@@ -1,7 +1,9 @@
 {
-  "name": "myWallapop",
-  "Description": "Wallapop",
+  "name": "sdi-entrega2-202-206",
   "version": "1.0.0",
+  "Description": "Wallapop",
+  "repository": "https://github.com/astrd/sdi-entrega2-202-206",
+  "license": "UNLICENSED",
   "dependencies": {
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
@@ -11,6 +13,6 @@
     "mongodb": "^2.2.33",
     "nodemon": "^1.18.10",
     "request": "^2.88.0",
-    "swig": "^1.4.2"
+    "swig-templates": "^2.0.3"
   }
 }

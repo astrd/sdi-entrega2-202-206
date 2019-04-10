@@ -1,8 +1,34 @@
 // Módulos
 var express = require('express');
 var app = express();
-var swig = require('swig');
 
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Credentials", "true");
+    res.header("Access-Control-Allow-Methods", "POST, GET, DELETE, UPDATE, PUT");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, token");
+// Debemos especificar todas las headers que se aceptan. Content-Type , token
+    next();
+});
+
+var jwt = require('jsonwebtoken');
+app.set('jwt', jwt);
+
+// Objeto sessión
+var expressSession = require('express-session');
+app.use(expressSession({
+    secret: 'abcdefg',
+    resave: true,
+    saveUninitialized: true
+}));
+
+// Encriptación de contraseñas
+var crypto = require('crypto');
+
+// Base de datos
+var mongo = require('mongodb');
+
+var swig = require('swig-templates');
 
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
@@ -12,7 +38,6 @@ app.use(express.static('public'));
 
 // Variables
 app.set('port', 8081);
-
 
 // routerUsuarioSession
 var routerUsuarioSession = express.Router();
@@ -34,10 +59,11 @@ require("./routes/rusuarios.js")(app, swig);
 require("./routes/rofertas.js")(app, swig);
 
 app.get('/', function (req, res) {
-    res.redirect('/home');
+    let respuesta = swig.renderFile('views/home.html', {});
+    res.send(respuesta);
 });
 // lanzar el servid
 app.listen(app.get('port'), 8081, function() {
-    console.log("Servidor activo");
+    console.log("Servidor activo en puerto " + app.get('port'));
 });
 //mongo
