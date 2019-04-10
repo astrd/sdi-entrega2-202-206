@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block titulo %} Lista de Ofertas {% endblock %}
+
+{% block contenido_principal %}
+	<div class="container">
+		<h2 >Ofertas</h2>
+
+		<p >Las ofertas disponibles en wallapop:</p>
+		<button type="button" id="updateButton" class="btn btn-default">Actualizar</button>
+		<script>
+			$("#updateButton").click(function() {
+				$("#tableoffers").load('/offer/list/update');
+			});
+		</script>
+		<div class="table-responsive">
+			<table class="table table-hover" id="tableoffers">
+				<thead>
+					<tr>
+						<th class="col-md-1">id</th>
+						<th >Titulo </th>
+						<th >Precio </th>
+						<th > Propetario </th>
+						<th class="col-md-1"></th>
+						<th class="col-md-1"></th>
+						<th class="col-md-1"></th>
+						
+					</tr>
+				</thead>
+				<tbody>
+				{% for offer in offerList %}
+					<tr >
+						<td >{{offer.id}}</td>
+						<td >{{offer.title}}</td>
+						<td >{{offer.price}}</td>
+						<td >{{offer.owner.email}}</td>
+						<td><a th:text="#{details.message}" href="{{'/offer/details/' + offer.id}}">detalles</a></td>
+						<td><a th:text="#{buy.message}" href="{{'/offer/details/' + offer.id}}" class="comprar">comprar</a></td>
+					</tr>
+				{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+{% endblock %}
