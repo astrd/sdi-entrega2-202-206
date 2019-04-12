@@ -38,6 +38,9 @@ app.use(express.static('public'));
 
 // Variables
 app.set('port', 8081);
+app.set('db','mongodb://uo258525:sdi202206@sdi-actividad2-202-206-shard-00-00-01at8.mongodb.net:27017,sdi-actividad2-202-206-shard-00-01-01at8.mongodb.net:27017,sdi-actividad2-202-206-shard-00-02-01at8.mongodb.net:27017/test?ssl=true&replicaSet=sdi-actividad2-202-206-shard-0&authSource=admin&retryWrites=true');
+app.set('clave','abcdefg');
+app.set('crypto',crypto);
 
 // routerUsuarioSession
 var routerUsuarioSession = express.Router();

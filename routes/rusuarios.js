@@ -1,4 +1,4 @@
-module.exports = function(app, swig) {
+module.exports = function (app, swig) {
     app.get("/identificarse", function (req, res) {
         var respuesta = swig.renderFile('views/login.html', {});
         res.send(respuesta);
@@ -9,15 +9,23 @@ module.exports = function(app, swig) {
         res.send(respuesta);
     });
 
-    app.post("/identificarse", function (req, res) {
-        var respuesta = swig.renderFile('views/home.html', {});
-        res.send(respuesta);
+    app.post('/registrarse', function (req, res) {
+        var seguro = app.get("crypto").createHmac('sha256', app.get('clave'))
+            .update(req.body.password).digest('hex');
+        var usuario = {
+            email: req.body.email,
+            password: seguro
+        }
+        gestorBD.insertarUsuario(usuario, function (id) {
+            if (id == null) {
+                res.send("Error al insertar ");
+            } else {
+                res.send('Usuario Insertado ' + id);
+            }
+        });
+
     });
 
-    app.post("/registrarse", function (req, res) {
-        var respuesta = swig.renderFile('views/home.html', {});
-        res.send(respuesta);
-    });
     app.get("/user/:id/details", function (req, res) {
         var respuesta = swig.renderFile('views/userdetails.html', {});
         res.send(respuesta);
