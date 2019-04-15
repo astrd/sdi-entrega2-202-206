@@ -27,7 +27,8 @@ var crypto = require('crypto');
 
 // Base de datos
 var mongo = require('mongodb');
-
+let gestorBD = require("./modules/gestorBD.js");
+gestorBD.init(app, mongo);
 var swig = require('swig-templates');
 
 var bodyParser = require('body-parser');
@@ -58,8 +59,8 @@ routerUsuarioSession.use(function(req, res, next) {
 
 //Rutas/controladores por lógica
 //Rutas/controladores por lógica
-require("./routes/rusuarios.js")(app, swig);
-require("./routes/rofertas.js")(app, swig);
+require("./routes/rusuarios.js")(app, swig,gestorBD);
+require("./routes/rofertas.js")(app, swig,gestorBD);
 
 app.get('/', function (req, res) {
     let respuesta = swig.renderFile('views/home.html', {});
