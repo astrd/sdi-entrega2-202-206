@@ -4,6 +4,26 @@ module.exports = function (app, swig,gestorBD) {
         res.send(respuesta);
     });
 
+    app.post("/identificarse", function (req, res) {
+        var seguro = app.get("crypto").createHmac('sha256', app.get('clave'))
+            .update(req.body.password).digest('hex');
+        var criterio = {
+            email : req.body.email,
+            password : seguro
+        }
+        gestorBD.obtenerUsuarios(criterio, function(usuarios) {
+            if (usuarios == null || usuarios.length == 0) {
+                req.session.usuario = null;
+
+                res.redirect("/identificarse" + "?mensaje=Email o password incorrecto"+ "&tipoMensaje=alert-danger ");
+            } else {
+                req.session.usuario = usuarios[0].email;
+                res.redirect("/home");
+            }
+        });
+
+    });
+
     app.get("/registrarse", function (req, res) {
         let respuesta = swig.renderFile('views/signup.html', {});
         res.send(respuesta);
@@ -62,6 +82,12 @@ module.exports = function (app, swig,gestorBD) {
                 }
             })
         }
+    });
+
+    app.get('/desconectarse', function (req, res) {
+        req.session.usuario = null;
+        console.log("desconectado");
+        res.redirect("/identificarse");
     });
 
     app.get("/user/:id/details", function (req, res) {

@@ -12,11 +12,19 @@ body {
   background-color: #e5ccff;
   
 }
+h2{
+    color:#4d124a;
+    font-family:Verdana;
+}
+form{
+    color:#a0609c;
+    font-family:monospace;
+}
 nav{
 	 color: #e5ccff;
 }
 .navbar{
-    background-color: #660066;
+    background-color: #4d124a;
 }
 btn-default {
     color: #660066;

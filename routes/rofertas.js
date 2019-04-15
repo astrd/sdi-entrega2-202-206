@@ -1,6 +1,7 @@
 module.exports = function(app, swig) {
     app.get("/home", function (req, res) {
-        var respuesta = swig.renderFile('views/home.html', {});
+        var respuesta = swig.renderFile('views/home.html', {user: req.session.usuario});
+        console.log(req.session.usuario);
         res.send(respuesta);
     });
     app.get("/offer/add", function (req, res) {
