@@ -4,7 +4,7 @@
 
 {% block contenido_principal %}
 	<div class="container">
-		<h2 th:text="#{offers.message}">Ofertas</h2>
+		<h2 >Ofertas</h2>
 
 		<p >Ofertas Propias</p>
 
@@ -23,14 +23,14 @@
 				</tr>
 				</thead>
 				<tbody>
-				{% for offer in offerList %}
+				{% for offer in ofertas %}
 				<tr >
-					<td >{{offer.id}}</td>
+					<td >{{parseInt(offer._id)}}</td>
 					<td >{{offer.title}}</td>
 					<td >{{offer.price}}</td>
-					<td >{{offer.owner.email}}</td>
+					<td >{{offer.owner}}</td>
 					<td><a  href="{{'/offer/details/' + offer.id}}">detalles</a></td>
-					<td><a  href="{{'/offer/details/' + offer.id}}" class="eliminar">eliminar</a></td>
+					<td><a  href="{{'/offer/details/' + offer.id}}" class="comprar">comprar</a></td>
 				</tr>
 				{% endfor %}
 				</tbody>

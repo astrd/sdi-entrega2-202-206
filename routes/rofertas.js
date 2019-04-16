@@ -41,10 +41,22 @@ module.exports = function(app, swig, gestorBD) {
         res.send(respuesta);
     });
     app.get("/offer/selling", function (req, res) {
-        var respuesta = swig.renderFile('views/selling.html', {});
-        app.get("logger").info('Usuario se ha dirijido a la vista de ofertas propias');
+        criterio={owner:  req.session.usuario };
+        gestorBD.obtenerOfertas(criterio, function (ofertas) {
+            if (ofertas == null) {
+                res.send("Error al listar ");
+                app.get("logger").error('Error al listar ofertas propias');
+            } else {
 
-        res.send(respuesta);
+                var respuesta = swig.renderFile('views/selling.html',
+                    {
+                        ofertas: ofertas
+                    });
+                res.send(respuesta);
+                app.get("logger").info('Usuario se ha dirijido a la vista ofertas propias');
+            }
+        });
+
     });
     app.get("/offer/bought", function (req, res) {
         var respuesta = swig.renderFile('views/bought.html', {});
@@ -54,7 +66,7 @@ module.exports = function(app, swig, gestorBD) {
     });
     app.get("/offer/list", function (req, res) {
 
-        criterio={};
+        criterio={owner: { $ne: req.session.usuario }};
         gestorBD.obtenerOfertas(criterio, function (ofertas) {
             if (ofertas == null) {
                 res.send("Error al listar ");
