@@ -55,14 +55,12 @@ module.exports = function (app, swig, gestorBD) {
         } else {
             let seguro = app.get("crypto").createHmac('sha256', app.get('clave'))
                 .update(req.body.password).digest('hex');
-            let usuario = {
-                email: req.body.email,
-                password: seguro
+            let buscarUsuario = {
+                email: req.body.email
             }
-            gestorBD.obtenerUsuarios(usuario, function (usuarios) {
-                if (usuarios != null && usuarios.length != 0) {
-                    res.send("El email ya está registrado. Inténtelo de nuevo con un email diferente");
-                    res.redirect("/registrarse");
+            gestorBD.obtenerUsuarios(buscarUsuario, function (usuarios) {
+                if (usuarios != null && usuarios.length !== 0) {
+                    res.redirect("/registrarse?mensaje=El email ya está registrado. Inténtelo de nuevo con un email diferente");
                 } else {
                     let user = {
                         name: req.body.name,
@@ -71,11 +69,10 @@ module.exports = function (app, swig, gestorBD) {
                         password: seguro,
                         rol: 'user',
                         money: 100.0
-                    }
+                    };
                     gestorBD.insertarUsuario(user, function (id) {
                         if (id == null) {
-                            res.send("error al insertar")
-
+                            res.send("Error al insertar");
                         } else {
                             res.redirect("/identificarse");
 
