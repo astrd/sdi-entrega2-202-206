@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block titulo %} Ofertas Propias {% endblock %}
+
+{% block contenido_principal %}
+	<div class="container">
+		<h2 >Ofertas</h2>
+
+		<p >Ofertas Propias</p>
+
+		<div class="table-responsive">
+			<table class="table table-hover" id="tableoffers">
+				<thead>
+				<tr>
+					<th class="col-md-1">id</th>
+					<th >Titulo </th>
+					<th >Precio </th>
+					<th > Propetario </th>
+					<th class="col-md-1"></th>
+					<th class="col-md-1"></th>
+					<th class="col-md-1"></th>
+
+				</tr>
+				</thead>
+				<tbody>
+				{% for offer in ofertas %}
+				<tr >
+					<td >{{parseInt(offer._id)}}</td>
+					<td >{{offer.title}}</td>
+					<td >{{offer.price}}</td>
+					<td >{{offer.owner}}</td>
+					<td><a  href="{{'/offer/details/' + offer.id}}">detalles</a></td>
+					<td><a  href="{{'/offer/details/' + offer.id}}" class="comprar">comprar</a></td>
+				</tr>
+				{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+{% endblock %}
