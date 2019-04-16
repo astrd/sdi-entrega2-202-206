@@ -55,10 +55,29 @@ routerUsuarioSession.use(function(req, res, next) {
         res.redirect("/identificarse");
     }
 });
+app.use("/ ", routerUsuarioSession);
+app.use("/home", routerUsuarioSession);
+app.use("/offer/*", routerUsuarioSession);
+app.use("/admin", routerUsuarioSession);
+app.use("/user/*", routerUsuarioSession);
+
+
 
 //asegurar identificacion
-
-
+var routerAdmin = express.Router();
+routerAdmin.use(function(req, res, next) {
+    console.log("routerAdmin");
+    console.log(req.session.usuario);
+    if ( req.session.usuario=='admin@email.com') {
+        // dejamos correr la petición
+        next();
+    } else {
+        console.log("va a : "+req.session.destino)
+        res.redirect("/home");
+    }
+});
+app.use("/admin", routerAdmin);
+app.use("/user/*", routerAdmin);
 //Rutas/controladores por lógica
 //Rutas/controladores por lógica
 require("./routes/rusuarios.js")(app, swig,gestorBD);

@@ -24,7 +24,11 @@ module.exports = function (app, swig, gestorBD) {
                     console.log("admin loged in");
                     res.redirect("/admin");
                 }
-                res.redirect("/home");
+                else
+                {
+                    res.redirect("/home");
+                }
+
             }
         });
 
