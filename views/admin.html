@@ -31,7 +31,7 @@
             <ul class="nav navbar-nav">
 
 
-                <li><a href="/user/list" id="usersee" >Ver  Usuarios</a></li>
+                 <li><a href="/user/list" id="usersee" >Ver  Usuarios</a></li>
 
 
 
@@ -47,42 +47,17 @@
 </nav>
 
 
+
 <div class="container">
-    <h2>Usuarios</h2>
-    <p>Los usuarios que actualmente figuran en el sistema son los
-        siguientes:</p>
-    <div class="table-responsive">
-        <form method="post" action="/user/delete">
-            <table class="table table-hover">
-                <thead>
-                <tr>
-                    <th>Email</th>
-                    <th>Nombre</th>
-                    <th>Apellidos</th>
-                    <th class="col-md-1"></th>
-                    <th class="col-md-1"></th>
-                    <th class="col-md-1"></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr >
-                    <td >{{user.email}}</td>
-                    <td >{{user.name}}</td>
-                    <td >{{user.surname}}</td>
-                    <td><input type="checkbox" name="idsUser" class="check"
-                               value={{user.id}} /></td>
 
-                </tr>
-                </tbody>
-            </table>
-            <div class="form-group">
-                <input class="btn btn-danger" type="submit" id="DeleteButton"
-                       value="Eliminar" />
-
-
-            </div>
-        </form>
+    <div class="container" style="text-align: center">
+        <h2 >Bienvenidos</h2>
+        <p > Ha sido autenticado como admin.
+        </p>
+        <p > Esto es Wallapop venda y compre!
+        </p>
     </div>
+
 </div>
 
 

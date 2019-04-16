@@ -18,6 +18,12 @@ module.exports = function (app, swig, gestorBD) {
                 res.redirect("/identificarse" + "?mensaje=Email o password incorrecto" + "&tipoMensaje=alert-danger ");
             } else {
                 req.session.usuario = usuarios[0].email;
+                if(usuarios[0].rol=='admin')
+                {
+
+                    console.log("admin loged in");
+                    res.redirect("/admin");
+                }
                 res.redirect("/home");
             }
         });
@@ -97,5 +103,6 @@ module.exports = function (app, swig, gestorBD) {
         var respuesta = swig.renderFile('views/userlist.html', {});
         res.send(respuesta);
     });
+
 
 }

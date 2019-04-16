@@ -56,11 +56,14 @@ routerUsuarioSession.use(function(req, res, next) {
     }
 });
 
+//asegurar identificacion
+
 
 //Rutas/controladores por lógica
 //Rutas/controladores por lógica
 require("./routes/rusuarios.js")(app, swig,gestorBD);
 require("./routes/rofertas.js")(app, swig,gestorBD);
+require("./routes/radmin.js")(app, swig,gestorBD);
 
 app.get('/', function (req, res) {
     let respuesta = swig.renderFile('views/home.html', {});
