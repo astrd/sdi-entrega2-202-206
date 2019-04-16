@@ -1,4 +1,4 @@
-module.exports = function (app, swig,gestorBD) {
+module.exports = function (app, swig, gestorBD) {
     app.get("/identificarse", function (req, res) {
         var respuesta = swig.renderFile('views/login.html', {});
         res.send(respuesta);
@@ -8,14 +8,14 @@ module.exports = function (app, swig,gestorBD) {
         var seguro = app.get("crypto").createHmac('sha256', app.get('clave'))
             .update(req.body.password).digest('hex');
         var criterio = {
-            email : req.body.email,
-            password : seguro
+            email: req.body.email,
+            password: seguro
         }
-        gestorBD.obtenerUsuarios(criterio, function(usuarios) {
+        gestorBD.obtenerUsuarios(criterio, function (usuarios) {
             if (usuarios == null || usuarios.length == 0) {
                 req.session.usuario = null;
 
-                res.redirect("/identificarse" + "?mensaje=Email o password incorrecto"+ "&tipoMensaje=alert-danger ");
+                res.redirect("/identificarse" + "?mensaje=Email o password incorrecto" + "&tipoMensaje=alert-danger ");
             } else {
                 req.session.usuario = usuarios[0].email;
                 res.redirect("/home");
@@ -34,10 +34,10 @@ module.exports = function (app, swig,gestorBD) {
         if (req.body.name.length < 2) {
             res.redirect("/registrarse?mensaje=El nombre debe tener entre 2 y 24 caracteres.");
         }
-        if (req.body.email === ""|| req.body.email===null) {
+        if (req.body.email === "" || req.body.email === null) {
             res.redirect("/registrarse?mensaje=El email no puede ser vacío");
         }
-        if(!req.body.email.includes()=="@"){
+        if (!req.body.email.includes() == "@") {
             res.redirect("/registrarse?mensaje=El email debe contener un @.");
         }
         if (req.body.password.length < 5) {
@@ -64,13 +64,15 @@ module.exports = function (app, swig,gestorBD) {
                     res.send("El email ya está registrado. Inténtelo de nuevo con un email diferente");
                     res.redirect("/registrarse");
                 } else {
-                    let user ={
-                        name:req.body.name,
-                        surname: req.body.surName,
-                        rol:'user',
-                        money:100.0
+                    let user = {
+                        name: req.body.name,
+                        surname: req.body.surname,
+                        email: req.body.email,
+                        password: seguro,
+                        rol: 'user',
+                        money: 100.0
                     }
-                    gestorBD.insertarUsuario(usuario, function (id) {
+                    gestorBD.insertarUsuario(user, function (id) {
                         if (id == null) {
                             res.send("error al insertar")
 
