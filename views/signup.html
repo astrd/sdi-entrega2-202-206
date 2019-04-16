@@ -1,11 +1,22 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>REGISTRARSE</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/css/wallapop.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <!--<script src="/css/cursoreffect.js"></script>-->
 
-{% block titulo %} Registrar usuario {% endblock %}
+    <script src="https://bootswatch.com/4/pulse/bootstrap.css"></script>
 
-{% block contenido_principal %}
+
+</head>
+<body>
 
 <div class="container">
-    <h2>Registrate</h2>
+    <h2 align="center"><br>Registrate<br></h2>
     <form class="form-horizontal" method="post" action="/registrarse">
         <div class="form-group">
             <label class="control-label col-sm-2" for="name">Nombre:</label>
@@ -51,3 +62,5 @@
     </form>
 </div>
 
+</body>
+</html>

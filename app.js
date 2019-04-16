@@ -55,7 +55,7 @@ app.set('crypto',crypto);
 // routerUsuarioSession
 var routerUsuarioSession = express.Router();
 routerUsuarioSession.use(function(req, res, next) {
-    console.log("routerUsuarioSession");
+
     if ( req.session.usuario ) {
         // dejamos correr la petición
         next();
@@ -75,8 +75,7 @@ app.use("/user/*", routerUsuarioSession);
 //asegurar identificacion
 var routerAdmin = express.Router();
 routerAdmin.use(function(req, res, next) {
-    console.log("routerAdmin");
-    console.log(req.session.usuario);
+
     if ( req.session.usuario=='admin@email.com') {
         // dejamos correr la petición
         next();
@@ -88,9 +87,12 @@ routerAdmin.use(function(req, res, next) {
 app.use("/admin", routerAdmin);
 app.use("/user/*", routerAdmin);
 //Rutas/controladores por lógica
-//Rutas/controladores por lógica
+
+//Maneja rutas respecto a usuarios
 require("./routes/rusuarios.js")(app, swig,gestorBD);
+//Maneja rutas respecto a ofertas
 require("./routes/rofertas.js")(app, swig,gestorBD);
+//Manaeja rutas respecto a admin
 require("./routes/radmin.js")(app, swig,gestorBD);
 
 app.get('/', function (req, res) {

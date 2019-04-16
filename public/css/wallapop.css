@@ -16,6 +16,11 @@ h2{
     color:#4d124a;
     font-family:Verdana;
 }
+table{
+    background-color: #c59cf47d;
+    border:none;
+
+}
 form{
     color:#a0609c;
     font-family:monospace;
