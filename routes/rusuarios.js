@@ -2,6 +2,8 @@ module.exports = function (app, swig, gestorBD) {
     app.get("/identificarse", function (req, res) {
         var respuesta = swig.renderFile('views/login.html', {});
         res.send(respuesta);
+        app.get("logger").info('Usuario se va a identificar');
+
     });
 
     app.post("/identificarse", function (req, res) {
@@ -14,8 +16,9 @@ module.exports = function (app, swig, gestorBD) {
         gestorBD.obtenerUsuarios(criterio, function (usuarios) {
             if (usuarios == null || usuarios.length == 0) {
                 req.session.usuario = null;
-
+                app.get("logger").error('Fallo en autenticacion');
                 res.redirect("/identificarse" + "?mensaje=Email o password incorrecto" + "&tipoMensaje=alert-danger ");
+
             } else {
                 req.session.usuario = usuarios[0].email;
                 if(usuarios[0].rol=='admin')
@@ -23,10 +26,12 @@ module.exports = function (app, swig, gestorBD) {
 
                     console.log("admin loged in");
                     res.redirect("/admin");
+                    app.get("logger").info('Usuario se ha identificado como admin');
                 }
                 else
                 {
                     res.redirect("/home");
+                    app.get("logger").info('Usuario Estandar se ha identificado');
                 }
 
             }
@@ -82,8 +87,10 @@ module.exports = function (app, swig, gestorBD) {
                     };
                     gestorBD.insertarUsuario(user, function (id) {
                         if (id == null) {
+                            app.get("logger").error('Error registro de usuario');
                             res.send("Error al insertar");
                         } else {
+                            app.get("logger").info('Usuario se ha registrado');
                             res.redirect("/identificarse");
 
                         }
@@ -96,16 +103,8 @@ module.exports = function (app, swig, gestorBD) {
     app.get('/desconectarse', function (req, res) {
         req.session.usuario = null;
         console.log("desconectado");
+        app.get("logger").info('Usuario se ha desconectado');
         res.redirect("/identificarse");
-    });
-
-    app.get("/user/:id/details", function (req, res) {
-        var respuesta = swig.renderFile('views/userdetails.html', {});
-        res.send(respuesta);
-    });
-    app.get("/user/list", function (req, res) {
-        var respuesta = swig.renderFile('views/userlist.html', {});
-        res.send(respuesta);
     });
 
 

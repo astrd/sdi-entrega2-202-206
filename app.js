@@ -2,6 +2,15 @@
 var express = require('express');
 var app = express();
 
+let log4js = require('log4js');
+log4js.configure({
+    appenders: { wallapop: { type: 'file', filename: 'logs/wallapop.log' } },
+    categories: { default: { appenders: ['wallapop'], level: 'trace' } }
+});
+let logger = log4js.getLogger('wallapop');
+app.set('logger', logger);
+
+
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Credentials", "true");
