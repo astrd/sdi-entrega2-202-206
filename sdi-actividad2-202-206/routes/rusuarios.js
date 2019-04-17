@@ -111,8 +111,8 @@ module.exports = function (app, swig, gestorBD) {
             };
             gestorBD.obtenerUsuarios(criterio, function (users) {
                 if (users == null) {
-                    res.redirect("/home?mensaje=Error al listar las ofertas del usuario");
-                    app.get("logger").error('Error al listar las ofertas ususarios');
+                    res.redirect("/home?mensaje=Error al listar los usuarios");
+                    app.get("logger").error('Error al listar los usuarios');
                 } else {
                     let respuesta = swig.renderFile('views/userlist.html',
                         {
@@ -123,6 +123,29 @@ module.exports = function (app, swig, gestorBD) {
                 }
             });
         }
+    });
+
+    app.post('/user/delete', function (req, res) {
+        let idsUsers = req.body.idsUsers;
+        //si es solo un usuario, creamos un array y lo metemos para trabajar con forEach
+        if (!Array.isArray(idsUsers)) {
+            let aux = idsUsers;
+            idsUsers = [];
+            idsUsers.push(aux);
+        }
+        idsUsers.forEach(user => {
+            let email = {
+                email: user
+            };
+            gestorBD.eliminarUsuario(email, function (resultado) {
+                if (resultado == null) {
+                    res.redirect('/user/list?mensaje=Error al borrar el usuario con email' + user);
+                    app.get("logger").error('Error al borrar el usuario');
+                }
+            })
+        });
+        res.redirect('/user/list?mensaje=Usuarios borrados correctamente');
+        app.get("logger").info('Usuarios borrados correctamente');
     });
 
     app.get('/desconectarse', function (req, res) {
