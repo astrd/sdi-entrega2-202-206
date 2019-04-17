@@ -1,4 +1,13 @@
 module.exports = function (app, swig, gestorBD) {
+    app.get("/home", function (req, res) {
+
+        var respuesta = swig.renderFile('views/home.html', {user: req.session.usuario });
+        app.get("logger").info('Usuario se ha dirijido a home');
+        res.send(respuesta);
+
+
+
+    });
     app.get("/identificarse", function (req, res) {
         var respuesta = swig.renderFile('views/login.html', {});
         res.send(respuesta);
@@ -20,7 +29,7 @@ module.exports = function (app, swig, gestorBD) {
                 res.redirect("/identificarse" + "?mensaje=Email o password incorrecto" + "&tipoMensaje=alert-danger ");
 
             } else {
-                req.session.usuario = usuarios[0].email;
+                req.session.usuario = usuarios[0];
                 if (usuarios[0].rol == 'admin') {
 
                     console.log("admin loged in");

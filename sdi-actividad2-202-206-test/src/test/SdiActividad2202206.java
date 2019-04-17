@@ -18,8 +18,7 @@ public class SdiActividad2202206 {
 
 	private TestUtil testUtil = new TestUtil(driver);
 
-	// En Windows (Debe ser la versiÃ³n 65.0.1 y desactivar las actualizacioens
-	// automÃ¡ticas)):
+	// 
 	final static String PathFirefox64 = "../FirefoxPortable/FirefoxPortable.exe";
 	// helen
 	final static String Geckdriver022 = "geckodriver024win64.exe";
@@ -142,7 +141,7 @@ public class SdiActividad2202206 {
 		driver.findElement(By.id("password")).sendKeys("123456");
 		driver.findElement(By.id("password2")).click();
 		driver.findElement(By.id("password2")).clear();
-		driver.findElement(By.id("password2")).sendKeys("12345678");
+		driver.findElement(By.id("password2")).sendKeys("1234533333678");
 		driver.findElement(By.id("send")).click();
 		// nos aseguramos que sigue en la misma pagina por datos incorrectos
 		testUtil.searchText("Identificacion de usuario", false);
@@ -180,4 +179,247 @@ public class SdiActividad2202206 {
 		testUtil.searchText("Registrate", true);
 		testUtil.searchText("El email ya está registrado", true);
 	}
+	
+	// Inicio de sesión con datos válidos (usuario ).
+		@Test
+		public void Prueba04() {
+			driver.get("http://localhost:8081/identificarse");
+
+			driver.findElement(By.name("email")).click();
+			driver.findElement(By.name("email")).clear();
+			driver.findElement(By.name("email")).sendKeys("prueba6@prueba6.com");
+			driver.findElement(By.name("password")).click();
+			driver.findElement(By.name("password")).clear();
+			driver.findElement(By.name("password")).sendKeys("12345");
+
+			driver.findElement(By.className("btn-primary")).click();
+			testUtil.waitChangeWeb();
+			testUtil.searchText("Bienvenidos", true);
+			testUtil.searchText("autenticado", true);
+			testUtil.searchText("prueba6@prueba6.com", true);
+		}
+		
+		// Inicio de sesión con datos válidos (usuario estándar, email existente,
+				// pero contraseñ incorrecta).
+				@Test
+				public void Prueba05() {
+					driver.get("http://localhost:8081/identificarse");
+
+					driver.findElement(By.name("email")).click();
+					driver.findElement(By.name("email")).clear();
+					driver.findElement(By.name("email")).sendKeys("prueba6@prueba6.com");
+					driver.findElement(By.name("password")).click();
+					driver.findElement(By.name("password")).clear();
+					driver.findElement(By.name("password")).sendKeys("error");
+
+					driver.findElement(By.className("btn-primary")).click();
+					testUtil.waitChangeWeb();
+					testUtil.searchText("Bienvenidos", false);
+					testUtil.searchText("autenticado", false);
+					
+				}
+
+		// Inicio de sesión con datos inválidos (usuario estándar, campo email y
+		// contraseña vacíos).
+		@Test
+		public void Prueba06() {
+								
+			driver.get("http://localhost:8081/identificarse");
+
+			driver.findElement(By.name("email")).click();
+			driver.findElement(By.name("email")).clear();
+			driver.findElement(By.name("email")).sendKeys(" ");
+			driver.findElement(By.name("password")).click();
+			driver.findElement(By.name("password")).clear();
+			driver.findElement(By.name("password")).sendKeys(" ");
+
+			driver.findElement(By.className("btn-primary")).click();
+			testUtil.waitChangeWeb();
+			testUtil.searchText("Bienvenidos", false);
+			testUtil.searchText("autenticado", false);
+			
+
+		}
+
+		
+		
+		// Inicio de sesión con datos inválidos (usuario estándar, email no
+		// existente en la aplicación).
+		@Test
+		public void Prueba07() {
+			driver.get("http://localhost:8081/identificarse");
+
+			driver.findElement(By.name("email")).click();
+			driver.findElement(By.name("email")).clear();
+			driver.findElement(By.name("email")).sendKeys("err@prueba6.com");
+			driver.findElement(By.name("password")).click();
+			driver.findElement(By.name("password")).clear();
+			driver.findElement(By.name("password")).sendKeys("error");
+
+			driver.findElement(By.className("btn-primary")).click();
+			testUtil.waitChangeWeb();
+			testUtil.searchText("Bienvenidos", false);
+			testUtil.searchText("autenticado", false);
+		}
+
+		// Hacer click en la opción de salir de sesión y comprobar que se redirige a
+		// la página de inicio de sesión (Login).
+		@Test
+		public void Prueba08() {
+			driver.get("http://localhost:8081/identificarse");
+
+			driver.findElement(By.name("email")).click();
+			driver.findElement(By.name("email")).clear();
+			driver.findElement(By.name("email")).sendKeys("prueba6@prueba6.com");
+			driver.findElement(By.name("password")).click();
+			driver.findElement(By.name("password")).clear();
+			driver.findElement(By.name("password")).sendKeys("12345");
+
+			driver.findElement(By.className("btn-primary")).click();
+			driver.findElement(By.linkText("Identifícate")).click();
+			
+			testUtil.waitChangeWeb();
+			testUtil.searchText("Identificación de usuario", true);
+			testUtil.searchText("email", true);
+
+		}
+
+		// Comprobar que el botón cerrar sesión no está visible si el usuario no
+		// está autenticado.
+		@Test
+		public void Prueba09() {
+			driver.get("http://localhost:8081/");
+			testUtil.searchText("Desconectar", false);
+		}
+		// Mostrar el listado de usuarios y comprobar que se muestran todos los que
+		// existen en el
+		@Test
+		public void Prueba10() {			
+			driver.get("http://localhost:8081/identificarse");
+
+			driver.findElement(By.name("email")).click();
+			driver.findElement(By.name("email")).clear();
+			driver.findElement(By.name("email")).sendKeys("admin@email.com");
+			driver.findElement(By.name("password")).click();
+			driver.findElement(By.name("password")).clear();
+			driver.findElement(By.name("password")).sendKeys("admin");
+			driver.findElement(By.className("btn-primary")).click();
+			driver.findElement(By.id("usersee")).click();
+			testUtil.searchText("prueba6", true);
+			testUtil.searchText("prueba1", true);
+			testUtil.searchText("prueba2", true);
+			
+		}
+
+		// Admin.Ir a la lista de usuarios, borrar el primer usuario de la lista,
+		// comprobar que la lista se actualizay dicho usuario desaparece.
+		//@Test
+		public void Prueba11() {
+			 
+
+		}
+
+		// Admin.Ir a la lista de usuarios, borrar el último usuario de la lista,
+		// comprobar que la lista se actualizay dicho usuario desaparece.
+		@Test
+		public void Prueba12() {
+			 
+
+		}
+
+		// Admin.Ir a la lista de usuarios, borrar 3 usuarios, comprobar que la
+		// lista se actualiza y dichosusuarios desaparecen.
+		@Test
+		public void Prueba13() {
+			  
+
+		}
+
+		// Ir al formulario de alta de oferta, rellenarla con datos válidos y pulsar
+		// el botón Submit.
+		// Comprobar que la oferta sale en el listado de ofertas de dicho usuario
+		@Test
+		public void Prueba14() {
+			driver.get("http://localhost:8081/identificarse");
+			driver.findElement(By.linkText("Identifícate")).click();
+			driver.findElement(By.name("email")).click();
+			driver.findElement(By.name("email")).clear();
+			driver.findElement(By.name("email")).sendKeys("prueba6@prueba6.com");
+			driver.findElement(By.name("password")).click();
+			driver.findElement(By.name("password")).clear();
+			driver.findElement(By.name("password")).sendKeys("12345");
+
+			driver.findElement(By.className("btn-primary")).click();
+
+			driver.get("http://localhost:8081/offer/add");
+
+			driver.findElement(By.name("title")).click();
+			driver.findElement(By.name("title")).clear();
+			driver.findElement(By.name("title")).sendKeys("Diamantes");
+			driver.findElement(By.name("description")).click();
+			driver.findElement(By.name("description")).clear();
+			driver.findElement(By.name("description")).sendKeys("25 Karats");
+			driver.findElement(By.name("price")).click();
+			driver.findElement(By.name("price")).clear();
+			driver.findElement(By.name("price")).sendKeys("25");
+
+			driver.findElement(By.id("add")).click();
+			driver.get("http://localhost:8081/offer/selling");
+			testUtil.searchText("Diamantes", true);
+			testUtil.searchText("25", true);
+		}
+		// Ir al formulario de alta de oferta, rellenarla con datos inválidos (campo
+		// título vacío) y pulsarel botón Submit. Comprobar que se muestra el
+		// mensaje de campo obligatorio.
+		@Test
+		public void Prueba15() {
+			driver.get("http://localhost:8081/identificarse");
+			
+			driver.findElement(By.name("email")).click();
+			driver.findElement(By.name("email")).clear();
+			driver.findElement(By.name("email")).sendKeys("prueba6@prueba6.com");
+			driver.findElement(By.name("password")).click();
+			driver.findElement(By.name("password")).clear();
+			driver.findElement(By.name("password")).sendKeys("12345");
+
+			driver.findElement(By.className("btn-primary")).click();
+
+			driver.get("http://localhost:8081/offer/add");
+
+			driver.findElement(By.name("title")).click();
+			driver.findElement(By.name("title")).clear();
+			driver.findElement(By.name("title")).sendKeys(" ");
+			driver.findElement(By.name("description")).click();
+			driver.findElement(By.name("description")).clear();
+			driver.findElement(By.name("description")).sendKeys(" ");
+			driver.findElement(By.name("price")).click();
+			driver.findElement(By.name("price")).clear();
+			driver.findElement(By.name("price")).sendKeys("25");
+
+			driver.findElement(By.id("add")).click();
+			
+			testUtil.searchText("Agregar", true);
+
+		}
+		//Mostrar el listado de ofertas para dicho usuario y comprobar que se muestran todas los que
+		@Test
+		public void Prueba16() {
+			// login user
+			driver.get("http://localhost:8081/identificarse");
+
+			driver.findElement(By.name("email")).click();
+			driver.findElement(By.name("email")).clear();
+			driver.findElement(By.name("email")).sendKeys("prueba6@prueba6.com");
+			driver.findElement(By.name("password")).click();
+			driver.findElement(By.name("password")).clear();
+			driver.findElement(By.name("password")).sendKeys("12345");
+
+			driver.findElement(By.className("btn-primary")).click();
+			// adding offer
+			driver.get("http://localhost:8081/offer/selling");
+
+			testUtil.searchText("Diamantes", true);
+		}
+
+
 }

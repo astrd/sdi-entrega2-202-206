@@ -52,6 +52,11 @@ app.set('db','mongodb://uo258525:sdi202206@sdi-actividad2-202-206-shard-00-00-01
 app.set('clave','abcdefg');
 app.set('crypto',crypto);
 
+
+app.get('/', function (req, res) {
+    let respuesta = swig.renderFile('views/home.html', {});
+    res.redirect("/home");
+});
 // routerUsuarioSession
 var routerUsuarioSession = express.Router();
 routerUsuarioSession.use(function(req, res, next) {
@@ -64,7 +69,7 @@ routerUsuarioSession.use(function(req, res, next) {
         res.redirect("/identificarse");
     }
 });
-app.use("/ ", routerUsuarioSession);
+
 app.use("/home", routerUsuarioSession);
 app.use("/offer/*", routerUsuarioSession);
 app.use("/admin", routerUsuarioSession);
@@ -95,10 +100,7 @@ require("./routes/rofertas.js")(app, swig,gestorBD);
 //Manaeja rutas respecto a admin
 require("./routes/radmin.js")(app, swig,gestorBD);
 
-app.get('/', function (req, res) {
-    let respuesta = swig.renderFile('views/home.html', {});
-    res.send(respuesta);
-});
+
 // lanzar el servid
 app.listen(app.get('port'), 8081, function() {
     console.log("Servidor activo en puerto " + app.get('port'));

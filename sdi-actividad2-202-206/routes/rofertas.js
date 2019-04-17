@@ -1,10 +1,5 @@
 module.exports = function(app, swig, gestorBD) {
-    app.get("/home", function (req, res) {
-        var respuesta = swig.renderFile('views/home.html', {user: req.session.usuario});
-        console.log(req.session.usuario);
-        app.get("logger").info('Usuario se ha dirijido a home');
-        res.send(respuesta);
-    });
+
     app.get("/offer/add", function (req, res) {
         var respuesta = swig.renderFile('views/add.html', {});
         app.get("logger").info('Usuario se ha dirijido a la vista de añadir oferta');
@@ -21,7 +16,9 @@ module.exports = function(app, swig, gestorBD) {
             title: req.body.title,
             description: req.body.description,
             price: req.body.price,
-            owner: req.session.usuario
+            owner: req.session.usuario,
+            state: 'disponible'
+
         }
         gestorBD.insertarOferta(cancion, function (id) {
             if (id == null) {
@@ -41,7 +38,8 @@ module.exports = function(app, swig, gestorBD) {
         res.send(respuesta);
     });
     app.get("/offer/selling", function (req, res) {
-        criterio={owner:  req.session.usuario };
+        criterio={owner:  req.session.usuario ,
+            state: { $ne: 'no disponible' }};
         gestorBD.obtenerOfertas(criterio, function (ofertas) {
             if (ofertas == null) {
                 res.send("Error al listar ");
@@ -66,7 +64,8 @@ module.exports = function(app, swig, gestorBD) {
     });
     app.get("/offer/list", function (req, res) {
 
-        let criterio={owner: { $ne: req.session.usuario }};
+        let criterio={owner: { $ne: req.session.usuario },
+            state: { $ne: 'no disponible' }};
         gestorBD.obtenerOfertas(criterio, function (ofertas) {
             if (ofertas == null) {
                 res.send("Error al listar ");
@@ -84,6 +83,45 @@ module.exports = function(app, swig, gestorBD) {
 
     });
 
+    app.get("/offer/details/:id", function (req, res) {
+        var criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
+        gestorBD.obtenerOfertas(criterio, function (ofertas) {
+            if (ofertas == null) {
+                app.get("logger").error('Error al ver detalle de oferta');
+                res.send(respuesta);
+            } else {
+                app.get("logger").info('Usuario se ha dirijido a la vista detallada de oferta');
+                var respuesta = swig.renderFile('views/details.html',
+                    {
+                        offer: ofertas[0]
+                    });
+                res.send(respuesta);
+            }
+        })
+    });
+
+    app.get('/offer/buy/:id', function (req, res) {
+
+        var criterio = {
+            _id: gestorBD.mongo.ObjectID(req.params.id)
+        }
+        gestorBD.obtenerOfertas(criterio, function (ofertas) {
+            if (ofertas == null) {
+                app.get("logger").error('Error al ver detalle de oferta');
+                res.send(respuesta);
+            } else {
+                app.get("logger").info('Usuario se ha dirijido a la vista detallada de oferta');
+                var price = ofertas[0].price;
+                var sueldo = req.session.usuario.money;
+                if(price>sueldo)
+                {
+                    res.redirect('/offer/list?mensaje=Sin sueldo suficiente');
+                }
+                else{
 
 
+                }
+            }
+        })
+    });
 }
