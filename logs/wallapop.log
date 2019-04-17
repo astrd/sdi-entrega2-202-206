@@ -1,0 +1,52 @@
+[2019-04-16T18:46:46.175] [INFO] wallapop - Usuario se va a identificar
+[2019-04-16T18:46:48.575] [INFO] wallapop - Usuario Estandar se ha identificado
+[2019-04-16T18:46:48.589] [INFO] wallapop - Usuario se ha dirijido a home
+[2019-04-16T18:46:53.805] [INFO] wallapop - Usuario se ha dirijido a la vista ofertas disponibles
+[2019-04-16T18:47:32.623] [INFO] wallapop - Usuario se va a identificar
+[2019-04-16T18:47:34.406] [INFO] wallapop - Usuario Estandar se ha identificado
+[2019-04-16T18:47:34.422] [INFO] wallapop - Usuario se ha dirijido a home
+[2019-04-16T18:47:37.951] [INFO] wallapop - Usuario se ha dirijido a la vista ofertas propias
+[2019-04-16T18:47:43.090] [INFO] wallapop - Usuario se ha dirijido a la vista ofertas disponibles
+[2019-04-16T18:47:45.596] [INFO] wallapop - Usuario se ha desconectado
+[2019-04-16T18:47:45.603] [INFO] wallapop - Usuario se va a identificar
+[2019-04-16T18:48:25.239] [INFO] wallapop - Usuario se ha registrado
+[2019-04-16T18:48:25.249] [INFO] wallapop - Usuario se va a identificar
+[2019-04-16T18:48:33.489] [INFO] wallapop - Usuario Estandar se ha identificado
+[2019-04-16T18:48:33.494] [INFO] wallapop - Usuario se ha dirijido a home
+[2019-04-16T18:48:41.502] [INFO] wallapop - Usuario se ha dirijido a la vista ofertas disponibles
+[2019-04-16T18:48:47.677] [INFO] wallapop - Usuario se ha dirijido a la vista ofertas propias
+[2019-04-17T00:07:38.390] [INFO] wallapop - Usuario se ha desconectado
+[2019-04-17T00:07:38.400] [INFO] wallapop - Usuario se va a identificar
+[2019-04-17T00:07:44.770] [INFO] wallapop - Usuario Estandar se ha identificado
+[2019-04-17T14:55:31.993] [INFO] wallapop - Usuario se ha desconectado
+[2019-04-17T14:55:32.012] [INFO] wallapop - Usuario se va a identificar
+[2019-04-17T14:55:41.203] [INFO] wallapop - Usuario se va a identificar
+[2019-04-17T14:55:47.196] [ERROR] wallapop - Fallo en autenticacion
+[2019-04-17T14:55:47.204] [INFO] wallapop - Usuario se va a identificar
+[2019-04-17T14:55:49.552] [ERROR] wallapop - Fallo en autenticacion
+[2019-04-17T14:55:49.556] [INFO] wallapop - Usuario se va a identificar
+[2019-04-17T14:55:58.185] [ERROR] wallapop - Fallo en autenticacion
+[2019-04-17T14:55:58.191] [INFO] wallapop - Usuario se va a identificar
+[2019-04-17T14:55:59.995] [ERROR] wallapop - Fallo en autenticacion
+[2019-04-17T14:56:00.002] [INFO] wallapop - Usuario se va a identificar
+[2019-04-17T14:56:06.090] [INFO] wallapop - Usuario se va a identificar
+[2019-04-17T14:56:16.463] [INFO] wallapop - Usuario se ha desconectado
+[2019-04-17T14:56:16.471] [INFO] wallapop - Usuario se va a identificar
+[2019-04-17T14:56:20.847] [INFO] wallapop - Usuario se ha identificado como admin
+[2019-04-17T14:56:20.853] [INFO] wallapop - Admin se ha dirijido a la pagina de administracion principal
+[2019-04-17T14:56:23.744] [INFO] wallapop - Admin se ha dirijido a administrar usuarios
+[2019-04-17T14:56:45.198] [INFO] wallapop - Usuario se ha registrado
+[2019-04-17T14:56:45.204] [INFO] wallapop - Usuario se va a identificar
+[2019-04-17T14:56:47.638] [INFO] wallapop - Usuario se ha identificado como admin
+[2019-04-17T14:56:47.645] [INFO] wallapop - Admin se ha dirijido a la pagina de administracion principal
+[2019-04-17T14:56:49.964] [INFO] wallapop - Admin se ha dirijido a administrar usuarios
+[2019-04-17T14:56:51.614] [INFO] wallapop - Usuario se ha desconectado
+[2019-04-17T14:56:51.619] [INFO] wallapop - Usuario se va a identificar
+[2019-04-17T14:57:00.009] [INFO] wallapop - Usuario Estandar se ha identificado
+[2019-04-17T14:57:00.014] [INFO] wallapop - Usuario se ha dirijido a home
+[2019-04-17T14:57:04.801] [INFO] wallapop - Usuario se ha desconectado
+[2019-04-17T14:57:04.806] [INFO] wallapop - Usuario se va a identificar
+[2019-04-17T14:57:07.844] [INFO] wallapop - Usuario se ha identificado como admin
+[2019-04-17T14:57:08.219] [INFO] wallapop - Usuario se ha identificado como admin
+[2019-04-17T14:57:08.224] [INFO] wallapop - Admin se ha dirijido a la pagina de administracion principal
+[2019-04-17T14:57:09.277] [INFO] wallapop - Admin se ha dirijido a administrar usuarios
