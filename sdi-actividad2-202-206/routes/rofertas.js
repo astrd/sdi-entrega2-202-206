@@ -66,7 +66,7 @@ module.exports = function(app, swig, gestorBD) {
     });
     app.get("/offer/list", function (req, res) {
 
-        criterio={owner: { $ne: req.session.usuario }};
+        let criterio={owner: { $ne: req.session.usuario }};
         gestorBD.obtenerOfertas(criterio, function (ofertas) {
             if (ofertas == null) {
                 res.send("Error al listar ");

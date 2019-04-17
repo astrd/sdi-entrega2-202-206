@@ -21,15 +21,12 @@ module.exports = function (app, swig, gestorBD) {
 
             } else {
                 req.session.usuario = usuarios[0].email;
-                if(usuarios[0].rol=='admin')
-                {
+                if (usuarios[0].rol == 'admin') {
 
                     console.log("admin loged in");
                     res.redirect("/admin");
                     app.get("logger").info('Usuario se ha identificado como admin');
-                }
-                else
-                {
+                } else {
                     res.redirect("/home");
                     app.get("logger").info('Usuario Estandar se ha identificado');
                 }
@@ -83,7 +80,8 @@ module.exports = function (app, swig, gestorBD) {
                         email: req.body.email,
                         password: seguro,
                         rol: 'user',
-                        money: 100.0
+                        money: 100.0,
+                        valid: true
                     };
                     gestorBD.insertarUsuario(user, function (id) {
                         if (id == null) {
@@ -97,6 +95,33 @@ module.exports = function (app, swig, gestorBD) {
                     })
                 }
             })
+        }
+    });
+
+    app.get("/user/list", function (req, res) {
+        let userLogged = req.session.usuario;
+
+        if (userLogged.rol === 'user') {
+            res.redirect('/home?mensaje=solo el administrador tiene acceso a esta zona');
+        } else {
+            let criterio = {
+                email: {
+                    $ne: userLogged
+                }
+            };
+            gestorBD.obtenerUsuarios(criterio, function (users) {
+                if (users == null) {
+                    res.redirect("/home?mensaje=Error al listar las ofertas del usuario");
+                    app.get("logger").error('Error al listar las ofertas ususarios');
+                } else {
+                    let respuesta = swig.renderFile('views/userlist.html',
+                        {
+                            users: users
+                        });
+                    res.send(respuesta);
+                    app.get("logger").info('Administrador se ha dirijido a la vista de usuarios del sistema');
+                }
+            });
         }
     });
 

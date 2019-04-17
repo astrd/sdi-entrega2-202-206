@@ -5,7 +5,7 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="/css/wallapop.css" />
+    <link rel="stylesheet" href="/css/wallapop.css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
     <!--<script src="/css/cursoreffect.js"></script>-->
 
@@ -31,9 +31,7 @@
             <ul class="nav navbar-nav">
 
 
-                <li><a href="/user/list" id="usersee" >Ver  Usuarios</a></li>
-
-
+                <li><a href="/user/list" id="usersee">Ver Usuarios</a></li>
 
 
             </ul>
@@ -65,19 +63,22 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr >
-                    <td >{{user.email}}</td>
-                    <td >{{user.name}}</td>
-                    <td >{{user.surname}}</td>
+
+                {% for user in users %}
+                <tr>
+                    <td>{{user.email}}</td>
+                    <td>{{user.name}}</td>
+                    <td>{{user.surname}}</td>
                     <td><input type="checkbox" name="idsUser" class="check"
-                               value={{user.id}} /></td>
+                               value={{user.id}}/></td>
 
                 </tr>
+                {% endfor %}
                 </tbody>
             </table>
             <div class="form-group">
                 <input class="btn btn-danger" type="submit" id="DeleteButton"
-                       value="Eliminar" />
+                       value="Eliminar"/>
 
 
             </div>
