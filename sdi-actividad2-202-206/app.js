@@ -81,7 +81,7 @@ app.use("/user/*", routerUsuarioSession);
 var routerAdmin = express.Router();
 routerAdmin.use(function(req, res, next) {
 
-    if ( req.session.usuario=='admin@email.com') {
+    if ( req.session.usuario.rol=='admin') {
         // dejamos correr la petición
         next();
     } else {

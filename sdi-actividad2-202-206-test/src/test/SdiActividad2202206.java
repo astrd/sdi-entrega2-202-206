@@ -312,20 +312,23 @@ public class SdiActividad2202206 {
 	// existen en el
 	@Test
 	public void T11_ListadoDeUsuarios() {
-		driver.get("http://localhost:8081/identificarse");
-
-		driver.findElement(By.name("email")).click();
-		driver.findElement(By.name("email")).clear();
-		driver.findElement(By.name("email")).sendKeys("admin@email.com");
-		driver.findElement(By.name("password")).click();
-		driver.findElement(By.name("password")).clear();
-		driver.findElement(By.name("password")).sendKeys("admin");
-		driver.findElement(By.className("btn-primary")).click();
-		driver.findElement(By.id("usersee")).click();
-		testUtil.searchText("prueba6", true);
-		testUtil.searchText("prueba1", true);
-		testUtil.searchText("prueba2", true);
-
+		driver.get("http://localhost:8081/");
+		testUtil.waitChangeWeb();
+	    driver.findElement(By.name("email")).click();
+	    driver.findElement(By.name("email")).clear();
+	    driver.findElement(By.name("email")).sendKeys("admin@email.com");
+	    driver.findElement(By.name("password")).click();
+	    driver.findElement(By.name("password")).clear();
+	    driver.findElement(By.name("password")).sendKeys("admin");
+	    driver.findElement(By.id("send")).click();
+	    driver.findElement(By.id("usersee")).click();
+	    testUtil.waitChangeWeb();
+	    //comprobamos que no se liste el administrador y que se listen usuarios que estan en la base de datos
+	    testUtil.searchText("Usuarios", true);
+	    testUtil.searchText("admin@email.com", false);
+	    testUtil.searchText("prueba1@prueba1.com", true);
+	    testUtil.searchText("pruebaEmailExistente@prueba.com", true);
+	    
 	}
 
 	// Admin.Ir a la lista de usuarios, borrar el primer usuario de la lista,

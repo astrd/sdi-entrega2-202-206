@@ -115,9 +115,12 @@ module.exports = function (app, swig, gestorBD) {
         } else {
             let criterio = {
                 email: {
-                    $ne: userLogged
+                    $ne: userLogged.email
+
                 }
+
             };
+            
             gestorBD.obtenerUsuarios(criterio, function (users) {
                 if (users == null) {
                     res.redirect("/home?mensaje=Error al listar los usuarios");
