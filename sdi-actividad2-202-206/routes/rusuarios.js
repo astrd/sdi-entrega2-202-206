@@ -30,7 +30,8 @@ module.exports = function (app, swig, gestorBD) {
 
             } else {
                 req.session.usuario = usuarios[0];
-                if (usuarios[0].rol == 'admin') {
+                console.log(usuarios[0].rol+"!!");
+                if (req.session.usuario.rol == "admin") {
 
                     console.log("admin loged in");
                     res.redirect("/admin");
