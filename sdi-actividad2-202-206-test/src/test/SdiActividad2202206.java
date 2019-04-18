@@ -201,7 +201,7 @@ public class SdiActividad2202206 {
 
 	// Inicio de sesión con datos válidos (usuario ).
 	@Test
-	public void Prueba04() {
+	public void T05_IdentificarseValido() {
 		driver.get("http://localhost:8081/identificarse");
 
 		driver.findElement(By.name("email")).click();
@@ -221,7 +221,7 @@ public class SdiActividad2202206 {
 	// Inicio de sesión con datos válidos (usuario estándar, email existente,
 	// pero contraseñ incorrecta).
 	@Test
-	public void Prueba05() {
+	public void T06_IdentificarseContraseñaIncorrecta() {
 		driver.get("http://localhost:8081/identificarse");
 
 		driver.findElement(By.name("email")).click();
@@ -241,7 +241,7 @@ public class SdiActividad2202206 {
 	// Inicio de sesión con datos inválidos (usuario estándar, campo email y
 	// contraseña vacíos).
 	@Test
-	public void Prueba06() {
+	public void T07_IdentificarseEmailPasswordVacios() {
 
 		driver.get("http://localhost:8081/identificarse");
 
@@ -262,7 +262,7 @@ public class SdiActividad2202206 {
 	// Inicio de sesión con datos inválidos (usuario estándar, email no
 	// existente en la aplicación).
 	@Test
-	public void Prueba07() {
+	public void T08_IdentificarseEmailNoExiste() {
 		driver.get("http://localhost:8081/identificarse");
 
 		driver.findElement(By.name("email")).click();
@@ -281,7 +281,7 @@ public class SdiActividad2202206 {
 	// Hacer click en la opción de salir de sesión y comprobar que se redirige a
 	// la página de inicio de sesión (Login).
 	@Test
-	public void Prueba08() {
+	public void T09_IdentificarseSalirSesion() {
 		driver.get("http://localhost:8081/identificarse");
 
 		driver.findElement(By.name("email")).click();
@@ -303,7 +303,7 @@ public class SdiActividad2202206 {
 	// Comprobar que el botón cerrar sesión no está visible si el usuario no
 	// está autenticado.
 	@Test
-	public void Prueba09() {
+	public void T10_CerrarSesionNoVisibleNoAutenticado() {
 		driver.get("http://localhost:8081/");
 		testUtil.searchText("Desconectar", false);
 	}
@@ -311,7 +311,7 @@ public class SdiActividad2202206 {
 	// Mostrar el listado de usuarios y comprobar que se muestran todos los que
 	// existen en el
 	@Test
-	public void Prueba10() {
+	public void T11_ListadoDeUsuarios() {
 		driver.get("http://localhost:8081/identificarse");
 
 		driver.findElement(By.name("email")).click();
@@ -331,21 +331,21 @@ public class SdiActividad2202206 {
 	// Admin.Ir a la lista de usuarios, borrar el primer usuario de la lista,
 	// comprobar que la lista se actualizay dicho usuario desaparece.
 	// @Test
-	public void Prueba11() {
+	public void T12_BorrarPrimerUsuario() {
 
 	}
 
 	// Admin.Ir a la lista de usuarios, borrar el último usuario de la lista,
 	// comprobar que la lista se actualizay dicho usuario desaparece.
 	@Test
-	public void Prueba12() {
+	public void T13_BorrarUltimoUsuario() {
 
 	}
 
 	// Admin.Ir a la lista de usuarios, borrar 3 usuarios, comprobar que la
 	// lista se actualiza y dichosusuarios desaparecen.
 	@Test
-	public void Prueba13() {
+	public void T14_BorrarTresUsuarios() {
 
 	}
 
@@ -353,7 +353,7 @@ public class SdiActividad2202206 {
 	// el botón Submit.
 	// Comprobar que la oferta sale en el listado de ofertas de dicho usuario
 	@Test
-	public void Prueba14() {
+	public void T15_DarAltaOfertaValido() {
 		driver.get("http://localhost:8081/identificarse");
 		driver.findElement(By.linkText("Identifícate")).click();
 		driver.findElement(By.name("email")).click();
