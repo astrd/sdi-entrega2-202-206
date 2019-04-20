@@ -116,11 +116,9 @@ module.exports = function (app, swig, gestorBD) {
             let criterio = {
                 email: {
                     $ne: userLogged.email
-
                 }
-
             };
-            
+            let mysort = (u1, u2) => { return u1.email.localeCompare(u2.email); };
             gestorBD.obtenerUsuarios(criterio, function (users) {
                 if (users == null) {
                     res.redirect("/home?mensaje=Error al listar los usuarios");
@@ -128,7 +126,7 @@ module.exports = function (app, swig, gestorBD) {
                 } else {
                     let respuesta = swig.renderFile('views/userlist.html',
                         {
-                            users: users
+                            users: users.sort(mysort)
                         });
                     res.send(respuesta);
                     app.get("logger").info('Administrador se ha dirijido a la vista de usuarios del sistema');

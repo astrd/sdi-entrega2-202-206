@@ -84,7 +84,7 @@ public class SdiActividad2202206 {
 	public void T01_registroDatosValidos() {
 		driver.get("http://localhost:8081/");
 		testUtil.waitChangeWeb();
-		driver.findElement(By.linkText("registrate")).click();
+		driver.findElement(By.linkText("Registrate")).click();
 		testUtil.waitChangeWeb();
 		driver.findElement(By.id("name")).click();
 		driver.findElement(By.id("name")).clear();
