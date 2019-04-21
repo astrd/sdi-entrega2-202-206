@@ -1,10 +1,9 @@
 module.exports = function (app, swig, gestorBD) {
     app.get("/home", function (req, res) {
 
-        var respuesta = swig.renderFile('views/home.html', {user: req.session.usuario });
+        var respuesta = swig.renderFile('views/home.html', {user: req.session.usuario});
         app.get("logger").info('Usuario se ha dirijido a home');
         res.send(respuesta);
-
 
 
     });
@@ -54,22 +53,28 @@ module.exports = function (app, swig, gestorBD) {
         console.log(req.body);
         if (req.body.name.length < 2) {
             res.redirect("/registrarse?mensaje=El nombre debe tener entre 2 y 24 caracteres.");
+            return;
         }
         if (req.body.email === "" || req.body.email === null) {
             res.redirect("/registrarse?mensaje=El email no puede ser vacío");
+            return;
         }
         if (!req.body.email.includes() == "@") {
             res.redirect("/registrarse?mensaje=El email debe contener un @.");
+            return;
         }
         if (req.body.password.length < 5) {
             res.redirect("/registrarse?mensaje=La contraseña debe tener entre 5 y 24 caracteres.");
+            return;
         }
 
         if (req.body.surname.length < 2) {
             res.redirect("/registrarse?mensaje=El apellido debe tener entre 5 y 24 caracteres.");
+            return;
         }
         if (req.body.password !== req.body.password2) {
             res.redirect("/registrarse?mensaje=Las contraseñas no coinciden.");
+            return;
         }
         if (req.body.password2.length < 5) {
             res.redirect("/registrarse?mensaje=La contraseña debe tener entre 5 y 24 caracteres.");
@@ -118,7 +123,9 @@ module.exports = function (app, swig, gestorBD) {
                     $ne: userLogged.email
                 }
             };
-            let mysort = (u1, u2) => { return u1.email.localeCompare(u2.email); };
+            let mysort = (u1, u2) => {
+                return u1.email.localeCompare(u2.email);
+            };
             gestorBD.obtenerUsuarios(criterio, function (users) {
                 if (users == null) {
                     res.redirect("/home?mensaje=Error al listar los usuarios");
@@ -143,19 +150,23 @@ module.exports = function (app, swig, gestorBD) {
             idsUsers = [];
             idsUsers.push(aux);
         }
-        idsUsers.forEach(user => {
+        for (let i = 0; i < idsUsers.length; i++) {
             let email = {
-                email: user
+                email: idsUsers[i]
             };
             gestorBD.eliminarUsuario(email, function (resultado) {
                 if (resultado == null) {
                     res.redirect('/user/list?mensaje=Error al borrar el usuario con email' + user);
                     app.get("logger").error('Error al borrar el usuario');
+                } else {
+                    if (i === idsUsers.length - 1) {
+                        res.redirect('/user/list?mensaje=Usuarios borrados correctamente');
+                        app.get("logger").info('Usuarios borrados correctamente');
+                    }
                 }
+
             })
-        });
-        res.redirect('/user/list?mensaje=Usuarios borrados correctamente');
-        app.get("logger").info('Usuarios borrados correctamente');
+        }
     });
 
     app.get('/desconectarse', function (req, res) {
