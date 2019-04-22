@@ -3,7 +3,6 @@ module.exports = function (app, swig, gestorBD) {
         var respuesta = swig.renderFile('views/home.html', {
             user: req.session.user
         });
-        console.log(req.session);
         app.get("logger").info('Usuario se ha dirijido a home');
         res.send(respuesta);
 
@@ -11,7 +10,6 @@ module.exports = function (app, swig, gestorBD) {
     });
     app.get("/identificarse", function (req, res) {
         var respuesta = swig.renderFile('views/login.html', {});
-        console.log(req.session);
         res.send(respuesta);
         app.get("logger").info('Usuario se va a identificar');
 
@@ -32,7 +30,6 @@ module.exports = function (app, swig, gestorBD) {
             } else {
                 req.session.user = usuarios[0];
                 if (usuarios[0].rol === 'admin') {
-                    console.log("admin logged in");
                     res.redirect("/admin");
                     app.get("logger").info('Usuario se ha identificado como admin');
                 } else {
@@ -49,7 +46,6 @@ module.exports = function (app, swig, gestorBD) {
     });
 
     app.post('/registrarse', function (req, res) {
-        console.log(req.body);
         if (req.body.name.length < 2) {
             res.redirect("/registrarse?mensaje=El nombre debe tener entre 2 y 24 caracteres.");
             return;
@@ -171,7 +167,6 @@ module.exports = function (app, swig, gestorBD) {
 
     app.get('/desconectarse', function (req, res) {
         req.session.user = undefined;
-        console.log("desconectado");
         app.get("logger").info('Usuario se ha desconectado');
         res.redirect("/identificarse");
     });

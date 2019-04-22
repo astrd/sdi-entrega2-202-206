@@ -3,43 +3,42 @@
 {% block titulo %} Lista de Ofertas {% endblock %}
 
 {% block contenido_principal %}
-	<div class="container">
-		<h2 >Ofertas</h2>
+<div class="container">
+    <h2>Ofertas</h2>
 
-		<p >Las ofertas disponibles en wallapop:</p>
-		<button type="button" id="updateButton" class="btn btn-default">Actualizar</button>
-		<script>
-			$("#updateButton").click(function() {
-				$("#tableoffers").load('/offer/list/update');
-			});
-		</script>
-		<div class="table-responsive">
-			<table class="table " id="tableoffers">
-				<thead>
-					<tr>
-						<th class="col-md-1">id</th>
-						<th >Titulo </th>
-						<th >Precio </th>
-						<th > Propetario </th>
-						<th class="col-md-1"></th>
-						<th class="col-md-1"></th>
-						<th class="col-md-1"></th>
-						
-					</tr>
-				</thead>
-				<tbody>
-				{% for offer in ofertas %}
-					<tr >
-						<td >{{offer._id.toString()}}</td>
-						<td >{{offer.title}}</td>
-						<td >{{offer.price}}</td>
-						<td >{{offer.owner}}</td>
-						<td><a  href="{{'/offer/details/' + offer._id.toString()}}">detalles</a></td>
-						<td><a  href="{{'/offer/details/' + offer._id.toString()}}" class="comprar">comprar</a></td>
-					</tr>
-				{% endfor %}
-				</tbody>
-			</table>
-		</div>
-	</div>
+    <p>Las ofertas disponibles en wallapop:</p>
+    <button type="button" id="updateButton" class="btn btn-default">Actualizar</button>
+    <script>
+        $("#updateButton").click(function () {
+            $("#tableoffers").load('/offer/list/update');
+        });
+    </script>
+    <div class="table-responsive">
+        <table class="table " id="tableoffers">
+            <thead>
+            <tr>
+                <th class="col-md-1">id</th>
+                <th>Titulo</th>
+                <th>Precio</th>
+                <th>Propetario</th>
+                <th class="col-md-1"></th>
+                <th class="col-md-1"></th>
+                <th class="col-md-1"></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for offer in ofertas %}
+            <tr>
+                <td>{{offer._id.toString()}}</td>
+                <td>{{offer.title}}</td>
+                <td>{{offer.price}}</td>
+                <td>{{offer.owner}}</td>
+                <td><a href="{{'/offer/details/' + offer._id.toString()}}">detalles</a></td>
+
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 {% endblock %}
