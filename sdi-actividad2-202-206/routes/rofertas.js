@@ -1,5 +1,4 @@
 module.exports = function (app, swig, gestorBD) {
-
     app.get("/offer/add", function (req, res) {
         var respuesta = swig.renderFile('views/add.html', {
             user: req.session.user
@@ -46,8 +45,6 @@ module.exports = function (app, swig, gestorBD) {
             state: {$ne: 'no disponible'}
         };
         gestorBD.obtenerOfertas(criterio, function (ofertas) {
-            console.log(ofertas);
-
             if (ofertas == null) {
                 res.send("Error al listar ");
                 app.get("logger").error('Error al listar ofertas propias');

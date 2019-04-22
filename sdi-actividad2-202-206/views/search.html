@@ -3,49 +3,43 @@
 {% block titulo %} Buscar Ofertas {% endblock %}
 
 {% block contenido_principal %}
-	<div class="container">
-		<form class="navbar-form" action="/offer/search">
-			<div class="form-group">
-				<input name="searchText" type="text" class="form-control" size="50"
-					   placeholder= "Buscar por titulo de oferta">
-			</div>
-			<button type="submit" id="send" class="btn btn-default" >Buscar</button>
-		</form>
-		<h2 >Ofertas</h2>
-		<p >Las ofertas disponibles en wallapop:</p>
-		<button type="button" id="updateButton" class="btn btn-default" >Actualizar</button>
-		<script>
-			$("#updateButton").click(function() {
-				$("#tableoffers").load('/offer/list/update');
-			});
-		</script>
-		<div class="table-responsive">
-			<table class="table table-hover" id="tableoffers">
-				<thead>
-				<tr>
-					<th class="col-md-1">id</th>
-					<th >Titulo </th>
-					<th >Precio </th>
-					<th > Propetario </th>
-					<th class="col-md-1"></th>
-					<th class="col-md-1"></th>
-					<th class="col-md-1"></th>
+<div class="container">
+    <form class="navbar-form" action="/offer/search">
+        <div class="form-group">
+            <input name="searchText" type="text" class="form-control" size="50"
+                   placeholder="Buscar por titulo de oferta">
+        </div>
+        <button type="submit" id="send" class="btn btn-outline-primary">Buscar</button>
+    </form>
+    <h2>Ofertas</h2>
+    <p>Las ofertas disponibles en wallapop:</p>
+    <div class="table-responsive">
+        <table class="table table-hover" id="tableoffers">
+            <thead>
+            <tr>
+                <th class="col-md-1">id</th>
+                <th>Titulo</th>
+                <th>Precio</th>
+                <th> Propetario</th>
+                <th class="col-md-1"></th>
+                <th class="col-md-1"></th>
+                <th class="col-md-1"></th>
 
-				</tr>
-				</thead>
-				<tbody>
-				{% for offer in offerList %}
-				<tr >
-					<td >{{offer.id}}</td>
-					<td >{{offer.title}}</td>
-					<td >{{offer.price}}</td>
-					<td >{{offer.owner.email}}</td>
-					<td><a id="buy" th:href="${'/offer/details/' + offer.id}" >detales</a></td>
-					<td><a class="buy" name="offerbuy"  th:href="${'/offer/details/' + offer.id}">comprar</a></td>
-					<td><a th:href="${'/offer/delete/' + offer.id}">eliminar</a></td>
-				</tr>
-				</tbody>
-			</table>
-		</div>
-	</div>
+            </tr>
+            </thead>
+            <tbody>
+            {% for offer in offerList %}
+            <tr>
+                <td>{{offer.id}}</td>
+                <td>{{offer.title}}</td>
+                <td>{{offer.price}}</td>
+                <td>{{offer.owner.email}}</td>
+                <td><a id="buy" th:href="${'/offer/details/' + offer.id}">detales</a></td>
+                <td><a class="buy" name="offerbuy" th:href="${'/offer/details/' + offer.id}">comprar</a></td>
+                <td><a th:href="${'/offer/delete/' + offer.id}">eliminar</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 
