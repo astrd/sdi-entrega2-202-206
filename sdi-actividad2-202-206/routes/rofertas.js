@@ -57,10 +57,22 @@ module.exports = function(app, swig, gestorBD) {
 
     });
     app.get("/offer/bought", function (req, res) {
-        var respuesta = swig.renderFile('views/bought.html', {});
-        app.get("logger").info('Usuario se ha dirijido a la vista de ofertas compradas');
+        let criterio={buyer: req.session.usuario.email ,
+            state: 'no disponible' };
+        gestorBD.obtenerOfertas(criterio, function (ofertas) {
+            if (ofertas == null) {
+                res.send("Error al listar ");
+                app.get("logger").error('Error al listar ofertas');
+            } else {
 
-        res.send(respuesta);
+                var respuesta = swig.renderFile('views/bought.html',
+                    {
+                        ofertas: ofertas
+                    });
+                res.send(respuesta);
+                app.get("logger").info('Usuario se ha dirijido a la vista ofertas compradas');
+            }
+        });
     });
     app.get("/offer/list", function (req, res) {
 
@@ -102,9 +114,7 @@ module.exports = function(app, swig, gestorBD) {
 
     app.get('/offer/buy/:id', function (req, res) {
 
-        var criterio = {
-            _id: gestorBD.mongo.ObjectID(req.params.id)
-        }
+        var criterio = { _id: gestorBD.mongo.ObjectID(req.params.id)    }
         gestorBD.obtenerOfertas(criterio, function (ofertas) {
             if (ofertas == null) {
                 app.get("logger").error('Error al ver detalle de oferta');
@@ -112,14 +122,25 @@ module.exports = function(app, swig, gestorBD) {
             } else {
                 app.get("logger").info('Usuario se ha dirijido a la vista detallada de oferta');
                 var price = ofertas[0].price;
-                var sueldo = req.session.usuario.money;
-                if(price>sueldo)
+                var sueldo = req.session.usuario.money-price;
+                if(sueldo<0)
                 {
                     res.redirect('/offer/list?mensaje=Sin sueldo suficiente');
+                    app.get("logger").info('Usuario no tiene sueldo suficiente');
                 }
                 else{
-
-
+                    var cri ={ "_id": req.session.user._id   }
+                    var usuario={   money: 11.1 ,
+                    }
+                    gestorBD.modificaUsuario(cri , usuario, function (result) {
+                        if (result == null) {
+                            res.send("Error al modificar usuario");
+                            app.get("logger").error('Error al comprar oferta');
+                        } else {
+                            console.log(cri._id+"........");
+                            res.redirect("/home");
+                        }
+                    });
                 }
             }
         })

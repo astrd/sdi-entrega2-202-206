@@ -26,7 +26,7 @@
 				<tbody>
 				{% for offer in offerList %}
 				<tr >
-					<td >{{offer.id}}</td>
+					<td >{{offer._id.toString()}}</td>
 					<td >{{offer.title}}</td>
 					<td >{{offer.price}}</td>
 					<td >{{offer.owner.email}}</td>

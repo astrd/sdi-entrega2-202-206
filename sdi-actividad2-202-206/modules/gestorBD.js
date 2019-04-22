@@ -58,6 +58,27 @@ module.exports = {
             }
         });
     },
+    //modifica un elemento de la collection usuarios de acuerdo a un criterio
+    modificaUsuario : function(criterio, usuario, funcionCallback) {
+        this.mongo.MongoClient.connect(this.app.get('db'), function (err, db) {
+            if (err) {
+                funcionCallback(null);
+            } else {
+                var collection = db.collection('usuarios');
+                collection.update(criterio, {$set: usuario}, function (err, result) {
+                    if (err) {
+                        funcionCallback(null);
+                    } else {
+
+                        funcionCallback(result);
+
+                    }
+                    db.close();
+                });
+            }
+        });
+
+    },
     //inserta en la tabla ofertas
     insertarOferta: function (oferta, funcionCallback) {
         this.mongo.MongoClient.connect(this.app.get('db'), function (err, db) {
@@ -94,7 +115,24 @@ module.exports = {
             }
         });
     },
+    //modifica un elemento de la collection ofertas de acuerdo a un criterio
+    modificarOferta : function(criterio, oferta, funcionCallback) {
+        this.mongo.MongoClient.connect(this.app.get('db'), function (err, db) {
+            if (err) {
+                funcionCallback(null);
+            } else {
+                var collection = db.collection('ofertas');
+                collection.update(criterio, {$set: oferta}, function (err, result) {
+                    if (err) {
+                        funcionCallback(null);
+                    } else {
+                        funcionCallback(result);
+                    }
+                    db.close();
+                });
+            }
+        });
 
-
+    },
 
 }
