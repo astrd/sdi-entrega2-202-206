@@ -1,7 +1,9 @@
 module.exports = function (app, swig, gestorBD) {
     app.get("/home", function (req, res) {
-
-        var respuesta = swig.renderFile('views/home.html', {user: req.session.usuario});
+        var respuesta = swig.renderFile('views/home.html', {
+            user: req.session.user
+        });
+        console.log(req.session);
         app.get("logger").info('Usuario se ha dirijido a home');
         res.send(respuesta);
 
@@ -9,6 +11,7 @@ module.exports = function (app, swig, gestorBD) {
     });
     app.get("/identificarse", function (req, res) {
         var respuesta = swig.renderFile('views/login.html', {});
+        console.log(req.session);
         res.send(respuesta);
         app.get("logger").info('Usuario se va a identificar');
 
@@ -20,28 +23,24 @@ module.exports = function (app, swig, gestorBD) {
         var criterio = {
             email: req.body.email,
             password: seguro
-        }
+        };
         gestorBD.obtenerUsuarios(criterio, function (usuarios) {
-            if (usuarios == null || usuarios.length == 0) {
-                req.session.usuario = null;
+            if (usuarios == null || usuarios.length === 0) {
+                req.session.user = undefined;
                 app.get("logger").error('Fallo en autenticacion');
                 res.redirect("/identificarse" + "?mensaje=Email o password incorrecto" + "&tipoMensaje=alert-danger ");
-
             } else {
-                req.session.usuario = usuarios[0];
-                if (usuarios[0].rol == 'admin') {
-
-                    console.log("admin loged in");
+                req.session.user = usuarios[0];
+                if (usuarios[0].rol === 'admin') {
+                    console.log("admin logged in");
                     res.redirect("/admin");
                     app.get("logger").info('Usuario se ha identificado como admin');
                 } else {
                     res.redirect("/home");
                     app.get("logger").info('Usuario Estandar se ha identificado');
                 }
-
             }
         });
-
     });
 
     app.get("/registrarse", function (req, res) {
@@ -59,7 +58,7 @@ module.exports = function (app, swig, gestorBD) {
             res.redirect("/registrarse?mensaje=El email no puede ser vacío");
             return;
         }
-        if (!req.body.email.includes() == "@") {
+        if (!req.body.email.includes("@")) {
             res.redirect("/registrarse?mensaje=El email debe contener un @.");
             return;
         }
@@ -113,7 +112,7 @@ module.exports = function (app, swig, gestorBD) {
     });
 
     app.get("/user/list", function (req, res) {
-        let userLogged = req.session.usuario;
+        let userLogged = req.session.user;
 
         if (userLogged.rol === 'user') {
             res.redirect('/home?mensaje=solo el administrador tiene acceso a esta zona');
@@ -133,7 +132,8 @@ module.exports = function (app, swig, gestorBD) {
                 } else {
                     let respuesta = swig.renderFile('views/userlist.html',
                         {
-                            users: users.sort(mysort)
+                            users: users.sort(mysort),
+                            user: req.session.user
                         });
                     res.send(respuesta);
                     app.get("logger").info('Administrador se ha dirijido a la vista de usuarios del sistema');
@@ -170,7 +170,7 @@ module.exports = function (app, swig, gestorBD) {
     });
 
     app.get('/desconectarse', function (req, res) {
-        req.session.usuario = null;
+        req.session.user = undefined;
         console.log("desconectado");
         app.get("logger").info('Usuario se ha desconectado');
         res.redirect("/identificarse");

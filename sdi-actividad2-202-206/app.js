@@ -61,7 +61,7 @@ app.get('/', function (req, res) {
 var routerUsuarioSession = express.Router();
 routerUsuarioSession.use(function(req, res, next) {
 
-    if ( req.session.usuario ) {
+    if ( req.session.user ) {
         // dejamos correr la petición
         next();
     } else {
@@ -81,7 +81,7 @@ app.use("/user/*", routerUsuarioSession);
 var routerAdmin = express.Router();
 routerAdmin.use(function(req, res, next) {
 
-    if ( req.session.usuario.rol=='admin') {
+    if ( req.session.user.rol=='admin') {
         // dejamos correr la petición
         next();
     } else {
