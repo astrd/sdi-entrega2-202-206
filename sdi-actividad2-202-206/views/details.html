@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block titulo %} Registrar usuario {% endblock %}
+{% block titulo %} Detalles oferta {% endblock %}
 
 {% block contenido_principal %}
 	<div class="container">
@@ -24,7 +24,7 @@
 		<h2 >Detalles del propietario</h2>
 		<div class="panel panel-default">
 			<div class="panel-heading"  >Email</div>
-			<div class="panel-body" >{{offer.owner.email}}</div>
+			<div class="panel-body" >{{offer.owner}}</div>
 
 		</div>
 		<a  class="btn btn-primary"

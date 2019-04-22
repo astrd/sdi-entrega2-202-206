@@ -19,7 +19,8 @@ module.exports = function (app, swig, gestorBD) {
             description: req.body.description,
             price: req.body.price,
             owner: req.session.user.email,
-            state: 'disponible'
+            state: 'disponible',
+            buyer: 'none',
         };
         gestorBD.insertarOferta(oferta, function (id) {
             if (id == null) {
@@ -62,8 +63,10 @@ module.exports = function (app, swig, gestorBD) {
 
     });
     app.get("/offer/bought", function (req, res) {
-        let criterio={buyer: req.session.usuario.email ,
-            state: 'no disponible' };
+        let criterio={
+            state:'no disponible',
+            buyer: req.session.user.email
+            };
         gestorBD.obtenerOfertas(criterio, function (ofertas) {
             if (ofertas == null) {
                 res.send("Error al listar ");
@@ -82,7 +85,7 @@ module.exports = function (app, swig, gestorBD) {
     app.get("/offer/list", function (req, res) {
 
         let criterio = {
-            owner: {$ne: req.session.user},
+            owner: {$ne: req.session.user.email},
             state: {$ne: 'no disponible'}
         };
         gestorBD.obtenerOfertas(criterio, function (ofertas) {
@@ -133,23 +136,49 @@ module.exports = function (app, swig, gestorBD) {
             } else {
                 app.get("logger").info('Usuario se ha dirijido a la vista detallada de oferta');
                 var price = ofertas[0].price;
-                var sueldo = req.session.usuario.money-price;
+                var sueldo = req.session.user.money-price;
                 if(sueldo<0)
                 {
                     res.redirect('/offer/list?mensaje=Sin sueldo suficiente');
                     app.get("logger").info('Usuario no tiene sueldo suficiente');
                 }
                 else{
-                    var cri ={ "_id": req.session.user._id   }
-                    var usuario={   money: 11.1 ,
+                    var cri ={ "_id": gestorBD.mongo.ObjectID(req.session.user._id )  }
+                    var usuario={
+                        name: req.session.user.name,
+                        surname: req.session.user.surname,
+                        email: req.session.user.email,
+                        password: req.session.user.password,
+                        rol: 'user',
+                        money: sueldo,
+                        valid: true
                     }
                     gestorBD.modificaUsuario(cri , usuario, function (result) {
                         if (result == null) {
                             res.send("Error al modificar usuario");
                             app.get("logger").error('Error al comprar oferta');
                         } else {
-                            console.log(cri._id+"........");
-                            res.redirect("/home");
+                            console.log(req.session.user.money+"........"+sueldo);
+
+                            var crit ={ "_id": gestorBD.mongo.ObjectID(req.params.id)  }
+                            var oferta={
+                                title: ofertas[0].title,
+                                description: ofertas[0].description,
+                                price: ofertas[0].price,
+                                owner: ofertas[0].owner,
+                                state: 'no disponible',
+                                buyer: req.session.user.email
+                            }
+                            gestorBD.modificarOferta(crit , oferta, function (result) {
+                                if (result == null) {
+                                    res.send("Error al modificar usuario");
+                                    app.get("logger").error('Error al comprar oferta');
+                                } else {
+                                    console.log(ofertas[0].state+"...."+oferta.buyer+"...."+ofertas[0].buyer);
+                                    app.get("logger").error('Usuario ha comprado oferta');
+                                    res.redirect('/offer/bought');
+                                }
+                            });
                         }
                     });
                 }

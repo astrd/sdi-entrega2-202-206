@@ -69,8 +69,7 @@ module.exports = {
                     if (err) {
                         funcionCallback(null);
                     } else {
-
-                        funcionCallback(result);
+                         funcionCallback(result);
 
                     }
                     db.close();
