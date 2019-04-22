@@ -1,9 +1,11 @@
 package test;
 
+import java.util.List;
 import java.util.Random;
 
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -11,6 +13,7 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 import test.util.TestUtil;
@@ -84,7 +87,7 @@ public class SdiActividad2202206 {
 	public void T01_registroDatosValidos() {
 		driver.get("http://localhost:8081/");
 		testUtil.waitChangeWeb();
-		driver.findElement(By.linkText("registrate")).click();
+		driver.findElement(By.linkText("Registrate")).click();
 		testUtil.waitChangeWeb();
 		driver.findElement(By.id("name")).click();
 		driver.findElement(By.id("name")).clear();
@@ -332,9 +335,45 @@ public class SdiActividad2202206 {
 	}
 
 	// Admin.Ir a la lista de usuarios, borrar el primer usuario de la lista,
-	// comprobar que la lista se actualizay dicho usuario desaparece.
-	// @Test
+	// comprobar que la lista se actualiza y dicho usuario desaparece.
+	 @Test
 	public void T12_BorrarPrimerUsuario() {
+		 driver.get("http://localhost:8081/identificarse");
+		    driver.findElement(By.linkText("Registrate")).click();
+		    testUtil.waitChangeWeb();
+		    driver.findElement(By.id("name")).click();
+		    driver.findElement(By.id("name")).clear();
+		    driver.findElement(By.id("name")).sendKeys("Ana");
+		    driver.findElement(By.id("surname")).click();
+		    driver.findElement(By.id("surname")).clear();
+		    driver.findElement(By.id("surname")).sendKeys("Alvarez");
+		    driver.findElement(By.id("email")).click();
+		    driver.findElement(By.id("email")).clear();
+		    driver.findElement(By.id("email")).sendKeys("aaaaaaaaaa@email.com");
+		    driver.findElement(By.id("password")).click();
+		    driver.findElement(By.id("password")).clear();
+		    driver.findElement(By.id("password")).sendKeys("123456");
+		    driver.findElement(By.id("password2")).click();
+		    driver.findElement(By.id("password2")).clear();
+		    driver.findElement(By.id("password2")).sendKeys("123456");
+		    driver.findElement(By.id("send")).click();
+		    testUtil.waitChangeWeb();
+		    driver.findElement(By.name("email")).click();
+		    driver.findElement(By.name("email")).clear();
+		    driver.findElement(By.name("email")).sendKeys("admin@email.com");
+		    driver.findElement(By.name("password")).click();
+		    driver.findElement(By.name("password")).clear();
+		    driver.findElement(By.name("password")).sendKeys("admin");
+		    driver.findElement(By.id("send")).click();
+		    driver.findElement(By.id("usersee")).click();
+		    testUtil.waitChangeWeb();
+		    testUtil.searchText("aaaaaaaaaa@email.com", true);
+		    driver.findElements(By.className("check")).get(0).click();
+		    driver.findElement(By.id("DeleteButton")).click();
+		    testUtil.searchText("Usuarios", true);
+		    testUtil.searchText("admin@email.com", false);
+		    testUtil.searchText("aaaaaaaaaa@email.com", false);
+		    
 
 	}
 
@@ -342,6 +381,46 @@ public class SdiActividad2202206 {
 	// comprobar que la lista se actualizay dicho usuario desaparece.
 	@Test
 	public void T13_BorrarUltimoUsuario() {
+		 driver.get("http://localhost:8081/identificarse");
+		    driver.findElement(By.linkText("Registrate")).click();
+		    testUtil.waitChangeWeb();
+		    driver.findElement(By.id("name")).click();
+		    driver.findElement(By.id("name")).clear();
+		    driver.findElement(By.id("name")).sendKeys("Pepe");
+		    driver.findElement(By.id("surname")).click();
+		    driver.findElement(By.id("surname")).clear();
+		    driver.findElement(By.id("surname")).sendKeys("Martinez");
+		    driver.findElement(By.id("email")).click();
+		    driver.findElement(By.id("email")).clear();
+		    driver.findElement(By.id("email")).sendKeys("zzzzEmailBorrarUltimoUsuario@email.com");
+		    driver.findElement(By.id("password")).click();
+		    driver.findElement(By.id("password")).clear();
+		    driver.findElement(By.id("password")).sendKeys("123456");
+		    driver.findElement(By.id("password2")).click();
+		    driver.findElement(By.id("password2")).clear();
+		    driver.findElement(By.id("password2")).sendKeys("123456");
+		    driver.findElement(By.id("send")).click();
+		    testUtil.waitChangeWeb();
+		    driver.findElement(By.name("email")).click();
+		    driver.findElement(By.name("email")).clear();
+		    driver.findElement(By.name("email")).sendKeys("admin@email.com");
+		    driver.findElement(By.name("password")).click();
+		    driver.findElement(By.name("password")).clear();
+		    driver.findElement(By.name("password")).sendKeys("admin");
+		    driver.findElement(By.id("send")).click();
+		    driver.findElement(By.id("usersee")).click();
+		    testUtil.waitChangeWeb();
+		    testUtil.searchText("zzzzEmailBorrarUltimoUsuario@email.com", true);
+		    List<WebElement> usuarios = driver.findElements(By.className("check"));
+			usuarios.get(usuarios.size() - 1).click();
+		    driver.findElement(By.id("DeleteButton")).click();
+		    testUtil.searchText("Usuarios", true);
+		    testUtil.searchText("admin@email.com", false);
+		    testUtil.searchText("zzzzEmailBorrarUltimoUsuario@email.com", false);
+		   
+		    
+		    
+		    
 
 	}
 
@@ -349,6 +428,83 @@ public class SdiActividad2202206 {
 	// lista se actualiza y dichosusuarios desaparecen.
 	@Test
 	public void T14_BorrarTresUsuarios() {
+	    driver.get("http://localhost:8081/identificarse");
+	    driver.findElement(By.linkText("Registrate")).click();
+	    testUtil.waitChangeWeb();
+	    driver.findElement(By.id("name")).click();
+	    driver.findElement(By.id("name")).clear();
+	    driver.findElement(By.id("name")).sendKeys("Paco");
+	    driver.findElement(By.id("surname")).click();
+	    driver.findElement(By.id("surname")).clear();
+	    driver.findElement(By.id("surname")).sendKeys("Pelaez");
+	    driver.findElement(By.id("email")).click();
+	    driver.findElement(By.id("email")).clear();
+	    driver.findElement(By.id("email")).sendKeys("aaBorrarPrimerUsuario@email.com");
+	    driver.findElement(By.id("password")).click();
+	    driver.findElement(By.id("password")).clear();
+	    driver.findElement(By.id("password")).sendKeys("123456");
+	    driver.findElement(By.id("password2")).click();
+	    driver.findElement(By.id("password2")).clear();
+	    driver.findElement(By.id("password2")).sendKeys("123456");
+	    driver.findElement(By.id("send")).click();
+	    driver.findElement(By.linkText("Registrate")).click();
+	    testUtil.waitChangeWeb();
+	    driver.findElement(By.id("name")).click();
+	    driver.findElement(By.id("name")).clear();
+	    driver.findElement(By.id("name")).sendKeys("Pepe");
+	    driver.findElement(By.id("surname")).click();
+	    driver.findElement(By.id("surname")).clear();
+	    driver.findElement(By.id("surname")).sendKeys("Diez");
+	    driver.findElement(By.id("email")).click();
+	    driver.findElement(By.id("email")).clear();
+	    driver.findElement(By.id("email")).sendKeys("aaSegundoUsuarioBorrar@email.com");
+	    driver.findElement(By.id("password")).click();
+	    driver.findElement(By.id("password")).clear();
+	    driver.findElement(By.id("password")).sendKeys("123456");
+	    driver.findElement(By.id("password2")).click();
+	    driver.findElement(By.id("password2")).clear();
+	    driver.findElement(By.id("password2")).sendKeys("123456");
+	    driver.findElement(By.id("send")).click();
+	    driver.findElement(By.linkText("Registrate")).click();
+	    testUtil.waitChangeWeb();
+	    driver.findElement(By.id("name")).click();
+	    driver.findElement(By.id("name")).clear();
+	    driver.findElement(By.id("name")).sendKeys("Andres");
+	    driver.findElement(By.id("surname")).click();
+	    driver.findElement(By.id("surname")).clear();
+	    driver.findElement(By.id("surname")).sendKeys("Jimenez");
+	    driver.findElement(By.id("email")).click();
+	    driver.findElement(By.id("email")).clear();
+	    driver.findElement(By.id("email")).sendKeys("aaTercerUsuarioBorrar@email.com");
+	    driver.findElement(By.id("password")).click();
+	    driver.findElement(By.id("password")).clear();
+	    driver.findElement(By.id("password")).sendKeys("123456");
+	    driver.findElement(By.id("password2")).click();
+	    driver.findElement(By.id("password2")).clear();
+	    driver.findElement(By.id("password2")).sendKeys("123456");
+	    driver.findElement(By.id("send")).click();
+	    driver.findElement(By.name("email")).click();
+	    driver.findElement(By.name("email")).clear();
+	    driver.findElement(By.name("email")).sendKeys("admin@email.com");
+	    driver.findElement(By.name("password")).click();
+	    driver.findElement(By.name("password")).clear();
+	    driver.findElement(By.name("password")).sendKeys("admin");
+	    driver.findElement(By.id("send")).click();
+	    driver.findElement(By.id("usersee")).click();
+	    testUtil.waitChangeWeb();
+	    testUtil.searchText("aaBorrarPrimerUsuario@email.com", true);
+	    testUtil.searchText("aaSegundoUsuarioBorrar@email.com", true);
+	    testUtil.searchText("aaTercerUsuarioBorrar@email.com", true);		
+	    driver.findElements(By.className("check")).get(0).click();
+	    driver.findElements(By.className("check")).get(1).click();
+	    driver.findElements(By.className("check")).get(2).click();
+	    driver.findElement(By.id("DeleteButton")).click();
+	    testUtil.searchText("Usuarios", true);
+	    testUtil.searchText("admin@email.com", false);
+	    testUtil.searchText("aaBorrarPrimerUsuario@email.com", false);
+	    testUtil.searchText("aaSegundoUsuarioBorrar@email.com", false);
+	    testUtil.searchText("aaTercerUsuarioBorrar@email.com", false);
+		
 
 	}
 
