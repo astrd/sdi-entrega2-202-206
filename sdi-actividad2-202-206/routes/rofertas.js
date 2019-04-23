@@ -75,7 +75,8 @@ module.exports = function (app, swig, gestorBD) {
 
                 var respuesta = swig.renderFile('views/bought.html',
                     {
-                        ofertas: ofertas
+                        ofertas: ofertas,
+                        usuario: req.session.user
                     });
                 res.send(respuesta);
                 app.get("logger").info('Usuario se ha dirijido a la vista ofertas compradas');
