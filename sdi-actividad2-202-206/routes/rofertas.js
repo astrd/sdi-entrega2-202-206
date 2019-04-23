@@ -32,14 +32,66 @@ module.exports = function (app, swig, gestorBD) {
             }
         });
     });
-    app.get("/offer/search", function (req, res) {
-        var respuesta = swig.renderFile('views/search.html', {
-            user: req.session.user
-        });
-        app.get("logger").info('Usuario se ha dirijido a la vista de buscar oferta');
+    
+    // app.get("/offer/search", function (req, res) {
+    //     var respuesta = swig.renderFile('views/search.html', {
+    //         user: req.session.user
+    //     });
+    //     app.get("logger").info('Usuario se ha dirijido a la vista de buscar oferta');
+    //
+    //     res.send(respuesta);
+    // });
 
-        res.send(respuesta);
+    app.get("/offer/search", function (req, res) {
+        var criterio = {};
+        if (req.query.busqueda != null) {
+            criterio = {
+                $or: [
+                    {
+                        description: {
+                            $regex: ".*" + req.query.busqueda + ".*", $options: 'i'
+                        }
+                    },
+                    {
+                        name: {
+                            $regex: ".*" + req.query.busqueda + ".*", $options: 'i'
+                        }
+                    }
+                ]
+            };
+        }
+        var pg = parseInt(req.query.pg); // Es String !!!
+        if (req.query.pg == null) { // Puede no venir el param
+            pg = 1;
+        }
+
+        gestorBD.obtenerOfertasPg(criterio, pg, function (ofertas, total) {
+            if (ofertas == null) {
+                res.send("Error al listar ");
+            } else {
+                var ultimaPg = total / 4;
+                if (total % 4 > 0) { // Sobran decimales
+                    ultimaPg = ultimaPg + 1;
+                }
+                var paginas = []; // paginas mostrar
+                for (var i = pg - 2; i <= pg + 2; i++) {
+                    if (i > 0 && i <= ultimaPg) {
+                        paginas.push(i);
+                    }
+                }
+                var respuesta = swig.renderFile('views/search.html',
+                    {
+                        ofertas: ofertas,
+                        paginas: paginas,
+                        actual: pg
+                    });
+                app.get("logger").info('Usuario se ha dirijido a la vista de buscar oferta');
+                res.send(respuesta);
+            }
+        });
     });
+
+
     app.get("/offer/selling", function (req, res) {
         let criterio = {
             owner: req.session.user.email,
@@ -63,10 +115,10 @@ module.exports = function (app, swig, gestorBD) {
 
     });
     app.get("/offer/bought", function (req, res) {
-        let criterio={
-            state:'no disponible',
+        let criterio = {
+            state: 'no disponible',
             buyer: req.session.user.email
-            };
+        };
         gestorBD.obtenerOfertas(criterio, function (ofertas) {
             if (ofertas == null) {
                 res.send("Error al listar ");
@@ -136,15 +188,13 @@ module.exports = function (app, swig, gestorBD) {
             } else {
                 app.get("logger").info('Usuario se ha dirijido a la vista detallada de oferta');
                 var price = ofertas[0].price;
-                var sueldo = req.session.user.money-price;
-                if(sueldo<0)
-                {
+                var sueldo = req.session.user.money - price;
+                if (sueldo < 0) {
                     res.redirect('/offer/list?mensaje=Sin sueldo suficiente');
                     app.get("logger").info('Usuario no tiene sueldo suficiente');
-                }
-                else{
-                    var cri ={ "_id": gestorBD.mongo.ObjectID(req.session.user._id )  }
-                    var usuario={
+                } else {
+                    var cri = {"_id": gestorBD.mongo.ObjectID(req.session.user._id)}
+                    var usuario = {
                         name: req.session.user.name,
                         surname: req.session.user.surname,
                         email: req.session.user.email,
@@ -153,15 +203,15 @@ module.exports = function (app, swig, gestorBD) {
                         money: sueldo,
                         valid: true
                     }
-                    gestorBD.modificaUsuario(cri , usuario, function (result) {
+                    gestorBD.modificaUsuario(cri, usuario, function (result) {
                         if (result == null) {
                             res.send("Error al modificar usuario");
                             app.get("logger").error('Error al comprar oferta');
                         } else {
-                            console.log(req.session.user.money+"........"+sueldo);
+                            console.log(req.session.user.money + "........" + sueldo);
 
-                            var crit ={ "_id": gestorBD.mongo.ObjectID(req.params.id)  }
-                            var oferta={
+                            var crit = {"_id": gestorBD.mongo.ObjectID(req.params.id)}
+                            var oferta = {
                                 title: ofertas[0].title,
                                 description: ofertas[0].description,
                                 price: ofertas[0].price,
@@ -169,12 +219,12 @@ module.exports = function (app, swig, gestorBD) {
                                 state: 'no disponible',
                                 buyer: req.session.user.email
                             }
-                            gestorBD.modificarOferta(crit , oferta, function (result) {
+                            gestorBD.modificarOferta(crit, oferta, function (result) {
                                 if (result == null) {
                                     res.send("Error al modificar usuario");
                                     app.get("logger").error('Error al comprar oferta');
                                 } else {
-                                    console.log(ofertas[0].state+"...."+oferta.buyer+"...."+ofertas[0].buyer);
+                                    console.log(ofertas[0].state + "...." + oferta.buyer + "...." + ofertas[0].buyer);
                                     app.get("logger").error('Usuario ha comprado oferta');
                                     res.redirect('/offer/bought');
                                 }

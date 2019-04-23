@@ -131,6 +131,27 @@ module.exports = {
             }
         });
     },
+    //obtener ofertas con paginacion
+    obtenerOfertasPg: function (criterio, pg, funcionCallback) {
+        this.mongo.MongoClient.connect(this.app.get('db'), function (err, db) {
+            if (err) {
+                funcionCallback(null);
+            } else {
+                var collection = db.collection('ofertas');
+                collection.count(function (err, count) {
+                    collection.find(criterio).skip((pg - 1) * 4).limit(4)
+                        .toArray(function (err, ofertas) {
+                            if (err) {
+                                funcionCallback(null);
+                            } else {
+                                funcionCallback(ofertas, count);
+                            }
+                            db.close();
+                        });
+                });
+            }
+        });
+    },
     //modifica un elemento de la collection ofertas de acuerdo a un criterio
     modificarOferta : function(criterio, oferta, funcionCallback) {
         this.mongo.MongoClient.connect(this.app.get('db'), function (err, db) {
@@ -150,6 +171,7 @@ module.exports = {
         });
 
     },
+
 
 
 }
