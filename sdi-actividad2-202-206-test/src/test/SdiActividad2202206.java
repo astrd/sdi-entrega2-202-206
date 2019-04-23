@@ -1,11 +1,12 @@
 package test;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.List;
 import java.util.Random;
 
 import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -595,6 +596,305 @@ public class SdiActividad2202206 {
 		driver.get("http://localhost:8081/offer/selling");
 
 		testUtil.searchText("Diamantes", true);
+	}
+	
+	// User. Dar de baja una oferta
+	// Ir a la lista de ofertas, borrar la primera oferta de la lista, comprobar
+	// que la lista se actualiza y que la oferta desaparece.
+	@Test
+	public void Prueba17() {//para elena
+		driver.get("http://localhost:8081");
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("email")).sendKeys("prueba6@prueba6.com");
+		driver.findElement(By.name("password")).click();
+		driver.findElement(By.name("password")).clear();
+		driver.findElement(By.name("password")).sendKeys("12345");
+
+		driver.findElement(By.className("btn-primary")).click();
+		 
+		driver.get("http://localhost:8081/offer/selling");
+		testUtil.waitChangeWeb();
+		List<WebElement> elements = driver
+				.findElements(By.className("eliminar"));
+		int size = elements.size();
+		driver.findElements(By.className("eliminar")).get(0).click();
+		testUtil.waitChangeWeb();
+		testUtil.searchText("Ofertas", true);
+		elements = driver.findElements(By.className("eliminar"));
+		assertTrue(size == elements.size() + 1);
+
+	}
+
+	// User.Dar de baja una oferta
+	// Ir a la lista de ofertas, borrar la última oferta de la lista, comprobar
+	// que la lista se actualiza y que la oferta desaparece.
+	@Test
+	public void Prueba18() {
+		driver.get("http://localhost:8081");
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("email")).sendKeys("prueba6@prueba6.com");
+		driver.findElement(By.name("password")).click();
+		driver.findElement(By.name("password")).clear();
+		driver.findElement(By.name("password")).sendKeys("12345");
+
+		driver.findElement(By.className("btn-primary")).click();
+		 
+		driver.get("http://localhost:8081/offer/selling");
+		List<WebElement> elements = driver
+				.findElements(By.className("eliminar"));
+		int size = elements.size();
+		driver.findElements(By.className("eliminar")).get(size - 1).click();
+		testUtil.waitChangeWeb();
+		testUtil.searchText("Ofertas", true);
+		elements = driver.findElements(By.className("eliminar"));
+		assertTrue(size == elements.size() + 1);
+
+	}
+
+	// Hacer una búsqueda con el campo vacío y comprobar que se muestra la
+	// página que corresponde con el listado de las ofertas existentes en el
+	// sistema
+	@Test
+	public void Prueba19() {
+		driver.get("http://localhost:8081");
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("email")).sendKeys("prueba6@prueba6.com");
+		driver.findElement(By.name("password")).click();
+		driver.findElement(By.name("password")).clear();
+		driver.findElement(By.name("password")).sendKeys("12345");
+
+		driver.findElement(By.className("btn-primary")).click();
+		 
+		driver.get("http://localhost:8081/offer/search");
+		 
+
+		driver.findElement(By.name("searchText")).click();
+		driver.findElement(By.name("searchText")).clear();
+		driver.findElement(By.id("send")).click();
+
+		testUtil.searchText("Offer 2", true);
+		testUtil.searchText("Offer 3", true);
+		
+	}
+
+	// Hacer una búsqueda escribiendo en el campo un texto que no exista y
+	// comprobar que se
+	// muestra la página que corresponde, con la lista de ofertas vacía.
+	@Test
+	public void Prueba20() {
+		driver.get("http://localhost:8081");
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("email")).sendKeys("prueba6@prueba6.com");
+		driver.findElement(By.name("password")).click();
+		driver.findElement(By.name("password")).clear();
+		driver.findElement(By.name("password")).sendKeys("12345");
+
+		driver.findElement(By.className("btn-primary")).click();
+		 
+		driver.get("http://localhost:8081/offer/search");
+		 
+
+		driver.findElement(By.name("searchText")).click();
+		driver.findElement(By.name("searchText")).clear();
+		driver.findElement(By.name("searchText")).sendKeys("wowowo");
+		driver.findElement(By.id("send")).click();
+
+		testUtil.searchText("Offer 1", false);
+		testUtil.searchText("Offer 2", false);
+		testUtil.searchText("Offer 3", false);
+		testUtil.searchText("Offer 4", false);
+		testUtil.searchText("Offer 5", false);
+	}
+	 //Hacer una búsqueda escribiendo en el campo un texto en minúscula o mayúscula y
+	 //comprobar que se muestra la página que corresponde, con la lista de ofertas que contengan dicho texto,
+	 //independientemente que el título esté almacenado en minúsculas o mayúscula.		// comprobar que se
+ 		@Test
+		public void Prueba21() {
+ 			driver.get("http://localhost:8081");
+ 			driver.findElement(By.name("email")).click();
+ 			driver.findElement(By.name("email")).clear();
+ 			driver.findElement(By.name("email")).sendKeys("prueba6@prueba6.com");
+ 			driver.findElement(By.name("password")).click();
+ 			driver.findElement(By.name("password")).clear();
+ 			driver.findElement(By.name("password")).sendKeys("12345");
+
+ 			driver.findElement(By.className("btn-primary")).click();
+ 			 
+ 			driver.get("http://localhost:8081/offer/search");
+
+			driver.findElement(By.name("searchText")).click();
+			driver.findElement(By.name("searchText")).clear();
+			driver.findElement(By.name("searchText")).sendKeys("wowowo");
+			driver.findElement(By.id("send")).click();
+
+			testUtil.searchText("Offer 1", false);
+			testUtil.searchText("Offer 2", false);
+			testUtil.searchText("Offer 3", false);
+			testUtil.searchText("Offer 4", false);
+			testUtil.searchText("Offer 5", false);
+		}
+	@Test
+	//Sobre una búsqueda determinada (a elección de desarrollador), comprar una oferta que deja
+	//un saldo positivo en el contador del comprobador. Y comprobar que el contador se actualiza
+	//correctamente en la vista del comprador
+	public void Prueba23() {
+		driver.get("http://localhost:8081");
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("email")).sendKeys("test@uniovi.es");
+		driver.findElement(By.name("password")).click();
+		driver.findElement(By.name("password")).clear();
+		driver.findElement(By.name("password")).sendKeys("tests");
+
+		driver.findElement(By.className("btn-primary")).click();
+		 
+		driver.get("http://localhost:8081/offer/add");
+		driver.findElement(By.name("title")).click();
+		driver.findElement(By.name("title")).clear();
+		driver.findElement(By.name("title")).sendKeys("vende1");
+		driver.findElement(By.name("description")).click();
+		driver.findElement(By.name("description")).clear();
+		driver.findElement(By.name("description")).sendKeys("Uno");
+		driver.findElement(By.name("price")).click();
+		driver.findElement(By.name("price")).clear();
+		driver.findElement(By.name("price")).sendKeys("1");
+		
+		driver.get("http://localhost:8081/identificarse");
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("email")).sendKeys("prueba6@prueba6.com");
+		driver.findElement(By.name("password")).click();
+		driver.findElement(By.name("password")).clear();
+		driver.findElement(By.name("password")).sendKeys("12345");
+
+		driver.findElement(By.className("btn-primary")).click();
+		 
+		driver.get("http://localhost:8081/offer/list");
+
+		List<WebElement> elements = driver
+				.findElements(By.className("buy"));
+		int size = elements.size();
+		driver.findElements(By.className("buy")).get(0).click();
+		driver.findElement(By.className("btn-primary")).click();
+		testUtil.waitChangeWeb(); 
+		testUtil.searchText("suficiente", false);
+		
+	}
+	//Sobre una búsqueda determinada (a elección de desarrollador), comprar una oferta que deja
+	//un saldo 0 en el contador del comprobador. Y comprobar que el contador se actualiza correctamente en
+	//la vista del comprador. 
+	@Test
+	public void Prueba24() {
+		driver.get("http://localhost:8081");
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("email")).sendKeys("test@uniovi.es");
+		driver.findElement(By.name("password")).click();
+		driver.findElement(By.name("password")).clear();
+		driver.findElement(By.name("password")).sendKeys("tests");
+
+		driver.findElement(By.className("btn-primary")).click();
+		 
+		driver.get("http://localhost:8081/offer/add");
+		driver.findElement(By.name("title")).click();
+		driver.findElement(By.name("title")).clear();
+		driver.findElement(By.name("title")).sendKeys("vende99");
+		driver.findElement(By.name("description")).click();
+		driver.findElement(By.name("description")).clear();
+		driver.findElement(By.name("description")).sendKeys(" ");
+		driver.findElement(By.name("price")).click();
+		driver.findElement(By.name("price")).clear();
+		driver.findElement(By.name("price")).sendKeys("99");
+		driver.get("http://localhost:8081/identificarse");
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("email")).sendKeys("prueba6@prueba6.com");
+		driver.findElement(By.name("password")).click();
+		driver.findElement(By.name("password")).clear();
+		driver.findElement(By.name("password")).sendKeys("12345");
+		driver.findElement(By.className("btn-primary")).click();
+		 
+		driver.get("http://localhost:8081/offer/list");
+
+
+		List<WebElement> elements = driver
+				.findElements(By.className("buy"));
+		int size = elements.size();
+		driver.findElements(By.className("buy")).get(0).click();
+		driver.findElement(By.className("btn-primary")).click();
+		testUtil.waitChangeWeb(); 
+		testUtil.searchText("suficiente", false);
+		
+	}
+	//Sobre una búsqueda determinada (a elección de desarrollador), intentar comprar una oferta
+	//que esté por encima de saldo disponible del comprador. Y comprobar que se muestra el mensaje de
+	//saldo no suficiente.
+	@Test
+	public void Prueba25() {
+		driver.get("http://localhost:8090/?lang=ES");
+		driver.get("http://localhost:8081");
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("email")).sendKeys("test@uniovi.es");
+		driver.findElement(By.name("password")).click();
+		driver.findElement(By.name("password")).clear();
+		driver.findElement(By.name("password")).sendKeys("tests");
+
+		driver.findElement(By.className("btn-primary")).click();
+		 
+		driver.get("http://localhost:8081/offer/add");
+		driver.findElement(By.name("title")).click();
+		driver.findElement(By.name("title")).clear();
+		driver.findElement(By.name("title")).sendKeys("vende99");
+		driver.findElement(By.name("description")).click();
+		driver.findElement(By.name("description")).clear();
+		driver.findElement(By.name("description")).sendKeys(" ");
+		driver.findElement(By.name("price")).click();
+		driver.findElement(By.name("price")).clear();
+		driver.findElement(By.name("price")).sendKeys("99");
+		driver.get("http://localhost:8081/identificarse");
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("email")).sendKeys("prueba6@prueba6.com");
+		driver.findElement(By.name("password")).click();
+		driver.findElement(By.name("password")).clear();
+		driver.findElement(By.name("password")).sendKeys("12345");
+		driver.findElement(By.className("btn-primary")).click();
+		 
+		driver.get("http://localhost:8081/offer/list");
+
+ 
+		List<WebElement> elements = driver
+				.findElements(By.className("buy"));
+		int size = elements.size();
+		driver.findElements(By.className("buy")).get(4).click();
+		driver.findElement(By.className("btn-primary")).click();
+		testUtil.waitChangeWeb();
+		testUtil.searchText("100", true);
+		testUtil.searchText("error", true);
+	}
+	//Ir a la opción de ofertas compradas del usuario y mostrar la lista. Comprobar que aparecen
+	//las ofertas que deben aparecer.
+	@Test
+	public void Prueba26() {
+		driver.get("http://localhost:8081/identificarse");
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("email")).sendKeys("prueba6@prueba6.com");
+		driver.findElement(By.name("password")).click();
+		driver.findElement(By.name("password")).clear();
+		driver.findElement(By.name("password")).sendKeys("12345");
+		driver.findElement(By.className("btn-primary")).click();
+		 
+		driver.get("http://localhost:8081/offer/bought");
+		testUtil.searchText("vende99", true);
+		testUtil.searchText("vende0", true);
+   
+		 
 	}
 
 }
