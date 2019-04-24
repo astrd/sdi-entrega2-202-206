@@ -66,12 +66,11 @@ module.exports = function (app, swig, gestorBD) {
         }
 
         gestorBD.obtenerOfertasPg(criterio, pg, function (ofertas, total) {
-            console.log(ofertas)
             if (ofertas == null) {
                 res.send("Error al listar ");
             } else {
-                var ultimaPg = total / 4;
-                if (total % 4 > 0) { // Sobran decimales
+                var ultimaPg = total / 5;
+                if (total % 5 > 0) { // Sobran decimales
                     ultimaPg = ultimaPg + 1;
                 }
                 var paginas = []; // paginas mostrar
@@ -80,11 +79,13 @@ module.exports = function (app, swig, gestorBD) {
                         paginas.push(i);
                     }
                 }
-                console.log(ofertas);
                 var respuesta = swig.renderFile('views/search.html',
                     {
+                        user: req.session.user,
+                        busqueda: req.query.busqueda,
                         ofertas: ofertas,
                         paginas: paginas,
+                        ultimaPg: ultimaPg,
                         actual: pg
                     });
                 app.get("logger").info('Usuario se ha dirijido a la vista de buscar oferta');
@@ -211,8 +212,6 @@ module.exports = function (app, swig, gestorBD) {
                             res.send("Error al modificar usuario");
                             app.get("logger").error('Error al comprar oferta');
                         } else {
-                            console.log(req.session.user.money + "........" + sueldo);
-
                             var crit = {"_id": gestorBD.mongo.ObjectID(req.params.id)}
                             var oferta = {
                                 title: ofertas[0].title,
@@ -227,7 +226,6 @@ module.exports = function (app, swig, gestorBD) {
                                     res.send("Error al modificar usuario");
                                     app.get("logger").error('Error al comprar oferta');
                                 } else {
-                                    console.log(ofertas[0].state + "...." + oferta.buyer + "...." + ofertas[0].buyer);
                                     app.get("logger").error('Usuario ha comprado oferta');
                                     res.redirect('/offer/bought');
                                 }
