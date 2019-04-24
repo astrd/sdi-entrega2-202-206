@@ -32,7 +32,7 @@ module.exports = function (app, swig, gestorBD) {
             }
         });
     });
-    
+
     // app.get("/offer/search", function (req, res) {
     //     var respuesta = swig.renderFile('views/search.html', {
     //         user: req.session.user
@@ -53,7 +53,7 @@ module.exports = function (app, swig, gestorBD) {
                         }
                     },
                     {
-                        name: {
+                        title: {
                             $regex: ".*" + req.query.busqueda + ".*", $options: 'i'
                         }
                     }
@@ -66,6 +66,7 @@ module.exports = function (app, swig, gestorBD) {
         }
 
         gestorBD.obtenerOfertasPg(criterio, pg, function (ofertas, total) {
+            console.log(ofertas)
             if (ofertas == null) {
                 res.send("Error al listar ");
             } else {
@@ -79,6 +80,7 @@ module.exports = function (app, swig, gestorBD) {
                         paginas.push(i);
                     }
                 }
+                console.log(ofertas);
                 var respuesta = swig.renderFile('views/search.html',
                     {
                         ofertas: ofertas,

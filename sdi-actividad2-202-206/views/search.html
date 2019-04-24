@@ -6,7 +6,7 @@
 <div class="container">
     <form class="navbar-form" action="/offer/search">
         <div class="form-group">
-            <input name="searchText" type="text" class="form-control" size="50"
+            <input name="busqueda" type="text" class="form-control" size="50"
                    placeholder="Buscar por titulo de oferta">
         </div>
         <button type="submit" id="send" class="btn btn-outline-primary">Buscar</button>
@@ -17,10 +17,9 @@
         <table class="table table-hover" id="tableoffers">
             <thead>
             <tr>
-                <th class="col-md-1">id</th>
                 <th>Titulo</th>
                 <th>Precio</th>
-                <th> Propetario</th>
+                <th>Propietario</th>
                 <th class="col-md-1"></th>
                 <th class="col-md-1"></th>
                 <th class="col-md-1"></th>
@@ -28,18 +27,34 @@
             </tr>
             </thead>
             <tbody>
-            {% for offer in offerList %}
+            {% for offer in ofertas %}
             <tr>
-                <td>{{offer.id}}</td>
                 <td>{{offer.title}}</td>
                 <td>{{offer.price}}</td>
                 <td>{{offer.owner.email}}</td>
-                <td><a id="buy" th:href="${'/offer/details/' + offer.id}">detales</a></td>
-                <td><a class="buy" name="offerbuy" th:href="${'/offer/details/' + offer.id}">comprar</a></td>
-                <td><a th:href="${'/offer/delete/' + offer.id}">eliminar</a></td>
+                <td><a id="buy" href="/offer/details/{{offer.id}}">detalles</a></td>
+                <td><a class="buy" name="offerbuy" href="/offer/details/{{offer.id}}">comprar</a></td>
+                <td><a href="/offer/delete/{{offer.id}}">eliminar</a></td>
             </tr>
+            {% endfor %}
             </tbody>
         </table>
+    </div>
+
+    <!-- Paginación mostrar la actual y 2 anteriores y dos siguientes -->
+    <div class="row text-center">
+        <ul class="pagination">
+
+            {% for pagina in paginas %}
+            <li class="page-item" id="pi-{{ pagina}}">
+                <a class="page-link" href="/offer/search?pg={{ pagina }}" >{{ pagina }}</a>
+            </li>
+            {% endfor %}
+            <script>
+                ( "#pi-{{actual}}" ).addClass("active");
+            </script>
+
+        </ul>
     </div>
 </div>
 
