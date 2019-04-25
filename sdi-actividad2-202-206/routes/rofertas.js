@@ -210,7 +210,7 @@ module.exports = function (app, swig, gestorBD) {
                     gestorBD.modificaUsuario(cri, usuario, function (result) {
                         if (result == null) {
                             res.send("Error al modificar usuario");
-                            app.get("logger").error('Error al comprar oferta');
+                            app.get("logger").error('Error al modificar usuario');
                         } else {
                             var crit = {"_id": gestorBD.mongo.ObjectID(req.params.id)}
                             var oferta = {
@@ -223,9 +223,10 @@ module.exports = function (app, swig, gestorBD) {
                             }
                             gestorBD.modificarOferta(crit, oferta, function (result) {
                                 if (result == null) {
-                                    res.send("Error al modificar usuario");
+                                    res.send("Error al modificar oferta");
                                     app.get("logger").error('Error al comprar oferta');
                                 } else {
+                                    req.session.user=usuario;
                                     app.get("logger").error('Usuario ha comprado oferta');
                                     res.redirect('/offer/bought');
                                 }
