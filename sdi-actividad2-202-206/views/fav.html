@@ -16,7 +16,6 @@
         <table class="table " id="tableoffers">
             <thead>
             <tr>
-                <th class="col-md-1">id</th>
                 <th>Titulo</th>
                 <th>Precio</th>
                 <th>Propetario</th>
@@ -28,12 +27,10 @@
             <tbody>
             {% for offer in ofertas %}
             <tr>
-                <td>{{offer._id.toString()}}</td>
                 <td>{{offer.title}}</td>
                 <td>{{offer.price}}</td>
                 <td>{{offer.owner}}</td>
                 <td><a href="{{'/offer/delete/' + offer._id.toString()}}" id="{{offer._id.toString()}}" class="eliminar">Eliminar</a></td>
-
             </tr>
             {% endfor %}
             </tbody>

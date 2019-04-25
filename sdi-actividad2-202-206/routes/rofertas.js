@@ -184,7 +184,7 @@ module.exports = function (app, swig, gestorBD) {
         let criterio = {
             owner: {$ne: req.session.user.email},
             state: {$ne: 'no disponible'},
-            fav: 'fav',
+            fav: 'on',
         };
         gestorBD.obtenerOfertas(criterio, function (ofertas) {
             if (ofertas == null) {
@@ -296,14 +296,55 @@ module.exports = function (app, swig, gestorBD) {
 
     app.get('/offer/fav/:id', function (req, res) {
         var criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
-        gestorBD.destacarOferta(criterio, function (ofertas) {
+        gestorBD.obtenerOfertas(criterio, function (ofertas) {
             if (ofertas == null) {
                 app.get("logger").error('Error al destacar la oferta');
                 res.redirect("/offer/selling?mensaje=Error al destacar la oferta");
             } else {
-                app.get("logger").error('Éxito al destacar la oferta');
-                res.redirect("/offer/fav?mensaje=Se ha destacado la oferta");
+                let sueldo = req.session.user.money - 20;//coste de destacar la oferta
+                if (sueldo < 0) {
+                    res.redirect('/offer/list?mensaje=Sin sueldo suficiente para destacar oferta');
+                    app.get("logger").info('Usuario no tiene sueldo suficiente');
+                } else {
+                    var cri = {"_id": gestorBD.mongo.ObjectID(req.session.user._id)}
+                    var usuario = {
+                        name: req.session.user.name,
+                        surname: req.session.user.surname,
+                        email: req.session.user.email,
+                        password: req.session.user.password,
+                        rol: 'user',
+                        money: sueldo,
+                        valid: true
+                    }
+                    gestorBD.modificaUsuario(cri, usuario, function (result) {
+                        if (result == null) {
+                            res.send("Error al modificar usuario");
+                            app.get("logger").error('Error al modificar usuario');
+                        } else {
+                            var crit = {"_id": gestorBD.mongo.ObjectID(req.params.id)}
+                            var oferta = {
+                                title: ofertas[0].title,
+                                description: ofertas[0].description,
+                                price: ofertas[0].price,
+                                owner: ofertas[0].owner,
+                                state: 'no disponible',
+                                buyer: req.session.user.email
+                            }
+                            gestorBD.modificarOferta(crit, oferta, function (result) {
+                                if (result == null) {
+                                    res.send("Error al modificar oferta");
+                                    app.get("logger").error('Error al modificar oferta');
+                                } else {
+                                    req.session.user = usuario;
+                                    app.get("logger").error('Usuario ha destacado oferta');
+                                    res.redirect('/offer/fav');
+                                }
+                            });
+                        }
+                    });
 
+
+                }
             }
         });
 
