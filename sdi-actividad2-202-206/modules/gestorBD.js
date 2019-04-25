@@ -5,6 +5,9 @@ module.exports = {
         this.mongo = mongo;
         this.app = app;
     },
+    destacarOferta: function (criterio, functionCallback) {
+
+    },
     eliminarUsuario: function (criterio, funcionCallback) {
         this.mongo.MongoClient.connect(this.app.get('db'), function (err, db) {
             if (err) {
@@ -59,7 +62,7 @@ module.exports = {
         });
     },
     //modifica un elemento de la collection usuarios de acuerdo a un criterio
-    modificaUsuario : function(criterio, usuario, funcionCallback) {
+    modificaUsuario: function (criterio, usuario, funcionCallback) {
         this.mongo.MongoClient.connect(this.app.get('db'), function (err, db) {
             if (err) {
                 funcionCallback(null);
@@ -69,7 +72,7 @@ module.exports = {
                     if (err) {
                         funcionCallback(null);
                     } else {
-                         funcionCallback(result);
+                        funcionCallback(result);
 
                     }
                     db.close();
@@ -138,7 +141,7 @@ module.exports = {
                 funcionCallback(null);
             } else {
                 var collection = db.collection('ofertas');
-                collection.count(function (err, count) {
+                collection.count(criterio, function (err, count) {
                     collection.find(criterio).skip((pg - 1) * 5).limit(5)
                         .toArray(function (err, ofertas) {
                             if (err) {
@@ -153,7 +156,7 @@ module.exports = {
         });
     },
     //modifica un elemento de la collection ofertas de acuerdo a un criterio
-    modificarOferta : function(criterio, oferta, funcionCallback) {
+    modificarOferta: function (criterio, oferta, funcionCallback) {
         this.mongo.MongoClient.connect(this.app.get('db'), function (err, db) {
             if (err) {
                 funcionCallback(null);
@@ -171,7 +174,6 @@ module.exports = {
         });
 
     },
-
 
 
 }

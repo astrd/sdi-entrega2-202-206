@@ -14,7 +14,7 @@ module.exports = function (app, swig, gestorBD) {
             res.redirect("/identificarse");
             return;
         }
-        if (req.body.title< 2) {
+        if (req.body.title < 2) {
             res.redirect("/offer/add?mensaje=El titulo debe tener entre 2 y 24 caracteres.");
             return;
         }
@@ -26,7 +26,7 @@ module.exports = function (app, swig, gestorBD) {
             res.redirect("/registrarse?mensaje=El precio no puede ser vacío");
             return;
         }
-        if (req.body.price === "" || req.body.price === null || req.body.price <=0 ) {
+        if (req.body.price === "" || req.body.price === null || req.body.price <= 0) {
             res.redirect("/registrarse?mensaje=Problema en el precio");
             return;
         }
@@ -87,12 +87,12 @@ module.exports = function (app, swig, gestorBD) {
             if (ofertas == null) {
                 res.send("Error al listar ");
             } else {
-                var ultimaPg = total / 4;
-                if (total % 4 > 0) { // Sobran decimales
+                let ultimaPg = total / 5;
+                if (total % 5 > 0) { // Sobran decimales
                     ultimaPg = ultimaPg + 1;
                 }
-                var paginas = []; // paginas mostrar
-                for (var i = pg - 2; i <= pg + 2; i++) {
+                let paginas = []; // paginas mostrar
+                for (let i = pg - 2; i <= pg + 2; i++) {
                     if (i > 0 && i <= ultimaPg) {
                         paginas.push(i);
                     }
@@ -268,7 +268,7 @@ module.exports = function (app, swig, gestorBD) {
                                     res.send("Error al modificar oferta");
                                     app.get("logger").error('Error al comprar oferta');
                                 } else {
-                                    req.session.user=usuario;
+                                    req.session.user = usuario;
                                     app.get("logger").error('Usuario ha comprado oferta');
                                     res.redirect('/offer/bought');
                                 }
@@ -292,7 +292,20 @@ module.exports = function (app, swig, gestorBD) {
 
             }
         });
+    });
 
+    app.get('/offer/fav/:id', function (req, res) {
+        var criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
+        gestorBD.destacarOferta(criterio, function (ofertas) {
+            if (ofertas == null) {
+                app.get("logger").error('Error al destacar la oferta');
+                res.redirect("/offer/selling?mensaje=Error al destacar la oferta");
+            } else {
+                app.get("logger").error('Éxito al destacar la oferta');
+                res.redirect("/offer/fav?mensaje=Se ha destacado la oferta");
+
+            }
+        });
 
     });
 };
