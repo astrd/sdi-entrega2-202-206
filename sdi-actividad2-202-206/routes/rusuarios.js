@@ -16,6 +16,15 @@ module.exports = function (app, swig, gestorBD) {
     });
 
     app.post("/identificarse", function (req, res) {
+
+        if (req.body.email === "" || req.body.email === null) {
+            res.redirect("/identificarse?mensaje=El email no puede ser vacío");
+            return;
+        }
+        if (!req.body.email.includes("@")) {
+            res.redirect("/identificarse?mensaje=El email debe contener un @.");
+            return;
+        }
         var seguro = app.get("crypto").createHmac('sha256', app.get('clave'))
             .update(req.body.password).digest('hex');
         var criterio = {

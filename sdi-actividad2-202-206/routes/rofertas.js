@@ -14,6 +14,23 @@ module.exports = function (app, swig, gestorBD) {
             res.redirect("/identificarse");
             return;
         }
+        if (req.body.title< 2) {
+            res.redirect("/offer/add?mensaje=El titulo debe tener entre 2 y 24 caracteres.");
+            return;
+        }
+        if (req.body.description === "" || req.body.description === null) {
+            res.redirect("/offer/add?mensaje=La descripcion no puede ser vacío");
+            return;
+        }
+        if (req.body.price === "" || req.body.price === null) {
+            res.redirect("/registrarse?mensaje=El precio no puede ser vacío");
+            return;
+        }
+        if (req.body.price === "" || req.body.price === null || req.body.price <=0 ) {
+            res.redirect("/registrarse?mensaje=Problema en el precio");
+            return;
+        }
+
         let oferta = {
             title: req.body.title,
             description: req.body.description,
@@ -69,8 +86,8 @@ module.exports = function (app, swig, gestorBD) {
             if (ofertas == null) {
                 res.send("Error al listar ");
             } else {
-                var ultimaPg = total / 5;
-                if (total % 5 > 0) { // Sobran decimales
+                var ultimaPg = total / 4;
+                if (total % 4 > 0) { // Sobran decimales
                     ultimaPg = ultimaPg + 1;
                 }
                 var paginas = []; // paginas mostrar
