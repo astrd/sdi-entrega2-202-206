@@ -25,11 +25,18 @@
 					<td >{{parseInt(offer._id)}}</td>
 					<td >{{offer.title}}</td>
 					<td >{{offer.price}}</td>
+					<td><input type="checkbox" name="favoffer" class="check"  value="fav"></td>
 					<td><a href="{{'/offer/delete/' + offer._id.toString()}}" id="{{offer._id.toString()}}" class="eliminar">Eliminar</a></td>
 				</tr>
 				{% endfor %}
 				</tbody>
 			</table>
+			<div class="form-group">
+				<input class="btn" type="submit" id="FavButton"
+					   value="Destacar"/>
+
+
+			</div>
 		</div>
 	</div>
 {% endblock %}

@@ -38,6 +38,7 @@ module.exports = function (app, swig, gestorBD) {
             owner: req.session.user.email,
             state: 'disponible',
             buyer: 'none',
+            fav: req.body.fav //la hace destacada
         };
         gestorBD.insertarOferta(oferta, function (id) {
             if (id == null) {
@@ -173,6 +174,30 @@ module.exports = function (app, swig, gestorBD) {
                     });
                 res.send(respuesta);
                 app.get("logger").info('Usuario se ha dirijido a la vista ofertas disponibles');
+            }
+        });
+
+    });
+
+    app.get("/offer/fav", function (req, res) {
+
+        let criterio = {
+            owner: {$ne: req.session.user.email},
+            state: {$ne: 'no disponible'},
+            fav: 'fav',
+        };
+        gestorBD.obtenerOfertas(criterio, function (ofertas) {
+            if (ofertas == null) {
+                res.send("Error al listar ");
+                app.get("logger").error('Error al listar ofertas');
+            } else {
+                var respuesta = swig.renderFile('views/fav.html',
+                    {
+                        user: req.session.user,
+                        ofertas: ofertas
+                    });
+                res.send(respuesta);
+                app.get("logger").info('Usuario se ha dirijido a la vista ofertas destacadas');
             }
         });
 
