@@ -7,7 +7,6 @@
     <h2>Ofertas</h2>
 
     <p>Las ofertas destacadas en wallapop:</p>
-    <button type="button" id="updateButton" class="btn btn-default">Actualizar</button>
     <script>
         $("#updateButton").click(function () {
             $("#tableoffers").load('/offer/list/update');
@@ -17,7 +16,6 @@
         <table class="table " id="tableoffers">
             <thead>
             <tr>
-                <th class="col-md-1">id</th>
                 <th>Titulo</th>
                 <th>Precio</th>
                 <th>Propetario</th>
@@ -29,13 +27,10 @@
             <tbody>
             {% for offer in ofertas %}
             <tr>
-                <td>{{offer._id.toString()}}</td>
                 <td>{{offer.title}}</td>
                 <td>{{offer.price}}</td>
                 <td>{{offer.owner}}</td>
-                <td class="buy"><a href="{{'/offer/details/' + offer._id.toString()}}">detalles</a></td>
-                <td><a class="buy" name="offerbuy" href="{{'/offer/buy/'+offer._id.toString()}}">comprar</a></td>
-
+                <td><a href="{{'/offer/delete/' + offer._id.toString()}}" id="{{offer._id.toString()}}" class="eliminar">Eliminar</a></td>
             </tr>
             {% endfor %}
             </tbody>

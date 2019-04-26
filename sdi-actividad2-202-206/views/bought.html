@@ -7,7 +7,6 @@
 	<h2>Ofertas</h2>
 	<p>Sueldo Actual <strong>{{usuario.money}}</strong></p>
 	<p>Las ofertas disponibles en wallapop:</p>
-	<button type="button" id="updateButton" class="btn btn-default">Actualizar</button>
 	<script>
 		$("#updateButton").click(function () {
 			$("#tableoffers").load('/offer/list/update');

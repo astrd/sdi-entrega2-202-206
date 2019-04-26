@@ -78,8 +78,6 @@ app.use("/offer/*", routerUsuarioSession);
 app.use("/admin", routerUsuarioSession);
 app.use("/user/*", routerUsuarioSession);
 
-
-
 //asegurar identificacion
 var routerAdmin = express.Router();
 routerAdmin.use(function(req, res, next) {
@@ -120,7 +118,6 @@ routerUsuarioToken.use(function(req, res, next) {
                     error: 'Token invalido o caducado'
                 });
                 // También podríamos comprobar que intoToken.usuario existe
-                return;
 
             } else {
                 // dejamos correr la petición

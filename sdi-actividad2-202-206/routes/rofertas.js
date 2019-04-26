@@ -14,7 +14,7 @@ module.exports = function (app, swig, gestorBD) {
             res.redirect("/identificarse");
             return;
         }
-        if (req.body.title< 2) {
+        if (req.body.title < 2) {
             res.redirect("/offer/add?mensaje=El titulo debe tener entre 2 y 24 caracteres.");
             return;
         }
@@ -26,7 +26,7 @@ module.exports = function (app, swig, gestorBD) {
             res.redirect("/registrarse?mensaje=El precio no puede ser vacío");
             return;
         }
-        if (req.body.price === "" || req.body.price === null || req.body.price <=0 ) {
+        if (req.body.price === "" || req.body.price === null || req.body.price <= 0) {
             res.redirect("/registrarse?mensaje=Problema en el precio");
             return;
         }
@@ -88,12 +88,12 @@ module.exports = function (app, swig, gestorBD) {
             if (ofertas == null) {
                 res.send("Error al listar ");
             } else {
-                var ultimaPg = total / 4;
-                if (total % 4 > 0) { // Sobran decimales
+                let ultimaPg = total / 5;
+                if (total % 5 > 0) { // Sobran decimales
                     ultimaPg = ultimaPg + 1;
                 }
-                var paginas = []; // paginas mostrar
-                for (var i = pg - 2; i <= pg + 2; i++) {
+                let paginas = []; // paginas mostrar
+                for (let i = pg - 2; i <= pg + 2; i++) {
                     if (i > 0 && i <= ultimaPg) {
                         paginas.push(i);
                     }
@@ -184,7 +184,11 @@ module.exports = function (app, swig, gestorBD) {
 
         let criterio = {
 
+
             fav: 'fav',
+            owner: {$ne: req.session.user.email},
+            state: {$ne: 'no disponible'},
+
         };
         gestorBD.obtenerOfertas(criterio, function (ofertas) {
             if (ofertas == null) {
@@ -268,7 +272,7 @@ module.exports = function (app, swig, gestorBD) {
                                     res.send("Error al modificar oferta");
                                     app.get("logger").error('Error al comprar oferta');
                                 } else {
-                                    req.session.user=usuario;
+                                    req.session.user = usuario;
                                     app.get("logger").error('Usuario ha comprado oferta');
                                     res.redirect('/offer/bought');
                                 }
@@ -292,7 +296,61 @@ module.exports = function (app, swig, gestorBD) {
 
             }
         });
+    });
 
+    app.get('/offer/fav/:id', function (req, res) {
+        var criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
+        gestorBD.obtenerOfertas(criterio, function (ofertas) {
+            if (ofertas == null) {
+                app.get("logger").error('Error al destacar la oferta');
+                res.redirect("/offer/selling?mensaje=Error al destacar la oferta");
+            } else {
+                let sueldo = req.session.user.money - 20;//coste de destacar la oferta
+                if (sueldo < 0) {
+                    res.redirect('/offer/list?mensaje=Sin sueldo suficiente para destacar oferta');
+                    app.get("logger").info('Usuario no tiene sueldo suficiente');
+                } else {
+                    var cri = {"_id": gestorBD.mongo.ObjectID(req.session.user._id)}
+                    var usuario = {
+                        name: req.session.user.name,
+                        surname: req.session.user.surname,
+                        email: req.session.user.email,
+                        password: req.session.user.password,
+                        rol: 'user',
+                        money: sueldo,
+                        valid: true
+                    }
+                    gestorBD.modificaUsuario(cri, usuario, function (result) {
+                        if (result == null) {
+                            res.send("Error al modificar usuario");
+                            app.get("logger").error('Error al modificar usuario');
+                        } else {
+                            var crit = {"_id": gestorBD.mongo.ObjectID(req.params.id)}
+                            var oferta = {
+                                title: ofertas[0].title,
+                                description: ofertas[0].description,
+                                price: ofertas[0].price,
+                                owner: ofertas[0].owner,
+                                state: 'no disponible',
+                                buyer: req.session.user.email
+                            }
+                            gestorBD.modificarOferta(crit, oferta, function (result) {
+                                if (result == null) {
+                                    res.send("Error al modificar oferta");
+                                    app.get("logger").error('Error al modificar oferta');
+                                } else {
+                                    req.session.user = usuario;
+                                    app.get("logger").error('Usuario ha destacado oferta');
+                                    res.redirect('/offer/fav');
+                                }
+                            });
+                        }
+                    });
+
+
+                }
+            }
+        });
 
     });
 };
