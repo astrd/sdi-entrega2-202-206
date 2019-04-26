@@ -27,20 +27,38 @@ module.exports = function(app, gestorBD) {
         });
     });
     app.get("/api/oferta", function(req, res) {
-        cri = { owner: {$ne: res.usuario},
-            state: {$ne: 'no disponible'} }
-
-        console.log(res.usuario);
-        gestorBD.obtenerOfertas( cri , function(ofertas) {
-            if (ofertas == null || ofertas.length== 0) {
-                res.status(403);
+        var token = req.headers['token'] || req.body.token || req.query.token;
+        app.get('jwt').verify(token, 'secreto', function (err, infoToken) {
+            if (err) {
+                res.status(403); // Forbidden
                 res.json({
-                    error : "se ha producido un error"
-                })
+                    acceso: false,
+                    error: 'Token invalido o caducado'
+                });
+                // También podríamos comprobar que intoToken.usuario existe
+                return;
             } else {
-                res.status(200);
-                res.send( JSON.stringify(ofertas) );
+                // dejamos correr la petición
+                var usuario = infoToken.usuario;
+                cri = {
+                    owner: {$ne: res.usuario},
+                    state: {$ne: 'no disponible'}
+                }
+                gestorBD.obtenerOfertas(cri, function (ofertas) {
+                    if (ofertas == null || ofertas.length == 0) {
+
+                        res.status(204); // Unauthorized
+                        res.json({
+                            err: "No results"
+                        });
+                    } else {
+
+                        res.status(200);
+                        res.json({offers: ofertas});
+                    }
+                })
             }
-        });
-    });
+        })
+    })
+
 }
