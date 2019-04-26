@@ -755,13 +755,14 @@ public class SdiActividad2202206 {
 		driver.get("http://localhost:8081/offer/add");
 		driver.findElement(By.name("title")).click();
 		driver.findElement(By.name("title")).clear();
-		driver.findElement(By.name("title")).sendKeys("vende1");
+		driver.findElement(By.name("title")).sendKeys("vende01");
 		driver.findElement(By.name("description")).click();
 		driver.findElement(By.name("description")).clear();
 		driver.findElement(By.name("description")).sendKeys("Uno");
 		driver.findElement(By.name("price")).click();
 		driver.findElement(By.name("price")).clear();
-		driver.findElement(By.name("price")).sendKeys("1");
+		driver.findElement(By.name("price")).sendKeys("0.1");
+		driver.findElement(By.className("btn-primary")).click();
 		
 		driver.get("http://localhost:8081/identificarse");
 		driver.findElement(By.name("email")).click();
@@ -773,15 +774,15 @@ public class SdiActividad2202206 {
 
 		driver.findElement(By.className("btn-primary")).click();
 		 
-		driver.get("http://localhost:8081/offer/list");
-
+		driver.get("http://localhost:8081/offer/search?busqueda=vende01");
 		List<WebElement> elements = driver
 				.findElements(By.className("buy"));
 		int size = elements.size();
 		driver.findElements(By.className("buy")).get(0).click();
-		driver.findElement(By.className("btn-primary")).click();
-		testUtil.waitChangeWeb(); 
-		testUtil.searchText("suficiente", false);
+		 
+		driver.get("http://localhost:8081/offer/bought");
+
+		testUtil.searchText("vende01", true);
 		
 	}
 	//Sobre una búsqueda determinada (a elección de desarrollador), comprar una oferta que deja
@@ -789,6 +790,7 @@ public class SdiActividad2202206 {
 	//la vista del comprador. 
 	@Test
 	public void Prueba24() {
+		
 		driver.get("http://localhost:8081");
 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
@@ -802,32 +804,38 @@ public class SdiActividad2202206 {
 		driver.get("http://localhost:8081/offer/add");
 		driver.findElement(By.name("title")).click();
 		driver.findElement(By.name("title")).clear();
-		driver.findElement(By.name("title")).sendKeys("vende99");
+		driver.findElement(By.name("title")).sendKeys("vendejusto");
 		driver.findElement(By.name("description")).click();
 		driver.findElement(By.name("description")).clear();
-		driver.findElement(By.name("description")).sendKeys(" ");
+		driver.findElement(By.name("description")).sendKeys("justo ");
 		driver.findElement(By.name("price")).click();
 		driver.findElement(By.name("price")).clear();
-		driver.findElement(By.name("price")).sendKeys("99");
+		driver.findElement(By.name("price")).sendKeys("100");
+		driver.findElement(By.className("btn")).click();
+
+		
 		driver.get("http://localhost:8081/identificarse");
 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
-		driver.findElement(By.name("email")).sendKeys("prueba6@prueba6.com");
+		driver.findElement(By.name("email")).sendKeys("prueba@justo.com");
 		driver.findElement(By.name("password")).click();
 		driver.findElement(By.name("password")).clear();
 		driver.findElement(By.name("password")).sendKeys("12345");
 		driver.findElement(By.className("btn-primary")).click();
 		 
-		driver.get("http://localhost:8081/offer/list");
+		driver.get("http://localhost:8081/offer/search?busqueda=vendejusto");
 
-
+ 
 		List<WebElement> elements = driver
 				.findElements(By.className("buy"));
 		int size = elements.size();
+		
 		driver.findElements(By.className("buy")).get(0).click();
-		driver.findElement(By.className("btn-primary")).click();
-		testUtil.waitChangeWeb(); 
-		testUtil.searchText("suficiente", false);
+		  
+		driver.get("http://localhost:8081/");
+		testUtil.searchText("0", true);
+		driver.get("http://localhost:8081/offer/bought");
+		testUtil.searchText("vendejusto", true);
 		
 	}
 	//Sobre una búsqueda determinada (a elección de desarrollador), intentar comprar una oferta
@@ -835,7 +843,6 @@ public class SdiActividad2202206 {
 	//saldo no suficiente.
 	@Test
 	public void Prueba25() {
-		driver.get("http://localhost:8090/?lang=ES");
 		driver.get("http://localhost:8081");
 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
@@ -852,10 +859,13 @@ public class SdiActividad2202206 {
 		driver.findElement(By.name("title")).sendKeys("vende99");
 		driver.findElement(By.name("description")).click();
 		driver.findElement(By.name("description")).clear();
-		driver.findElement(By.name("description")).sendKeys(" ");
+		driver.findElement(By.name("description")).sendKeys("Caro ");
 		driver.findElement(By.name("price")).click();
 		driver.findElement(By.name("price")).clear();
-		driver.findElement(By.name("price")).sendKeys("99");
+		driver.findElement(By.name("price")).sendKeys("1199");
+		driver.findElement(By.className("btn")).click();
+
+		
 		driver.get("http://localhost:8081/identificarse");
 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
@@ -865,17 +875,14 @@ public class SdiActividad2202206 {
 		driver.findElement(By.name("password")).sendKeys("12345");
 		driver.findElement(By.className("btn-primary")).click();
 		 
-		driver.get("http://localhost:8081/offer/list");
+		driver.get("http://localhost:8081/offer/search?busqueda=vende1199");
 
- 
-		List<WebElement> elements = driver
-				.findElements(By.className("buy"));
-		int size = elements.size();
-		driver.findElements(By.className("buy")).get(4).click();
-		driver.findElement(By.className("btn-primary")).click();
+  
+		
+		driver.findElements(By.className("buy")).get(0).click();
+		 
 		testUtil.waitChangeWeb();
-		testUtil.searchText("100", true);
-		testUtil.searchText("error", true);
+		testUtil.searchText("Sin sueldo suficiente", true);
 	}
 	//Ir a la opción de ofertas compradas del usuario y mostrar la lista. Comprobar que aparecen
 	//las ofertas que deben aparecer.
@@ -889,11 +896,29 @@ public class SdiActividad2202206 {
 		driver.findElement(By.name("password")).clear();
 		driver.findElement(By.name("password")).sendKeys("12345");
 		driver.findElement(By.className("btn-primary")).click();
+		
+		driver.get("http://localhost:8081/offer/selling");
+		List<WebElement> elements = driver
+				.findElements(By.className("sell"));
+		int size = elements.size();
+		
+		driver.get("http://localhost:8081/offer/add");
+		driver.findElement(By.name("title")).click();
+		driver.findElement(By.name("title")).clear();
+		driver.findElement(By.name("title")).sendKeys("Vendo 1");
+		driver.findElement(By.name("description")).click();
+		driver.findElement(By.name("description")).clear();
+		driver.findElement(By.name("description")).sendKeys("Vendo 111");
+		driver.findElement(By.name("price")).click();
+		driver.findElement(By.name("price")).clear();
+		driver.findElement(By.name("price")).sendKeys("1.11");
+		driver.findElement(By.className("btn-primary")).click();
 		 
-		driver.get("http://localhost:8081/offer/bought");
-		testUtil.searchText("vende99", true);
-		testUtil.searchText("vende0", true);
-   
+		driver.get("http://localhost:8081/offer/selling");
+		int nelements=driver.findElements(By.className("sell")).size();
+		assertTrue(size == nelements - 1);
+		testUtil.searchText("Vendo 1", true);
+    
 		 
 	}
 

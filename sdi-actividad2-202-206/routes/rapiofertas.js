@@ -30,6 +30,7 @@ module.exports = function (app, gestorBD) {
         var token = req.headers['token'] || req.body.token || req.query.token;
         app.get('jwt').verify(token, 'secreto', function (err, infoToken) {
             if (err) {
+                app.get("logger").error('API: Token invalido');
                 res.status(403); // Forbidden
                 res.json({
                     acceso: false,
@@ -45,13 +46,13 @@ module.exports = function (app, gestorBD) {
                 }
                 gestorBD.obtenerOfertas(cri, function (ofertas) {
                     if (ofertas == null || ofertas.length === 0) {
-
+                        app.get("logger").erro('Usuario no autorizado');
                         res.status(204); // Unauthorized
                         res.json({
                             err: "No results"
                         });
                     } else {
-
+                        app.get("logger").info('API: Se han mostrado las ofertas disponibles para un usuario');
                         res.status(200);
                         res.json({offers: ofertas});
                     }

@@ -176,7 +176,7 @@ module.exports = function (app, swig, gestorBD) {
         let criterio = {
 
 
-            fav: 'fav',
+            fav: 'on',
             owner: {$ne: req.session.user.email},
             state: {$ne: 'no disponible'},
 
