@@ -23,11 +23,11 @@ module.exports = function (app, swig, gestorBD) {
             return;
         }
         if (req.body.price === "" || req.body.price === null) {
-            res.redirect("/registrarse?mensaje=El precio no puede ser vacío");
+            res.redirect("/offer/add?mensaje=El precio no puede ser vacío");
             return;
         }
         if (req.body.price === "" || req.body.price === null || req.body.price <= 0) {
-            res.redirect("/registrarse?mensaje=Problema en el precio");
+            res.redirect("/offer/add?mensaje=Problema en el precio");
             return;
         }
 

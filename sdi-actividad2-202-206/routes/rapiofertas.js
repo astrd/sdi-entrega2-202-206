@@ -26,7 +26,7 @@ module.exports = function (app, gestorBD) {
 
         });
     });
-    app.get("/api/oferta", function (req, res) {
+    app.get("/api/oferta/", function (req, res) {
         var token = req.headers['token'] || req.body.token || req.query.token;
         app.get('jwt').verify(token, 'secreto', function (err, infoToken) {
             if (err) {
@@ -54,7 +54,7 @@ module.exports = function (app, gestorBD) {
                     } else {
                         app.get("logger").info('API: Se han mostrado las ofertas disponibles para un usuario');
                         res.status(200);
-                        res.json({offers: ofertas});
+                        res.send( ofertas );
                     }
                 })
             }

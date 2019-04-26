@@ -919,7 +919,7 @@ public class SdiActividad2202206 {
 		assertTrue(size == nelements - 1);
 		testUtil.searchText("Vendo 1", true);
     
-		 
+	 	 
 	}
 
 }

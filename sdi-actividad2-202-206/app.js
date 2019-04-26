@@ -23,8 +23,6 @@ app.use(function (req, res, next) {
     next();
 });
 
-var jwt = require('jsonwebtoken');
-app.set('jwt', jwt);
 
 // Objeto sessión
 var expressSession = require('express-session');
@@ -61,40 +59,6 @@ app.get('/', function (req, res) {
     res.redirect("/home");
 });
 
-// routerUsuarioToken
-var routerUsuarioToken = express.Router();
-routerUsuarioToken.use(function (req, res, next) {
-    // obtener el token, vía headers (opcionalmente GET y/o POST).
-    var token = req.headers['token'] || req.body.token || req.query.token;
-    if (token != null) {
-        // verificar el token
-        jwt.verify(token, 'secreto', function (err, infoToken) {
-            if (err || (Date.now() / 1000 - infoToken.tiempo) > 24000) {
-                res.status(403); // Forbidden
-                res.json({
-                    acceso: false,
-                    error: 'Token invalido o caducado'
-                });
-                // También podríamos comprobar que intoToken.usuario existe
-            } else {
-                // dejamos correr la petición
-                console.log(infoToken)
-                res.usuario = infoToken.usuario;
-                next();
-            }
-        });
-    } else {
-        res.status(403); // Forbidden
-        res.json({
-            acceso: false,
-            mensaje: 'No hay Token'
-        });
-    }
-});
-// Aplicar routerUsuarioToken
-
-app.use('/api/oferta', routerUsuarioToken);
-app.use('/api/offer/message/:id', routerUsuarioToken);
 
 // routerUsuarioSession
 var routerUsuarioSession = express.Router();
