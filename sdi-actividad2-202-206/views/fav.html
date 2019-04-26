@@ -30,7 +30,8 @@
                 <td>{{offer.title}}</td>
                 <td>{{offer.price}}</td>
                 <td>{{offer.owner}}</td>
-                <td><a href="{{'/offer/delete/' + offer._id.toString()}}" id="{{offer._id.toString()}}" class="eliminar">Eliminar</a></td>
+                <td class="buy"><a href="{{'/offer/details/' + offer._id.toString()}}">detalles</a></td>
+                <td><a class="buy" name="offerbuy" href="{{'/offer/buy/'+offer._id.toString()}}">comprar</a></td>
             </tr>
             {% endfor %}
             </tbody>
