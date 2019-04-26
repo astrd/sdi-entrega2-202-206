@@ -40,6 +40,7 @@ module.exports = function (app, swig, gestorBD) {
             buyer: 'none',
             fav: req.body.fav //la hace destacada
         };
+        console.log(oferta.fav);
         gestorBD.insertarOferta(oferta, function (id) {
             if (id == null) {
                 app.get("logger").error('Error al insertar oferta');
@@ -182,8 +183,7 @@ module.exports = function (app, swig, gestorBD) {
     app.get("/offer/fav", function (req, res) {
 
         let criterio = {
-            owner: {$ne: req.session.user.email},
-            state: {$ne: 'no disponible'},
+
             fav: 'fav',
         };
         gestorBD.obtenerOfertas(criterio, function (ofertas) {

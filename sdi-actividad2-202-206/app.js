@@ -138,6 +138,7 @@ routerUsuarioToken.use(function(req, res, next) {
     }
 });
 // Aplicar routerUsuarioToken
+
 app.use('/api/oferta', routerUsuarioToken);
 
 // lanzar el servid

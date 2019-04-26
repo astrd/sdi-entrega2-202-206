@@ -27,9 +27,13 @@ module.exports = function(app, gestorBD) {
         });
     });
     app.get("/api/oferta", function(req, res) {
-        gestorBD.obtenerOfertas( {} , function(ofertas) {
-            if (ofertas == null) {
-                res.status(500);
+        cri = { owner: {$ne: res.usuario},
+            state: {$ne: 'no disponible'} }
+
+        console.log(res.usuario);
+        gestorBD.obtenerOfertas( cri , function(ofertas) {
+            if (ofertas == null || ofertas.length== 0) {
+                res.status(403);
                 res.json({
                     error : "se ha producido un error"
                 })

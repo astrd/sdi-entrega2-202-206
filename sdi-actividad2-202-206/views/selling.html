@@ -22,7 +22,7 @@
 				<tbody>
 				{% for offer in ofertas %}
 				<tr >
-					<td >{{parseInt(offer._id)}}</td>
+					<td >{{offer._id.toString()}}</td>
 					<td >{{offer.title}}</td>
 					<td >{{offer.price}}</td>
 					<td><input type="checkbox" name="favoffer" class="check"  value="fav"></td>
