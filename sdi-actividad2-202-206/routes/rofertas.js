@@ -115,11 +115,14 @@ module.exports = function (app, swig, gestorBD) {
                 res.send("Error al listar ");
                 app.get("logger").error('Error al listar ofertas propias');
             } else {
+                let mysort = (o1, o2) => {
+                    return o1.title.localeCompare(o2.title);
+                };
 
                 var respuesta = swig.renderFile('views/selling.html',
                     {
                         user: req.session.user,
-                        ofertas: ofertas
+                        ofertas: ofertas.sort(mysort)
                     });
                 res.send(respuesta);
                 app.get("logger").info('Usuario se ha dirijido a la vista ofertas propias');

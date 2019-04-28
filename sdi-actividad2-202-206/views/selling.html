@@ -13,6 +13,7 @@
 				<thead>
 				<tr>
 					<th >Titulo </th>
+					<th>Descripción</th>
 					<th >Precio </th>
 					<th class="col-md-1"></th>
 					<th class="col-md-1"></th>
@@ -22,8 +23,8 @@
 				{% for offer in ofertas %}
 				<tr class="sell">
 
-					<td >{{offer._id.toString()}}</td>
 					<td >{{offer.title}}</td>
+					<th>{{offer.description}}</td>
 					<td >{{offer.price}}</td>
 					<td><a href="{{'/offer/delete/' + offer._id.toString()}}" class="eliminar">Eliminar</a></td>
 					<td><a href="{{'/offer/fav/' + offer._id.toString()}}" class="destacar">Destacar</a></td>
