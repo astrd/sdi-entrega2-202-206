@@ -116,7 +116,7 @@ public class SdiActividad2202206 {
 	 * Registro con email vacio
 	 */
 	@Test
-	public void T02_registroEmailVacio() {
+	public void T01_registroEmailVacio() {
 		driver.get("http://localhost:8081/");
 		testUtil.waitChangeWeb();
 		driver.findElement(By.linkText("Registrate")).click();
@@ -144,7 +144,7 @@ public class SdiActividad2202206 {
 	 * registro contraseñas no coinciden
 	 */
 	@Test
-	public void T03_registroContraseñasNoCoinciden() {
+	public void T02_registroContraseñasNoCoinciden() {
 		driver.get("http://localhost:8081/");
 		testUtil.waitChangeWeb();
 		driver.findElement(By.linkText("Registrate")).click();
@@ -175,7 +175,7 @@ public class SdiActividad2202206 {
 	 * Registro email ya existe
 	 */
 	@Test
-	public void T04_registroEmailExistente() {
+	public void T03_registroEmailExistente() {
 		driver.get("http://localhost:8081/");
 		testUtil.waitChangeWeb();
 		driver.findElement(By.linkText("Registrate")).click();
@@ -205,7 +205,7 @@ public class SdiActividad2202206 {
 
 	// Inicio de sesión con datos válidos (usuario ).
 	@Test
-	public void T05_IdentificarseValido() {
+	public void T04_IdentificarseValido() {
 		driver.get("http://localhost:8081/identificarse");
 
 		driver.findElement(By.name("email")).click();
@@ -225,7 +225,7 @@ public class SdiActividad2202206 {
 	// Inicio de sesión con datos válidos (usuario estándar, email existente,
 	// pero contraseñ incorrecta).
 	@Test
-	public void T06_IdentificarseContraseñaIncorrecta() {
+	public void T05_IdentificarseContraseñaIncorrecta() {
 		driver.get("http://localhost:8081/identificarse");
 
 		driver.findElement(By.name("email")).click();
@@ -245,7 +245,7 @@ public class SdiActividad2202206 {
 	// Inicio de sesión con datos inválidos (usuario estándar, campo email y
 	// contraseña vacíos).
 	@Test
-	public void T07_IdentificarseEmailPasswordVacios() {
+	public void T06_IdentificarseEmailPasswordVacios() {
 
 		driver.get("http://localhost:8081/identificarse");
 
@@ -266,7 +266,7 @@ public class SdiActividad2202206 {
 	// Inicio de sesión con datos inválidos (usuario estándar, email no
 	// existente en la aplicación).
 	@Test
-	public void T08_IdentificarseEmailNoExiste() {
+	public void T07_IdentificarseEmailNoExiste() {
 		driver.get("http://localhost:8081/identificarse");
 
 		driver.findElement(By.name("email")).click();
@@ -285,7 +285,7 @@ public class SdiActividad2202206 {
 	// Hacer click en la opción de salir de sesión y comprobar que se redirige a
 	// la página de inicio de sesión (Login).
 	@Test
-	public void T09_IdentificarseSalirSesion() {
+	public void T08_IdentificarseSalirSesion() {
 		driver.get("http://localhost:8081/identificarse");
 
 		driver.findElement(By.name("email")).click();
@@ -307,7 +307,7 @@ public class SdiActividad2202206 {
 	// Comprobar que el botón cerrar sesión no está visible si el usuario no
 	// está autenticado.
 	@Test
-	public void T10_CerrarSesionNoVisibleNoAutenticado() {
+	public void T9_CerrarSesionNoVisibleNoAutenticado() {
 		driver.get("http://localhost:8081/");
 		testUtil.searchText("Desconectar", false);
 	}
@@ -315,7 +315,7 @@ public class SdiActividad2202206 {
 	// Mostrar el listado de usuarios y comprobar que se muestran todos los que
 	// existen en el
 	@Test
-	public void T11_ListadoDeUsuarios() {
+	public void T10_ListadoDeUsuarios() {
 		driver.get("http://localhost:8081/");
 		testUtil.waitChangeWeb();
 	    driver.findElement(By.name("email")).click();
@@ -338,7 +338,7 @@ public class SdiActividad2202206 {
 	// Admin.Ir a la lista de usuarios, borrar el primer usuario de la lista,
 	// comprobar que la lista se actualiza y dicho usuario desaparece.
 	 @Test
-	public void T12_BorrarPrimerUsuario() {
+	public void T11_BorrarPrimerUsuario() {
 		 driver.get("http://localhost:8081/identificarse");
 		    driver.findElement(By.linkText("Registrate")).click();
 		    testUtil.waitChangeWeb();
@@ -381,7 +381,7 @@ public class SdiActividad2202206 {
 	// Admin.Ir a la lista de usuarios, borrar el último usuario de la lista,
 	// comprobar que la lista se actualizay dicho usuario desaparece.
 	@Test
-	public void T13_BorrarUltimoUsuario() {
+	public void T12_BorrarUltimoUsuario() {
 		 driver.get("http://localhost:8081/identificarse");
 		    driver.findElement(By.linkText("Registrate")).click();
 		    testUtil.waitChangeWeb();
@@ -428,7 +428,7 @@ public class SdiActividad2202206 {
 	// Admin.Ir a la lista de usuarios, borrar 3 usuarios, comprobar que la
 	// lista se actualiza y dichosusuarios desaparecen.
 	@Test
-	public void T14_BorrarTresUsuarios() {
+	public void T13_BorrarTresUsuarios() {
 	    driver.get("http://localhost:8081/identificarse");
 	    driver.findElement(By.linkText("Registrate")).click();
 	    testUtil.waitChangeWeb();
@@ -513,7 +513,7 @@ public class SdiActividad2202206 {
 	// el botón Submit.
 	// Comprobar que la oferta sale en el listado de ofertas de dicho usuario
 	@Test
-	public void T15_DarAltaOfertaValido() {
+	public void T14_DarAltaOfertaValido() {
 		driver.get("http://localhost:8081/identificarse");
 		driver.findElement(By.linkText("Identifícate")).click();
 		driver.findElement(By.name("email")).click();
@@ -547,7 +547,7 @@ public class SdiActividad2202206 {
 	// título vacío) y pulsarel botón Submit. Comprobar que se muestra el
 	// mensaje de campo obligatorio.
 	@Test
-	public void T16_CrearOfertaTituloVacio() {
+	public void T15_CrearOfertaTituloVacio() {
 		driver.get("http://localhost:8081/identificarse");
 
 		driver.findElement(By.name("email")).click();
@@ -580,7 +580,7 @@ public class SdiActividad2202206 {
 	// Mostrar el listado de ofertas para dicho usuario y comprobar que se muestran
 	// todas los que
 	@Test
-	public void T17_MostrarOfertas() {
+	public void T16_MostrarOfertas() {
 		// login user
 		driver.get("http://localhost:8081/identificarse");
 
@@ -602,7 +602,7 @@ public class SdiActividad2202206 {
 	// Ir a la lista de ofertas, borrar la primera oferta de la lista, comprobar
 	// que la lista se actualiza y que la oferta desaparece.
 	@Test
-	public void T18_EliminarPrimeraOferta() {
+	public void T17_EliminarPrimeraOferta() {
 		 driver.get("http://localhost:8081/identificarse");
 		 	driver.findElement(By.name("email")).click();
 		    driver.findElement(By.name("email")).clear();
@@ -646,7 +646,7 @@ public class SdiActividad2202206 {
 	// Ir a la lista de ofertas, borrar la última oferta de la lista, comprobar
 	// que la lista se actualiza y que la oferta desaparece.
 	@Test
-	public void T19_EliminarUltimaOferta() {
+	public void T18_EliminarUltimaOferta() {
 		
 		driver.get("http://localhost:8081/identificarse");
 	 	driver.findElement(By.name("email")).click();
@@ -693,7 +693,7 @@ public class SdiActividad2202206 {
 	// página que corresponde con el listado de las ofertas existentes en el
 	// sistema
 	@Test
-	public void T20_BusquedaOfertaVacia() {
+	public void T19_BusquedaOfertaVacia() {
 		driver.get("http://localhost:8081");
 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
@@ -720,7 +720,7 @@ public class SdiActividad2202206 {
 	// comprobar que se
 	// muestra la página que corresponde, con la lista de ofertas vacía.
 	@Test
-	public void T21_BusquedaOfertaTextoNoExiste() {
+	public void T20_BusquedaOfertaTextoNoExiste() {
 		driver.get("http://localhost:8081");
 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
@@ -749,7 +749,7 @@ public class SdiActividad2202206 {
 	 //comprobar que se muestra la página que corresponde, con la lista de ofertas que contengan dicho texto,
 	 //independientemente que el título esté almacenado en minúsculas o mayúscula.		// comprobar que se
  		@Test
-		public void T22_BusquedaOfertaMayusMinus() {
+		public void T21_BusquedaOfertaMayusMinus() {
  			driver.get("http://localhost:8081");
  			driver.findElement(By.name("email")).click();
  			driver.findElement(By.name("email")).clear();
@@ -777,7 +777,7 @@ public class SdiActividad2202206 {
 	//Sobre una búsqueda determinada (a elección de desarrollador), comprar una oferta que deja
 	//un saldo positivo en el contador del comprobador. Y comprobar que el contador se actualiza
 	//correctamente en la vista del comprador
-	public void Prueba23() {
+	public void Prueba22() {
 		driver.get("http://localhost:8081");
 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
@@ -825,7 +825,7 @@ public class SdiActividad2202206 {
 	//un saldo 0 en el contador del comprobador. Y comprobar que el contador se actualiza correctamente en
 	//la vista del comprador. 
 	@Test
-	public void Prueba24() {
+	public void Prueba23() {
 		
 		driver.get("http://localhost:8081");
 		driver.findElement(By.name("email")).click();
@@ -878,7 +878,7 @@ public class SdiActividad2202206 {
 	//que esté por encima de saldo disponible del comprador. Y comprobar que se muestra el mensaje de
 	//saldo no suficiente.
 	@Test
-	public void Prueba25() {
+	public void Prueba24() {
 		driver.get("http://localhost:8081");
 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
@@ -923,7 +923,7 @@ public class SdiActividad2202206 {
 	//Ir a la opción de ofertas compradas del usuario y mostrar la lista. Comprobar que aparecen
 	//las ofertas que deben aparecer.
 	@Test
-	public void Prueba26() {
+	public void Prueba25() {
 		driver.get("http://localhost:8081/identificarse");
 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
@@ -957,5 +957,91 @@ public class SdiActividad2202206 {
     
 	 	 
 	}
+	//Jquery: Inicio de sesión con datos válidos.
+	@Test
+	public void Prueba29() {
+		driver.get("http://localhost:8081/cliente.html");
+		testUtil.waitChangeWeb();
+
+		driver.findElement(By.id("email")).click();
+		driver.findElement(By.id("email")).clear();
+		driver.findElement(By.id("email")).sendKeys("prueba6@prueba6.com");
+		driver.findElement(By.id("password")).click();
+		driver.findElement(By.id("password")).clear();
+		driver.findElement(By.id("password")).sendKeys("12345");
+		driver.findElement(By.id("boton-login")).click();
+		testUtil.waitChangeWeb();
+
+		testUtil.searchText("Nombre", true);
+		testUtil.searchText("Descripcion", true);
+		testUtil.searchText("Precio", true);
+		testUtil.searchText("Password", false);
+
+	}
+	
+	//Jquery:] Inicio de sesión con datos inválidos (email existente, pero contraseña incorrecta).
+
+		@Test
+		public void Prueba30() {
+			driver.get("http://localhost:8081/cliente.html");
+			testUtil.waitChangeWeb();
+
+			driver.findElement(By.id("email")).click();
+			driver.findElement(By.id("email")).clear();
+			driver.findElement(By.id("email")).sendKeys("prueba6@prueba6.com");
+			driver.findElement(By.id("password")).click();
+			driver.findElement(By.id("password")).clear();
+			driver.findElement(By.id("password")).sendKeys("qewrewq");
+			driver.findElement(By.id("boton-login")).click();
+			testUtil.waitChangeWeb();
+			
+ 
+			testUtil.searchText("Usuario no encontrado", true);
+			 
+
+
+		}
+		// Inicio de sesión con datos válidos (campo email o contraseña vacíos)
+		@Test
+		public void Prueba31() {
+			driver.get("http://localhost:8081/cliente.html");
+			testUtil.waitChangeWeb();
+
+			driver.findElement(By.id("email")).click();
+			driver.findElement(By.id("email")).clear();
+			driver.findElement(By.id("email")).sendKeys(" ");
+			driver.findElement(By.id("password")).click();
+			driver.findElement(By.id("password")).clear();
+			driver.findElement(By.id("password")).sendKeys("qewrewq");
+			driver.findElement(By.id("boton-login")).click();
+ 			
+ 
+			testUtil.searchText("Usuario no encontrado", true);
+			 
+
+
+		}
+		//Mostrar el listado de ofertas disponibles y comprobar que se muestran todas las que existen,
+		//menos las del usuario identificado
+		@Test
+		public void Prueba32() {
+			driver.get("http://localhost:8081/cliente.html");
+			testUtil.waitChangeWeb();
+
+			driver.findElement(By.id("email")).click();
+			driver.findElement(By.id("email")).clear();
+			driver.findElement(By.id("email")).sendKeys("prueba6@prueba6.com");
+			driver.findElement(By.id("password")).click();
+			driver.findElement(By.id("password")).clear();
+			driver.findElement(By.id("password")).sendKeys("12345");
+			driver.findElement(By.id("boton-login")).click();
+			testUtil.waitChangeWeb();
+
+			testUtil.searchText("Nombre", true);
+			testUtil.searchText("Vendo 111", false);
+			 
+
+		}
+
 
 }
