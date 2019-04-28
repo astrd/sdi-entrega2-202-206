@@ -547,7 +547,7 @@ public class SdiActividad2202206 {
 	// título vacío) y pulsarel botón Submit. Comprobar que se muestra el
 	// mensaje de campo obligatorio.
 	@Test
-	public void Prueba15() {
+	public void T16_CrearOfertaTituloVacio() {
 		driver.get("http://localhost:8081/identificarse");
 
 		driver.findElement(By.name("email")).click();
@@ -580,7 +580,7 @@ public class SdiActividad2202206 {
 	// Mostrar el listado de ofertas para dicho usuario y comprobar que se muestran
 	// todas los que
 	@Test
-	public void Prueba16() {
+	public void T17_MostrarOfertas() {
 		// login user
 		driver.get("http://localhost:8081/identificarse");
 
@@ -602,7 +602,7 @@ public class SdiActividad2202206 {
 	// Ir a la lista de ofertas, borrar la primera oferta de la lista, comprobar
 	// que la lista se actualiza y que la oferta desaparece.
 	@Test
-	public void Prueba17() {//para elena
+	public void T18_EliminarPrimeraOferta() {
 		driver.get("http://localhost:8081");
 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
@@ -630,7 +630,7 @@ public class SdiActividad2202206 {
 	// Ir a la lista de ofertas, borrar la última oferta de la lista, comprobar
 	// que la lista se actualiza y que la oferta desaparece.
 	@Test
-	public void Prueba18() {
+	public void T19_EliminarUltimaOferta() {
 		driver.get("http://localhost:8081");
 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
@@ -657,7 +657,7 @@ public class SdiActividad2202206 {
 	// página que corresponde con el listado de las ofertas existentes en el
 	// sistema
 	@Test
-	public void Prueba19() {
+	public void T20_BusquedaOfertaVacia() {
 		driver.get("http://localhost:8081");
 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
@@ -684,7 +684,7 @@ public class SdiActividad2202206 {
 	// comprobar que se
 	// muestra la página que corresponde, con la lista de ofertas vacía.
 	@Test
-	public void Prueba20() {
+	public void T21_BusquedaOfertaTextoNoExiste() {
 		driver.get("http://localhost:8081");
 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
@@ -713,7 +713,7 @@ public class SdiActividad2202206 {
 	 //comprobar que se muestra la página que corresponde, con la lista de ofertas que contengan dicho texto,
 	 //independientemente que el título esté almacenado en minúsculas o mayúscula.		// comprobar que se
  		@Test
-		public void Prueba21() {
+		public void T22_BusquedaOfertaMayusMinus() {
  			driver.get("http://localhost:8081");
  			driver.findElement(By.name("email")).click();
  			driver.findElement(By.name("email")).clear();

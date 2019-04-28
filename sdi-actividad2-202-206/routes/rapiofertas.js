@@ -66,7 +66,7 @@ module.exports = function (app, gestorBD) {
 
         gestorBD.obtenerOfertas(criterio, function (ofertas) {
             if (ofertas == null || ofertas.length === 0) {
-                res.status(403); // Unauthorized
+                res.status(403);
                 res.json({
                     err: "No results"
                 });
@@ -84,11 +84,15 @@ module.exports = function (app, gestorBD) {
                 gestorBD.insertarMensaje(message, function (mensaje) {
                     if (mensaje == null) {
                         res.status(500); // error del servidor
+                        app.get("logger").info('API: Se ha producido un errr al insertar el mensaje');
                         res.json({
+
                             err: "Error del servidor"
+
                         });
                     } else {
                         res.status(200);
+                        app.get("logger").info('API: El mensaje se ha insertado correctamente');
                         res.json(JSON.stringify(mensaje));
                     }
                 })
