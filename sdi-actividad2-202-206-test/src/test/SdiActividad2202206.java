@@ -611,34 +611,41 @@ public class SdiActividad2202206 {
 		    driver.findElement(By.name("password")).clear();
 		    driver.findElement(By.name("password")).sendKeys("tests");
 		    driver.findElement(By.id("send")).click();
-		    testUtil.waitChangeWeb();
-		    driver.findElement(By.id("offersmanage")).click();
+		    
+ 		    driver.findElement(By.id("offersmanage")).click();
 		    driver.findElement(By.id("offeradd")).click();
-		    testUtil.waitChangeWeb();
+ 
 		    driver.findElement(By.id("title")).click();
 		    driver.findElement(By.id("title")).clear();
-		    driver.findElement(By.id("title")).sendKeys("aaaaaPrimeraOferta");
+		    driver.findElement(By.id("title")).sendKeys("Eliminar");
 		    driver.findElement(By.id("description")).click();
 		    driver.findElement(By.id("description")).clear();
-		    driver.findElement(By.id("description")).sendKeys("Bonita");
+		    driver.findElement(By.id("description")).sendKeys("Eliminaro");
 		    driver.findElement(By.name("price")).click();
 		    driver.findElement(By.name("price")).clear();
 		    driver.findElement(By.name("price")).sendKeys("2");
-		    driver.findElement(By.id("add")).click();
-		    testUtil.waitChangeWeb();
+		   // driver.findElement(By.id("add")).click();
+ 
 		    driver.findElement(By.id("offersmanage")).click();
 		    driver.findElement(By.id("offerselling")).click();
-		    testUtil.waitChangeWeb();
-		    testUtil.searchText("aaaaaPrimeraOferta", true);
+ 
+		    testUtil.searchText("Eliminaro", true);
 		    List<WebElement> elements = driver.findElements(By.className("eliminar"));
 			int size = elements.size();
 			driver.findElements(By.className("eliminar")).get(0).click();
-		    testUtil.waitChangeWeb();		    
-		    testUtil.searchText("aaaaaPrimeraOferta", false);
-		    testUtil.searchText("Se ha eliminado correctamente la oferta", true);
+ 		    testUtil.searchText("Se ha eliminado correctamente la oferta", true);
+
+		    testUtil.waitChangeWeb();
+			driver.get("http://localhost:8081/offer/list");
+			driver.get("http://localhost:8081/offer/selling");
+
+			List<WebElement> elements2 = driver.findElements(By.className("eliminar"));
+			int size2 = elements.size();
+		    System.out.println(size2);
 		    System.out.println(size);
-		    System.out.println(elements.size()-1);
-		    assertTrue(size == elements.size() - 1);
+		    testUtil.searchText("Eliminaro", false);
+
+		    assertTrue(size2 == size -1);
 
 	}
 
