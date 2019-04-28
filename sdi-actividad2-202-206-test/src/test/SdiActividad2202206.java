@@ -603,26 +603,42 @@ public class SdiActividad2202206 {
 	// que la lista se actualiza y que la oferta desaparece.
 	@Test
 	public void T18_EliminarPrimeraOferta() {
-		driver.get("http://localhost:8081");
-		driver.findElement(By.name("email")).click();
-		driver.findElement(By.name("email")).clear();
-		driver.findElement(By.name("email")).sendKeys("prueba6@prueba6.com");
-		driver.findElement(By.name("password")).click();
-		driver.findElement(By.name("password")).clear();
-		driver.findElement(By.name("password")).sendKeys("12345");
-
-		driver.findElement(By.className("btn-primary")).click();
-		 
-		driver.get("http://localhost:8081/offer/selling");
-		testUtil.waitChangeWeb();
-		List<WebElement> elements = driver
-				.findElements(By.className("eliminar"));
-		int size = elements.size();
-		driver.findElements(By.className("eliminar")).get(0).click();
-		testUtil.waitChangeWeb();
-		testUtil.searchText("Ofertas", true);
-		elements = driver.findElements(By.className("eliminar"));
-		assertTrue(size == elements.size() + 1);
+		 driver.get("http://localhost:8081/identificarse");
+		 	driver.findElement(By.name("email")).click();
+		    driver.findElement(By.name("email")).clear();
+		    driver.findElement(By.name("email")).sendKeys("testElena@test.es");
+		    driver.findElement(By.name("password")).click();
+		    driver.findElement(By.name("password")).clear();
+		    driver.findElement(By.name("password")).sendKeys("tests");
+		    driver.findElement(By.id("send")).click();
+		    testUtil.waitChangeWeb();
+		    driver.findElement(By.id("offersmanage")).click();
+		    driver.findElement(By.id("offeradd")).click();
+		    testUtil.waitChangeWeb();
+		    driver.findElement(By.id("title")).click();
+		    driver.findElement(By.id("title")).clear();
+		    driver.findElement(By.id("title")).sendKeys("aaaaaPrimeraOferta");
+		    driver.findElement(By.id("description")).click();
+		    driver.findElement(By.id("description")).clear();
+		    driver.findElement(By.id("description")).sendKeys("Bonita");
+		    driver.findElement(By.name("price")).click();
+		    driver.findElement(By.name("price")).clear();
+		    driver.findElement(By.name("price")).sendKeys("2");
+		    driver.findElement(By.id("add")).click();
+		    testUtil.waitChangeWeb();
+		    driver.findElement(By.id("offersmanage")).click();
+		    driver.findElement(By.id("offerselling")).click();
+		    testUtil.waitChangeWeb();
+		    testUtil.searchText("aaaaaPrimeraOferta", true);
+		    List<WebElement> elements = driver.findElements(By.className("eliminar"));
+			int size = elements.size();
+			driver.findElements(By.className("eliminar")).get(0).click();
+		    testUtil.waitChangeWeb();		    
+		    testUtil.searchText("aaaaaPrimeraOferta", false);
+		    testUtil.searchText("Se ha eliminado correctamente la oferta", true);
+		    System.out.println(size);
+		    System.out.println(elements.size()-1);
+		    assertTrue(size == elements.size() - 1);
 
 	}
 
