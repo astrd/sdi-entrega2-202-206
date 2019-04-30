@@ -54,7 +54,7 @@ module.exports = function (app, gestorBD) {
                     } else {
                         app.get("logger").info('API: Se han mostrado las ofertas disponibles para un usuario');
                         res.status(200);
-                        res.send( ofertas );
+                        res.send(ofertas);
                     }
                 })
             }
@@ -63,7 +63,6 @@ module.exports = function (app, gestorBD) {
 
     app.post('/api/offer/message/:id', function (req, res) {
         let criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
-
         gestorBD.obtenerOfertas(criterio, function (ofertas) {
             if (ofertas == null || ofertas.length === 0) {
                 res.status(403);
@@ -75,12 +74,13 @@ module.exports = function (app, gestorBD) {
                 let oferta = ofertas[0];
                 let message = {
                     sender: usuario,
-                    offer: oferta,
+                    receiver: req.body.receiver,
+                    offer: gestorBD.mongo.ObjectID(req.params.id),
                     message: req.body.message,
                     date: new Date(),
                     read: false
-
                 };
+                console.log(message)
                 gestorBD.insertarMensaje(message, function (mensaje) {
                     if (mensaje == null) {
                         res.status(500); // error del servidor
@@ -93,10 +93,78 @@ module.exports = function (app, gestorBD) {
                     } else {
                         res.status(200);
                         app.get("logger").info('API: El mensaje se ha insertado correctamente');
-                        res.json(JSON.stringify(mensaje));
+                        res.json(mensaje);
                     }
                 })
             }
         });
     });
+
+    app.get("/api/offer/conversation/:id", function (req, res) {
+        let crit = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
+        gestorBD.obtenerOfertas(crit, function (ofertas) {
+            if (ofertas == null) {
+                res.status(500);
+                app.get("logger").info('API: Se ha producido un error al obtener ofertas');
+                res.json({
+                    error: "Se ha producido un error"
+                })
+            } else if (ofertas.length === 0) {
+                res.status(400);
+                app.get("logger").info('API: Oferta no encontrada');
+                res.json({
+                    error: "Oferta no encontrada"
+                })
+            } else {
+                let offer = ofertas[0];
+                let owner = offer.owner;
+                let user = res.usuario;
+                let crit = {
+                    $or: [
+                        {
+                            $and: [
+                                {
+                                    sender: user
+                                },
+                                {
+                                    receiver: owner
+                                },
+                                {
+                                    offer: offer
+                                }
+                            ]
+                        },
+                        {
+                            $and: [
+                                {
+                                    sender: owner
+                                },
+                                {
+                                    receiver: user
+                                },
+
+                                {
+                                    offer: offer
+                                }
+                            ]
+                        }
+                    ]
+                };
+                console.log(crit);
+                gestorBD.obtenerMensajes(crit, function (mensajes) {
+                    if (mensajes == null) {
+                        res.status(500);
+                        app.get("logger").info('API: Se ha producido un error al obtener mensajes');
+                        res.json({
+                            error: "Ha habido un error"
+                        })
+                    } else {
+                        res.status(200);
+                        res.send(JSON.stringify(mensajes));
+                    }
+                });
+            }
+        });
+    });
+
 };
