@@ -175,10 +175,7 @@ module.exports = function (app, swig, gestorBD) {
     });
 
     app.get("/offer/fav", function (req, res) {
-
         let criterio = {
-
-
             fav: 'on',
             owner: {$ne: req.session.user.email},
             state: {$ne: 'no disponible'},
@@ -198,7 +195,6 @@ module.exports = function (app, swig, gestorBD) {
                 app.get("logger").info('Usuario se ha dirijido a la vista ofertas destacadas');
             }
         });
-
     });
 
     app.get("/offer/details/:id", function (req, res) {
@@ -325,7 +321,7 @@ module.exports = function (app, swig, gestorBD) {
                                 description: ofertas[0].description,
                                 price: ofertas[0].price,
                                 owner: ofertas[0].owner,
-                                fav:'on'
+                                fav: 'on'
                             };
                             gestorBD.modificarOferta(crit, oferta, function (result) {
                                 if (result == null) {
@@ -339,11 +335,8 @@ module.exports = function (app, swig, gestorBD) {
                             });
                         }
                     });
-
-
                 }
             }
         });
-
     });
 };

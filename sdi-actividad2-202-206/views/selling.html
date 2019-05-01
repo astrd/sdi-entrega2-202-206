@@ -3,35 +3,39 @@
 {% block titulo %} Ofertas Propias {% endblock %}
 
 {% block contenido_principal %}
-	<div class="container">
-		<h2 >Ofertas</h2>
+<div class="container">
+    <h2>Ofertas</h2>
 
-		<p >Ofertas Propias</p>
+    <p>Ofertas Propias</p>
 
-		<div class="table-responsive">
-			<table class="table table-hover" id="tableoffers">
-				<thead>
-				<tr>
-					<th >Titulo </th>
-					<th>Descripción</th>
-					<th >Precio </th>
-					<th class="col-md-1"></th>
-					<th class="col-md-1"></th>
-				</tr>
-				</thead>
-				<tbody>
-				{% for offer in ofertas %}
-				<tr class="sell">
-
-					<td >{{offer.title}}</td>
-					<th>{{offer.description}}</td>
-					<td >{{offer.price}}</td>
-					<td><a href="{{'/offer/delete/' + offer._id.toString()}}" class="eliminar">Eliminar</a></td>
-					<td><a href="{{'/offer/fav/' + offer._id.toString()}}" class="destacar">Destacar</a></td>
-				</tr>
-				{% endfor %}
-				</tbody>
-			</table>
-		</div>
-	</div>
+    <div class="table-responsive">
+        <table class="table table-hover" id="tableoffers">
+            <thead>
+            <tr>
+                <th>Titulo</th>
+                <th>Descripción</th>
+                <th>Precio</th>
+                <th class="col-md-1"></th>
+                <th class="col-md-1"></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for offer in ofertas %}
+            <tr class="sell">
+                <td>{{offer.title}}</td>
+                <th>{{offer.description}}
+                </td>
+                <td>{{offer.price}}</td>
+                <td><a href="{{'/offer/delete/' + offer._id.toString()}}" class="eliminar">Eliminar</a></td>
+                {% if offer.fav !== 'on'%}
+                <td><a href="{{'/offer/fav/' + offer._id.toString()}}" class="destacar">Destacar</a></td>
+                {% else %}
+                <td>Oferta destacada</td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 {% endblock %}

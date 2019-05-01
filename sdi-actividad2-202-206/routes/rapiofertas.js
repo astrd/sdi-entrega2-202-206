@@ -80,15 +80,12 @@ module.exports = function (app, gestorBD) {
                     date: new Date(),
                     read: false
                 };
-                console.log(message)
                 gestorBD.insertarMensaje(message, function (mensaje) {
                     if (mensaje == null) {
                         res.status(500); // error del servidor
                         app.get("logger").info('API: Se ha producido un errr al insertar el mensaje');
                         res.json({
-
                             err: "Error del servidor"
-
                         });
                     } else {
                         res.status(200);
@@ -130,7 +127,7 @@ module.exports = function (app, gestorBD) {
                                     receiver: owner
                                 },
                                 {
-                                    offer: offer
+                                    offer: gestorBD.mongo.ObjectID(req.params.id)
                                 }
                             ]
                         },
@@ -144,13 +141,12 @@ module.exports = function (app, gestorBD) {
                                 },
 
                                 {
-                                    offer: offer
+                                    offer: gestorBD.mongo.ObjectID(req.params.id)
                                 }
                             ]
                         }
                     ]
                 };
-                console.log(crit);
                 gestorBD.obtenerMensajes(crit, function (mensajes) {
                     if (mensajes == null) {
                         res.status(500);
@@ -160,7 +156,7 @@ module.exports = function (app, gestorBD) {
                         })
                     } else {
                         res.status(200);
-                        res.send(JSON.stringify(mensajes));
+                        res.json(mensajes);
                     }
                 });
             }

@@ -4,40 +4,37 @@
 
 {% block contenido_principal %}
 <div class="container">
-	<h2>Ofertas</h2>
-	<p>Sueldo Actual <strong>{{usuario.money}}</strong></p>
-	<p>Las ofertas disponibles en wallapop:</p>
-	<script>
-		$("#updateButton").click(function () {
-			$("#tableoffers").load('/offer/list/update');
-		});
-	</script>
-	<div class="table-responsive">
-		<table class="table " id="tableoffers">
-			<thead>
-			<tr>
-				<th class="col-md-1">id</th>
-				<th>Titulo</th>
-				<th>Precio</th>
-				<th>Propetario</th>
-				<th class="col-md-1"></th>
-				<th class="col-md-1"></th>
-				<th class="col-md-1"></th>
-			</tr>
-			</thead>
-			<tbody>
-			{% for offer in ofertas %}
-			<tr>
-				<td>{{offer._id.toString()}}</td>
-				<td>{{offer.title}}</td>
-				<td>{{offer.price}}</td>
-				<td>{{offer.state}}</td>
-
-
-			</tr>
-			{% endfor %}
-			</tbody>
-		</table>
-	</div>
+    <h2>Ofertas</h2>
+    <p>Sueldo Actual <strong>{{usuario.money}}</strong></p>
+    <p>Las ofertas compradas en wallapop:</p>
+    <script>
+        $("#updateButton").click(function () {
+            $("#tableoffers").load('/offer/list/update');
+        });
+    </script>
+    <div class="table-responsive">
+        <table class="table " id="tableoffers">
+            <thead>
+            <tr>
+                <th class="col-md-1">id</th>
+                <th>Titulo</th>
+                <th>Precio</th>
+                <th>Propietario</th>
+                <th class="col-md-1"></th>
+                <th class="col-md-1"></th>
+                <th class="col-md-1"></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for offer in ofertas %}
+            <tr>
+                <td>{{offer.title}}</td>
+                <td>{{offer.price}}</td>
+                <td>{{offer.buyer}}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 {% endblock %}

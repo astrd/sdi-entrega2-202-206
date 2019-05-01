@@ -1,13 +1,27 @@
 module.exports = function (app, swig, gestorBD) {
     app.get("/home", function (req, res) {
-        var respuesta = swig.renderFile('views/home.html', {
-            user: req.session.user
+        let criterio = {
+            fav: 'on',
+            owner: {$ne: req.session.user.email},
+            state: {$ne: 'no disponible'},
+
+        };
+        gestorBD.obtenerOfertas(criterio, function (ofertas) {
+            if (ofertas == null) {
+                res.send("Error al listar ");
+                app.get("logger").error('Error al listar ofertas');
+            } else {
+                var respuesta = swig.renderFile('views/home.html',
+                    {
+                        user: req.session.user,
+                        ofertas: ofertas
+                    });
+                res.send(respuesta);
+                app.get("logger").info('Usuario se ha dirijido a la vista ofertas destacadas');
+            }
         });
-        app.get("logger").info('Usuario se ha dirijido a home');
-        res.send(respuesta);
-
-
     });
+
     app.get("/identificarse", function (req, res) {
         var respuesta = swig.renderFile('views/login.html', {});
         res.send(respuesta);

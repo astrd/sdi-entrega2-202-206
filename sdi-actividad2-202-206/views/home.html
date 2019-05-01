@@ -12,5 +12,36 @@
 		<p>Sueldo disponible: <strong>{{user.money}}</strong></p>
 		<p > Esto es Wallapop venda y compre!
 		</p>
+		<p>Las ofertas destacadas en wallapop:</p>
+		<script>
+			$("#updateButton").click(function () {
+				$("#tableoffers").load('/offer/list/update');
+			});
+		</script>
+		<div class="table-responsive">
+			<table class="table " id="tableoffers">
+				<thead>
+				<tr>
+					<th>Titulo</th>
+					<th>Precio</th>
+					<th>Propetario</th>
+					<th class="col-md-1"></th>
+					<th class="col-md-1"></th>
+					<th class="col-md-1"></th>
+				</tr>
+				</thead>
+				<tbody>
+				{% for offer in ofertas %}
+				<tr>
+					<td>{{offer.title}}</td>
+					<td>{{offer.price}}</td>
+					<td>{{offer.owner}}</td>
+					<td class="buy"><a href="{{'/offer/details/' + offer._id.toString()}}">detalles</a></td>
+					<td><a class="buy" name="offerbuy" href="{{'/offer/buy/'+offer._id.toString()}}">comprar</a></td>
+				</tr>
+				{% endfor %}
+				</tbody>
+			</table>
+		</div>
 	</div>
 {% endblock %}
