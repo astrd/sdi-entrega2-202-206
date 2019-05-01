@@ -697,6 +697,40 @@ public class SdiActividad2202206 {
 		driver.get("http://localhost:8081");
 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
+		driver.findElement(By.name("email")).sendKeys("test@uniovi.es");
+		driver.findElement(By.name("password")).click();
+		driver.findElement(By.name("password")).clear();
+		driver.findElement(By.name("password")).sendKeys("tests");
+
+		driver.findElement(By.className("btn-primary")).click();
+		 
+		driver.get("http://localhost:8081/offer/add");
+		driver.findElement(By.name("title")).click();
+		driver.findElement(By.name("title")).clear();
+		driver.findElement(By.name("title")).sendKeys("buscaA");
+		driver.findElement(By.name("description")).click();
+		driver.findElement(By.name("description")).clear();
+		driver.findElement(By.name("description")).sendKeys("Uno");
+		driver.findElement(By.name("price")).click();
+		driver.findElement(By.name("price")).clear();
+		driver.findElement(By.name("price")).sendKeys("0.1");
+		driver.findElement(By.className("btn-primary")).click();
+		
+		driver.get("http://localhost:8081/offer/add");
+		driver.findElement(By.name("title")).click();
+		driver.findElement(By.name("title")).clear();
+		driver.findElement(By.name("title")).sendKeys("BUSCAa");
+		driver.findElement(By.name("description")).click();
+		driver.findElement(By.name("description")).clear();
+		driver.findElement(By.name("description")).sendKeys("Uno");
+		driver.findElement(By.name("price")).click();
+		driver.findElement(By.name("price")).clear();
+		driver.findElement(By.name("price")).sendKeys("0.1");
+		driver.findElement(By.className("btn-primary")).click();
+		
+		driver.get("http://localhost:8081/identificarse");
+		driver.findElement(By.name("email")).click();
+		driver.findElement(By.name("email")).clear();
 		driver.findElement(By.name("email")).sendKeys("prueba6@prueba6.com");
 		driver.findElement(By.name("password")).click();
 		driver.findElement(By.name("password")).clear();
@@ -705,14 +739,16 @@ public class SdiActividad2202206 {
 		driver.findElement(By.className("btn-primary")).click();
 		 
 		driver.get("http://localhost:8081/offer/search");
-		 
 
-		driver.findElement(By.name("searchText")).click();
-		driver.findElement(By.name("searchText")).clear();
+
+		driver.findElement(By.name("busqueda")).click();
+		driver.findElement(By.name("busqueda")).clear();
 		driver.findElement(By.id("send")).click();
 
-		testUtil.searchText("Offer 2", true);
-		testUtil.searchText("Offer 3", true);
+		driver.findElement(By.id("lastpage")).click();
+		
+		testUtil.searchText("BUSCAa", true);
+		testUtil.searchText("buscaA", true);
 		
 	}
 
@@ -734,16 +770,12 @@ public class SdiActividad2202206 {
 		driver.get("http://localhost:8081/offer/search");
 		 
 
-		driver.findElement(By.name("searchText")).click();
-		driver.findElement(By.name("searchText")).clear();
-		driver.findElement(By.name("searchText")).sendKeys("wowowo");
+		driver.findElement(By.name("busqueda")).click();
+		driver.findElement(By.name("busqueda")).clear();
+		driver.findElement(By.name("busqueda")).sendKeys("wasdfgsadgowowo");
 		driver.findElement(By.id("send")).click();
 
-		testUtil.searchText("Offer 1", false);
-		testUtil.searchText("Offer 2", false);
-		testUtil.searchText("Offer 3", false);
-		testUtil.searchText("Offer 4", false);
-		testUtil.searchText("Offer 5", false);
+		testUtil.searchText("BUSCAa", false); 
 	}
 	 //Hacer una búsqueda escribiendo en el campo un texto en minúscula o mayúscula y
 	 //comprobar que se muestra la página que corresponde, con la lista de ofertas que contengan dicho texto,
@@ -761,17 +793,16 @@ public class SdiActividad2202206 {
  			driver.findElement(By.className("btn-primary")).click();
  			 
  			driver.get("http://localhost:8081/offer/search");
+ 			 
 
-			driver.findElement(By.name("searchText")).click();
-			driver.findElement(By.name("searchText")).clear();
-			driver.findElement(By.name("searchText")).sendKeys("wowowo");
-			driver.findElement(By.id("send")).click();
+ 			driver.findElement(By.name("busqueda")).click();
+ 			driver.findElement(By.name("busqueda")).clear();
+ 			driver.findElement(By.name("busqueda")).sendKeys("buscaa");
+ 			driver.findElement(By.id("send")).click();
 
-			testUtil.searchText("Offer 1", false);
-			testUtil.searchText("Offer 2", false);
-			testUtil.searchText("Offer 3", false);
-			testUtil.searchText("Offer 4", false);
-			testUtil.searchText("Offer 5", false);
+ 			testUtil.searchText("BUSCAa", true); 
+ 			testUtil.searchText("buscaA", true); 
+
 		}
 	@Test
 	//Sobre una búsqueda determinada (a elección de desarrollador), comprar una oferta que deja

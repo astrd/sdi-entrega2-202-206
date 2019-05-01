@@ -31,7 +31,7 @@ module.exports = function (app, swig, gestorBD) {
             return;
         }
 
-        if (req.body.fav === '') {
+        if (req.body.fav != 'on') {
             let oferta = {
                 title: req.body.title,
                 description: req.body.description,
@@ -41,7 +41,8 @@ module.exports = function (app, swig, gestorBD) {
                 buyer: 'none',
                 fav: req.body.fav //la hace destacada
             };
-            console.log(oferta.fav);
+
+
             gestorBD.insertarOferta(oferta, function (id) {
                 if (id == null) {
                     app.get("logger").error('Error al insertar oferta');
@@ -52,9 +53,10 @@ module.exports = function (app, swig, gestorBD) {
                 }
             });
         } else {
+
             let sueldo = req.session.user.money - 20;//coste de destacar la oferta
             if (sueldo < 0) {
-                res.redirect('/offer/add?mensaje=Sin sueldo suficiente para destacar oferta');
+               res.redirect('/offer/add?mensaje=Sin sueldo suficiente para destacar oferta');
                 app.get("logger").info('Usuario no tiene sueldo suficiente');
             } else {
                 let cri = {"_id": gestorBD.mongo.ObjectID(req.session.user._id)}
@@ -87,6 +89,7 @@ module.exports = function (app, swig, gestorBD) {
                                 app.get("logger").error('Error al insertar oferta');
                                 res.redirect("/offer/add?mensaje=Error al insertar oferta&tipoMensaje=alert-danger");
                             } else {
+                                req.session.user = usuario;
                                 app.get("logger").info('Se ha añadido oferta');
                                 res.redirect("/offer/list?mensaje=Oferta creada correctamente&tipoMensaje=alert-success");
                             }

@@ -64,7 +64,7 @@
                 {% if busqueda !== undefined %}
                 <a class="page-link" href="/offer/search?pg={{ ultimaPg }}&busqueda={{busqueda}}">Última</a>
                 {% else %}
-                <a class="page-link" href="/offer/search?pg={{ ultimaPg }}">Última</a>
+                <a class="page-link" id="lastpage" href="/offer/search?pg={{ ultimaPg }}">Última</a>
                 {% endif %}
             </li>
             <script>

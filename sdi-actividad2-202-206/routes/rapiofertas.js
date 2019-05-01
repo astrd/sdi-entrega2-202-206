@@ -133,18 +133,19 @@ module.exports = function (app, gestorBD) {
                         {
                             $and: [
                                 {
-                                    sender: owner
+                                   // sender: owner
                                 },
                                 {
-                                    receiver: user
+                                  //receiver: user
                                 },
                                 {
-                                    offer: req.params.id
+                                 //  offer: req.params.id
                                 }
                             ]
                         }
                     ]
                 };
+                let cri  = {};
                 gestorBD.obtenerMensajes(criterio, function (mensajes) {
                     if (mensajes == null) {
                         res.status(500);
@@ -160,5 +161,27 @@ module.exports = function (app, gestorBD) {
             }
         });
     });
+
+    app.get("/api/mensaje/leido/:id", function (req, res) {
+        let criterio = {
+            "_id": gestorBD.mongo.ObjectID(req.params.id)
+        }
+        gestorBD.marcarLeido(criterio, function (mensajes) {
+            if (mensajes == null) {
+                res.status(500);
+                app.get("logger").error('API: Se ha producido un error al leer mensajes');
+
+                res.json({
+                    error: "se ha producido un error"
+                })
+            } else {
+                res.status(200);
+                app.get("logger").info('API: Se ha leido mensaje');
+
+                res.send( mensajes);
+            }
+        })
+    });
+
 
 };
