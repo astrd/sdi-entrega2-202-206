@@ -137,11 +137,12 @@ module.exports = {
                 funcionCallback(null);
             } else {
                 var collection = db.collection('mensajes');
-                collection.find(crit).toArray(function (err, canciones) {
+                console.log(crit)
+                collection.find(crit).toArray(function (err, mensajes) {
                     if (err) {
                         funcionCallback(null);
                     } else {
-                        funcionCallback(canciones);
+                        funcionCallback(mensajes);
                     }
                     db.close();
                 });

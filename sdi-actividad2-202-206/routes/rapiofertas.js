@@ -1,12 +1,11 @@
 module.exports = function (app, gestorBD) {
     app.post("/api/autenticar/", function (req, res) {
-        var seguro = app.get("crypto").createHmac('sha256', app.get('clave'))
+        let seguro = app.get("crypto").createHmac('sha256', app.get('clave'))
             .update(req.body.password).digest('hex');
-        var criterio = {
+        let criterio = {
             email: req.body.email,
             password: seguro
-        }
-
+        };
         gestorBD.obtenerUsuarios(criterio, function (usuarios) {
             if (usuarios == null || usuarios.length === 0) {
                 res.status(401); // Unauthorized
@@ -14,7 +13,7 @@ module.exports = function (app, gestorBD) {
                     autenticado: false
                 })
             } else {
-                var token = app.get('jwt').sign(
+                let token = app.get('jwt').sign(
                     {usuario: criterio.email, tiempo: Date.now() / 1000},
                     "secreto");
                 res.status(200);
@@ -27,7 +26,7 @@ module.exports = function (app, gestorBD) {
         });
     });
     app.get("/api/oferta/", function (req, res) {
-        var token = req.headers['token'] || req.body.token || req.query.token;
+        let token = req.headers['token'] || req.body.token || req.query.token;
         app.get('jwt').verify(token, 'secreto', function (err, infoToken) {
             if (err) {
                 app.get("logger").error('API: Token invalido');
@@ -39,14 +38,14 @@ module.exports = function (app, gestorBD) {
                 // También podríamos comprobar que intoToken.usuario existe
             } else {
                 // dejamos correr la petición
-                var usuario = infoToken.usuario;
-                cri = {
+                let usuario = infoToken.usuario;
+                let cri = {
                     owner: {$ne: res.usuario},
                     state: {$ne: 'no disponible'}
-                }
+                };
                 gestorBD.obtenerOfertas(cri, function (ofertas) {
                     if (ofertas == null || ofertas.length === 0) {
-                        app.get("logger").erro('Usuario no autorizado');
+                        app.get("logger").error('Usuario no autorizado');
                         res.status(204); // Unauthorized
                         res.json({
                             err: "No results"
@@ -75,7 +74,7 @@ module.exports = function (app, gestorBD) {
                 let message = {
                     sender: usuario,
                     receiver: req.body.receiver,
-                    offer: gestorBD.mongo.ObjectID(req.params.id),
+                    offer: oferta._id,
                     message: req.body.message,
                     date: new Date(),
                     read: false
@@ -83,7 +82,7 @@ module.exports = function (app, gestorBD) {
                 gestorBD.insertarMensaje(message, function (mensaje) {
                     if (mensaje == null) {
                         res.status(500); // error del servidor
-                        app.get("logger").info('API: Se ha producido un errr al insertar el mensaje');
+                        app.get("logger").info('API: Se ha producido un error al insertar el mensaje');
                         res.json({
                             err: "Error del servidor"
                         });
@@ -116,7 +115,7 @@ module.exports = function (app, gestorBD) {
                 let offer = ofertas[0];
                 let owner = offer.owner;
                 let user = res.usuario;
-                let crit = {
+                let criterio = {
                     $or: [
                         {
                             $and: [
@@ -127,7 +126,7 @@ module.exports = function (app, gestorBD) {
                                     receiver: owner
                                 },
                                 {
-                                    offer: gestorBD.mongo.ObjectID(req.params.id)
+                                    offer: req.params.id
                                 }
                             ]
                         },
@@ -139,15 +138,14 @@ module.exports = function (app, gestorBD) {
                                 {
                                     receiver: user
                                 },
-
                                 {
-                                    offer: gestorBD.mongo.ObjectID(req.params.id)
+                                    offer: req.params.id
                                 }
                             ]
                         }
                     ]
                 };
-                gestorBD.obtenerMensajes(crit, function (mensajes) {
+                gestorBD.obtenerMensajes(criterio, function (mensajes) {
                     if (mensajes == null) {
                         res.status(500);
                         app.get("logger").info('API: Se ha producido un error al obtener mensajes');

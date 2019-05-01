@@ -32,6 +32,7 @@
                     <a class="dropdown-toggle" data-toggle="dropdown" id="offersmanage" href="#">
                         Gestión de Ofertas <span class="caret"></span>
                     </a>
+
                     <ul class="dropdown-menu">
                         <li><a href="/offer/add" id="offeradd">Agregar Oferta</a></li>
                         <li><a href="/offer/search" id="offersearch">Buscar Oferta</a></li>
@@ -44,6 +45,8 @@
                 {% if user !== undefined && user.rol === 'admin' %}
                     <li><a href="/user/list" id="usersee" >Ver  Usuarios</a></li>
                 {% endif %}
+
+                <li><a href="/home">Home</a></li>
             </ul>
 
             <ul class="nav navbar-nav navbar-right">

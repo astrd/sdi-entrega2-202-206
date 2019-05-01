@@ -26,30 +26,75 @@ module.exports = function (app, swig, gestorBD) {
             res.redirect("/offer/add?mensaje=El precio no puede ser vacío");
             return;
         }
-        if (req.body.price === "" || req.body.price === null || req.body.price <= 0) {
+        if (req.body.price === "" || req.body.price <= 0) {
             res.redirect("/offer/add?mensaje=Problema en el precio");
             return;
         }
 
-        let oferta = {
-            title: req.body.title,
-            description: req.body.description,
-            price: req.body.price,
-            owner: req.session.user.email,
-            state: 'disponible',
-            buyer: 'none',
-            fav: req.body.fav //la hace destacada
-        };
-        console.log(oferta.fav);
-        gestorBD.insertarOferta(oferta, function (id) {
-            if (id == null) {
-                app.get("logger").error('Error al insertar oferta');
-                res.send("Error al insertar oferta");
+        if (req.body.fav === '') {
+            let oferta = {
+                title: req.body.title,
+                description: req.body.description,
+                price: req.body.price,
+                owner: req.session.user.email,
+                state: 'disponible',
+                buyer: 'none',
+                fav: req.body.fav //la hace destacada
+            };
+            console.log(oferta.fav);
+            gestorBD.insertarOferta(oferta, function (id) {
+                if (id == null) {
+                    app.get("logger").error('Error al insertar oferta');
+                    res.redirect("/offer/add?mensaje=Error al insertar oferta&tipoMensaje=alert-danger");
+                } else {
+                    app.get("logger").info('Se ha añadido oferta');
+                    res.redirect("/offer/list");
+                }
+            });
+        } else {
+            let sueldo = req.session.user.money - 20;//coste de destacar la oferta
+            if (sueldo < 0) {
+                res.redirect('/offer/add?mensaje=Sin sueldo suficiente para destacar oferta');
+                app.get("logger").info('Usuario no tiene sueldo suficiente');
             } else {
-                app.get("logger").info('Se ha añadido oferta');
-                res.redirect("/offer/list");
+                let cri = {"_id": gestorBD.mongo.ObjectID(req.session.user._id)}
+                let usuario = {
+                    name: req.session.user.name,
+                    surname: req.session.user.surname,
+                    email: req.session.user.email,
+                    password: req.session.user.password,
+                    rol: 'user',
+                    money: sueldo,
+                    valid: true
+                };
+                gestorBD.modificaUsuario(cri, usuario, function (result) {
+                    if (result == null) {
+                        res.redirect("/offer/add?mensaje=Error al insertar oferta&tipoMensaje=alert-danger");
+                        app.get("logger").error('Error al modificar usuario');
+                    } else {
+                        let oferta = {
+                            title: req.body.title,
+                            description: req.body.description,
+                            price: req.body.price,
+                            owner: req.session.user.email,
+                            state: 'disponible',
+                            buyer: 'none',
+                            fav: req.body.fav //la hace destacada
+                        };
+                        console.log(oferta.fav);
+                        gestorBD.insertarOferta(oferta, function (id) {
+                            if (id == null) {
+                                app.get("logger").error('Error al insertar oferta');
+                                res.redirect("/offer/add?mensaje=Error al insertar oferta&tipoMensaje=alert-danger");
+                            } else {
+                                app.get("logger").info('Se ha añadido oferta');
+                                res.redirect("/offer/list?mensaje=Oferta creada correctamente&tipoMensaje=alert-success");
+                            }
+                        });
+                    }
+                })
             }
-        });
+        }
     });
 
     app.get("/offer/search", function (req, res) {
@@ -151,8 +196,8 @@ module.exports = function (app, swig, gestorBD) {
             }
         });
     });
-    app.get("/offer/list", function (req, res) {
 
+    app.get("/offer/list", function (req, res) {
         let criterio = {
             owner: {$ne: req.session.user.email},
             state: {$ne: 'no disponible'}

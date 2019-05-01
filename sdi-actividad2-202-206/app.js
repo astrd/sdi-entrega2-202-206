@@ -92,6 +92,7 @@ routerUsuarioToken.use(function (req, res, next) {
 // Aplicar routerUsuarioToken
 app.use('/api/oferta', routerUsuarioToken);
 app.use('/api/offer/message/:id', routerUsuarioToken);
+app.use('/api/offer/conversation/:id', routerUsuarioToken);
 
 // routerUsuarioSession
 var routerUsuarioSession = express.Router();
@@ -135,7 +136,6 @@ require("./routes/rofertas.js")(app, swig, gestorBD);
 require("./routes/radmin.js")(app, swig, gestorBD);
 //Manaeja rutas de api
 require("./routes/rapiofertas.js")(app, gestorBD);
-
 
 
 // lanzar el servid
