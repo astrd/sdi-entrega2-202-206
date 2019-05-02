@@ -123,7 +123,7 @@ module.exports = function (app, gestorBD) {
                                     sender: user
                                 },
                                 {
-                                    receiver: owner
+                                    receiver: owner.email
                                 },
                                 {
                                     offer: req.params.id
@@ -133,13 +133,13 @@ module.exports = function (app, gestorBD) {
                         {
                             $and: [
                                 {
-                                   // sender: owner
+                                    sender: owner.email
                                 },
                                 {
-                                  //receiver: user
+                                  receiver: user
                                 },
                                 {
-                                 //  offer: req.params.id
+                                   offer: req.params.id
                                 }
                             ]
                         }
