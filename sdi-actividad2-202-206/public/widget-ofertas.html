@@ -1,14 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Ofertas</title>
-</head>
-<body>
 <div id="widget-ofertas">
-    <input type="text" class="form-control" placeholder="Filtrar por nombre"
-           id="filtro-nombre"/>
-    <button class="btn" onclick="cargarOfertas()">Actualizar</button>
     <table class="table table-hover">
         <thead>
         <tr>
@@ -25,9 +15,8 @@
 </div>
 
 <script>
-
+    window.history.pushState("", "", "/cliente.html?w=ofertas");
     var ofertas;
-
     function cargarOfertas() {
         $.ajax({
             url: URLbase + "/oferta",
@@ -64,8 +53,4 @@
     }
 
     cargarOfertas();
-
 </script>
-
-</body>
-</html>
