@@ -96,8 +96,8 @@ module.exports = function (app, gestorBD) {
         });
     });
 
-    app.get("/api/offer/conversation/:id", function (req, res) {
-        let crit = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
+    app.post("/api/offer/conversation", function (req, res) {
+        let crit = {"_id": gestorBD.mongo.ObjectID(req.body.id)};
         gestorBD.obtenerOfertas(crit, function (ofertas) {
             if (ofertas == null) {
                 res.status(500);
@@ -112,8 +112,7 @@ module.exports = function (app, gestorBD) {
                     error: "Oferta no encontrada"
                 })
             } else {
-                let offer = ofertas[0];
-                let owner = offer.owner;
+                let owner = req.body.receiver;
                 let user = res.usuario;
                 let criterio = {
                     $or: [
@@ -123,29 +122,29 @@ module.exports = function (app, gestorBD) {
                                     sender: user
                                 },
                                 {
-                                    receiver: owner.email
+                                    receiver: owner
                                 },
                                 {
-                                    offer: req.params.id
+                                    offer: gestorBD.mongo.ObjectID(req.body.id)
                                 }
                             ]
                         },
                         {
                             $and: [
                                 {
-                                    sender: owner.email
+                                    sender: owner
                                 },
                                 {
-                                  receiver: user
+                                    receiver: user
                                 },
                                 {
-                                   offer: req.params.id
+                                    offer: gestorBD.mongo.ObjectID(req.body.id)
                                 }
                             ]
                         }
                     ]
                 };
-                let cri  = {};
+                let cri = {};
                 gestorBD.obtenerMensajes(criterio, function (mensajes) {
                     if (mensajes == null) {
                         res.status(500);
@@ -178,7 +177,7 @@ module.exports = function (app, gestorBD) {
                 res.status(200);
                 app.get("logger").info('API: Se ha leido mensaje');
 
-                res.send( mensajes);
+                res.send(mensajes);
             }
         })
     });

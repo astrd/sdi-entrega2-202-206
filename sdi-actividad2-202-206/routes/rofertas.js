@@ -83,7 +83,7 @@ module.exports = function (app, swig, gestorBD) {
                             buyer: 'none',
                             fav: req.body.fav //la hace destacada
                         };
-                        console.log(oferta.fav);
+
                         gestorBD.insertarOferta(oferta, function (id) {
                             if (id == null) {
                                 app.get("logger").error('Error al insertar oferta');
