@@ -161,6 +161,66 @@ module.exports = function (app, gestorBD) {
         });
     });
 
+    app.post("/api/mensaje/eliminar/", function (req, res) {        let crit  = {"_id": gestorBD.mongo.ObjectID(req.body.id)};
+        gestorBD.obtenerOfertas(crit, function (ofertas) {
+            if (ofertas == null) {
+                res.status(500);
+                res.json({
+                    error: "se ha producido un error"
+                })
+            } else if (ofertas.length === 0) {
+                res.status(400);
+                res.json({
+                    error: "Oferta no encontrada"
+                })
+            }
+            else {
+                let owner = req.body.receiver;
+                let user = res.usuario;
+                let criterio = {
+                    $or: [
+                        {
+                            $and: [
+                                {
+                                    sender: user
+                                },
+                                {
+                                    receiver: owner
+                                },
+                                {
+                                    offer: gestorBD.mongo.ObjectID(req.body.id)
+                                }
+                            ]
+                        },
+                        {
+                            $and: [
+                                {
+                                    sender: owner
+                                },
+                                {
+                                    receiver: user
+                                },
+                                {
+                                    offer: gestorBD.mongo.ObjectID(req.body.id)
+                                }
+                            ]
+                        }
+                    ]
+                };
+                gestorBD.eliminarMensajes(criterio, function (mensajes) {
+                    if (mensajes == null) {
+                        res.status(500);
+                        res.json({
+                            error: "se ha producido un error"
+                        })
+                    } else {
+                        res.status(200);
+                        res.send( mensajes);
+                    }
+                });
+            }
+        });
+    });
     app.get("/api/mensaje/leido/:id", function (req, res) {
         let criterio = {
             "_id": gestorBD.mongo.ObjectID(req.params.id)
