@@ -369,6 +369,7 @@ module.exports = function (app, swig, gestorBD) {
                                 description: ofertas[0].description,
                                 price: ofertas[0].price,
                                 owner: ofertas[0].owner,
+                                state: 'disponible',
                                 fav: 'on'
                             };
                             gestorBD.modificarOferta(crit, oferta, function (result) {
