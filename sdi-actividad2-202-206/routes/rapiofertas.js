@@ -115,38 +115,42 @@ module.exports = function (app, gestorBD) {
                 let offer = ofertas[0];
                 let owner = offer.owner;
                 let user = res.usuario;
-                let criterio = {
-                    $or: [
-                        {
-                            $and: [
-                                {
-                                    sender: user
-                                },
-                                {
-                                    receiver: owner
-                                },
-                                {
-                                    offer: req.params.id
-                                }
-                            ]
-                        },
-                        {
-                            $and: [
-                                {
-                                   // sender: owner
-                                },
-                                {
-                                  //receiver: user
-                                },
-                                {
-                                 //  offer: req.params.id
-                                }
-                            ]
-                        }
-                    ]
-                };
-                let cri  = {};
-                gestorBD.obtenerMensajes(criterio, function (mensajes) {
+                var cri1= {$and: [ {
+                    sender:   owner.email
+                },
+                {
+                    receiver:user
+
+                },
+                {
+                    offer: gestorBD.mongo.ObjectID(req.params.id)
+                }]};
+            var cri2= {$and: [
+                    {
+                        sender:user
+                    },
+                    {
+                        receiver:owner.email
+
+                    },
+                    {
+                        offer: gestorBD.mongo.ObjectID(req.params.id)
+                    }]};
+
+
+
+
+            var test= {$and:[
+                    {$or:[{price:1},{title:'ofertaA'}]},
+                    {$or:[{price:1},{title:'OFERTAa'}]}
+
+                ]};
+
+            console.log(test);
+
+
+
+                gestorBD.obtenerMensajes(test, function (mensajes) {
                     if (mensajes == null) {
                         res.status(500);
                         app.get("logger").info('API: Se ha producido un error al obtener mensajes');
