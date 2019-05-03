@@ -31,7 +31,7 @@ module.exports = function (app, swig, gestorBD) {
             return;
         }
 
-        if (req.body.fav != 'on') {
+        if (req.body.fav !== 'on') {
             let oferta = {
                 title: req.body.title,
                 description: req.body.description,

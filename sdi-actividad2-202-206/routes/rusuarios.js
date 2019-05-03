@@ -11,7 +11,7 @@ module.exports = function (app, swig, gestorBD) {
                 res.send("Error al listar ");
                 app.get("logger").error('Error al listar ofertas');
             } else {
-                var respuesta = swig.renderFile('views/home.html',
+                let respuesta = swig.renderFile('views/home.html',
                     {
                         user: req.session.user,
                         ofertas: ofertas
@@ -23,7 +23,7 @@ module.exports = function (app, swig, gestorBD) {
     });
 
     app.get("/identificarse", function (req, res) {
-        var respuesta = swig.renderFile('views/login.html', {});
+        let respuesta = swig.renderFile('views/login.html', {});
         res.send(respuesta);
         app.get("logger").info('Usuario se va a identificar');
 
@@ -39,13 +39,12 @@ module.exports = function (app, swig, gestorBD) {
             res.redirect("/identificarse?mensaje=El email debe contener un @.");
             return;
         }
-        var seguro = app.get("crypto").createHmac('sha256', app.get('clave'))
+        let seguro = app.get("crypto").createHmac('sha256', app.get('clave'))
             .update(req.body.password).digest('hex');
-        var criterio = {
+        let criterio = {
             email: req.body.email,
             password: seguro
         };
-        console.log(criterio.email+"---"+criterio.password)
         gestorBD.obtenerUsuarios(criterio, function (usuarios) {
             if (usuarios == null || usuarios.length === 0) {
                 req.session.user = undefined;
@@ -98,15 +97,15 @@ module.exports = function (app, swig, gestorBD) {
         if (req.body.password2.length < 5) {
             res.redirect("/registrarse?mensaje=La contraseña debe tener entre 5 y 24 caracteres.");
         } else {
-            var seguro = app.get("crypto").createHmac('sha256', app.get('clave')).update(req.body.password).digest('hex');
-            var buscarUsuario = {
+            let seguro = app.get("crypto").createHmac('sha256', app.get('clave')).update(req.body.password).digest('hex');
+            let buscarUsuario = {
                 email: req.body.email
-            }
+            };
             gestorBD.obtenerUsuarios(buscarUsuario, function (usuarios) {
                 if (usuarios != null && usuarios.length !== 0) {
                     res.redirect("/registrarse?mensaje=El email ya está registrado. Inténtelo de nuevo con un email diferente");
                 } else {
-                    var user = {
+                    let user = {
                         name: req.body.name,
                         surname: req.body.surname,
                         email: req.body.email,
@@ -193,6 +192,4 @@ module.exports = function (app, swig, gestorBD) {
         app.get("logger").info('Usuario se ha desconectado');
         res.redirect("/identificarse");
     });
-
-
-}
+};

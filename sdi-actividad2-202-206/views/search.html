@@ -31,10 +31,11 @@
             <tr>
                 <td>{{offer.title}}</td>
                 <td>{{offer.price}}</td>
-                <td>{{offer.owner.email}}</td>
+                <td>{{offer.owner}}</td>
                 <td><a id="buy" href="{{'/offer/details/' + offer._id.toString()}}">detalles</a></td>
+                {% if offer !== user.email %}
                 <td><a class="buy" name="offerbuy" href="{{'/offer/buy/'+offer._id.toString()}}">comprar</a></td>
-
+                {% endif %}
             </tr>
             {% endfor %}
             </tbody>
