@@ -45,6 +45,7 @@ module.exports = function (app, swig, gestorBD) {
             email: req.body.email,
             password: seguro
         };
+        console.log(criterio.email+"---"+criterio.password)
         gestorBD.obtenerUsuarios(criterio, function (usuarios) {
             if (usuarios == null || usuarios.length === 0) {
                 req.session.user = undefined;
@@ -97,16 +98,15 @@ module.exports = function (app, swig, gestorBD) {
         if (req.body.password2.length < 5) {
             res.redirect("/registrarse?mensaje=La contraseña debe tener entre 5 y 24 caracteres.");
         } else {
-            let seguro = app.get("crypto").createHmac('sha256', app.get('clave'))
-                .update(req.body.password).digest('hex');
-            let buscarUsuario = {
+            var seguro = app.get("crypto").createHmac('sha256', app.get('clave')).update(req.body.password).digest('hex');
+            var buscarUsuario = {
                 email: req.body.email
             }
             gestorBD.obtenerUsuarios(buscarUsuario, function (usuarios) {
                 if (usuarios != null && usuarios.length !== 0) {
                     res.redirect("/registrarse?mensaje=El email ya está registrado. Inténtelo de nuevo con un email diferente");
                 } else {
-                    let user = {
+                    var user = {
                         name: req.body.name,
                         surname: req.body.surname,
                         email: req.body.email,

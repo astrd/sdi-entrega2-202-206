@@ -5,6 +5,24 @@ module.exports = {
         this.mongo = mongo;
         this.app = app;
     },
+    resetDB:function (  funcionCallback) {
+        this.mongo.MongoClient.connect(this.app.get('db'), function (err, db) {
+            if (err) {
+                funcionCallback(null);
+            } else {
+                var mensajes=db.collection('mensajes');
+                mensajes.remove();
+
+                var ofertas=db.collection('ofertas');
+                ofertas.remove();
+
+                var usuarios=db.collection('usuarios');
+                usuarios.remove();
+            db.close();}
+
+        });
+    },
+
     insertarMensaje:function (message, funcionCallback) {
         this.mongo.MongoClient.connect(this.app.get('db'), function (err, db) {
             if (err) {
