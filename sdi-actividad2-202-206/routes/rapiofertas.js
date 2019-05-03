@@ -65,6 +65,7 @@ module.exports = function (app, gestorBD) {
         gestorBD.obtenerOfertas(criterio, function (ofertas) {
             if (ofertas == null || ofertas.length === 0) {
                 res.status(403);
+                app.get("logger").info('API: Se ha producido un error al obtener oferta');
                 res.json({
                     err: "No results"
                 });
@@ -144,6 +145,7 @@ module.exports = function (app, gestorBD) {
                         }
                     ]
                 };
+                app.get("logger").info('API: Se ha obtenido la oferta correctamente');
                 let cri = {};
                 gestorBD.obtenerMensajes(criterio, function (mensajes) {
                     if (mensajes == null) {
@@ -153,6 +155,7 @@ module.exports = function (app, gestorBD) {
                             error: "Ha habido un error"
                         })
                     } else {
+                        app.get("logger").info('API: Se ha obtenido el mensaje');
                         res.status(200);
                         res.json(mensajes);
                     }
@@ -210,10 +213,12 @@ module.exports = function (app, gestorBD) {
                 gestorBD.eliminarMensajes(criterio, function (mensajes) {
                     if (mensajes == null) {
                         res.status(500);
+                        app.get("logger").info('API: Se ha producido un error al eliminar mensaje');
                         res.json({
                             error: "se ha producido un error"
                         })
                     } else {
+                        app.get("logger").info('API: Se ha eliminado el mensaje');
                         res.status(200);
                         res.send( mensajes);
                     }

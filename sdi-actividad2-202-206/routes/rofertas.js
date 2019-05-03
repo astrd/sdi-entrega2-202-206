@@ -125,6 +125,7 @@ module.exports = function (app, swig, gestorBD) {
 
         gestorBD.obtenerOfertasPg(criterio, pg, function (ofertas, total) {
             if (ofertas == null) {
+                app.get("logger").info('Error al listar las ofertas con paginación');
                 res.send("Error al listar ");
             } else {
                 let ultimaPg = total / 5;

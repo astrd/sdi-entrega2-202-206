@@ -92,6 +92,7 @@ app.use('/api/oferta', routerUsuarioToken);
 app.use('/api/offer/message/:id', routerUsuarioToken);
 app.use('/api/offer/conversation', routerUsuarioToken);
 app.use('/api/mensaje/eliminar/', routerUsuarioToken);
+app.use('/api/mensaje/leido/:id', routerUsuarioToken);
 
 // routerUsuarioSession
 let routerUsuarioSession = express.Router();
