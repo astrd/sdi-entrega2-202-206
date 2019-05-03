@@ -38,25 +38,23 @@
 
     function actualizarTabla(ofertasMostrar) {
         $("#tablaCuerpo").empty(); // Vaciar la tabla
-        for (i = 0; i < ofertasMostrar.length; i++) {
+        for (let i = 0; i < ofertasMostrar.length; i++) {
             $("#tablaCuerpo").append(
                 "<tr id=" + ofertasMostrar[i]._id + ">" +
                 "<td>" + ofertasMostrar[i].title + "</td>" +
                 "<td>" + ofertasMostrar[i].description + "</td>" +
                 "<td>" + ofertasMostrar[i].price + "</td>" +
-                "<td>" +
-                "<a class='btn btn-primary' onclick=cargarConversacion('"
-                + ofertasMostrar[i]._id + "','" + ofertasMostrar[i].owner + "')>" +
-                "Enviar mensaje</a></td>" +
-                "</tr>");
-
+                "<td><a class='btn btn-primary' onclick=cargarConversacion('" + ofertasMostrar[i]._id + "','" + ofertasMostrar[i].owner + "')>Enviar mensaje</a></td>" +
+                "</tr>"
+            );
         }
     }
 
+
     function cargarConversacion(id, email) {
-        this.email = email;
         idOferta = id;
         $("#contenedor-principal").load("widget-chat.html");
+        window.history.pushState("", "", "/cliente.html?w=chat&receptor=" + email + "&oferta=" + id);
     }
 
     cargarOfertas();

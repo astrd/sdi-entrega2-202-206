@@ -46,15 +46,14 @@
                 <div class="messageTime">12:50</div>
             </div>
         </div>
-        <form action="" class="currentChatInput">
+        <div class="currentChatInput">
             <input type="text" name="" id="inputMessage">
-            <input type="submit" value="↩︎" id="submitMessage">
-        </form>
-
+            <input type="button" value="↩︎" id="submitMessage" onclick="showMessage()">
+        </div>
     </div>
 </div>
 <script>
-    let email = 'uo32232@uniovi.es';
-    let id = 'dsklfjaiodsfjioasdjfk';
-    window.history.pushState("", "", "/cliente.html?w=chat&receptor=" + email + "&oferta=" + id);
+    function showMessage() {
+
+    }
 </script>
