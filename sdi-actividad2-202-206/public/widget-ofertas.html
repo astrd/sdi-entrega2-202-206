@@ -30,7 +30,7 @@
                 console.log(ofertas)
                 actualizarTabla(ofertas);
             },
-            error: function (error) {
+            error: function () {
                 $("#contenedor-principal").load("widget-login.html");
             }
         });
@@ -45,11 +45,18 @@
                 "<td>" + ofertasMostrar[i].description + "</td>" +
                 "<td>" + ofertasMostrar[i].price + "</td>" +
                 "<td>" +
-                "<a class='btn btn-outline-primary' href='/cliente.html?w=chat&receptor=" + ofertasMostrar[i].owner
-                + "&oferta=" + ofertasMostrar[i]._id + "'>Enviar mensaje</a></td>" +
+                "<a class='btn btn-primary' onclick=cargarConversacion('"
+                + ofertasMostrar[i]._id + "','" + ofertasMostrar[i].owner + "')>" +
+                "Enviar mensaje</a></td>" +
                 "</tr>");
 
         }
+    }
+
+    function cargarConversacion(id, email) {
+        this.email = email;
+        idOferta = id;
+        $("#contenedor-principal").load("widget-chat.html");
     }
 
     cargarOfertas();
