@@ -76,7 +76,6 @@ routerUsuarioToken.use(function (req, res, next) {
                 // También podríamos comprobar que intoToken.usuario existe
             } else {
                 // dejamos correr la petición
-                console.log(infoToken)
                 res.usuario = infoToken.usuario;
                 next();
             }
@@ -92,7 +91,7 @@ routerUsuarioToken.use(function (req, res, next) {
 // Aplicar routerUsuarioToken
 app.use('/api/oferta', routerUsuarioToken);
 app.use('/api/offer/message/:id', routerUsuarioToken);
-app.use('/api/offer/conversation/:id', routerUsuarioToken);
+app.use('/api/offer/conversation', routerUsuarioToken);
 
 // routerUsuarioSession
 var routerUsuarioSession = express.Router();
