@@ -1,8 +1,8 @@
 // Módulos
-var express = require('express');
-var app = express();
+let express = require('express');
+let app = express();
 
-var jwt = require('jsonwebtoken');
+let jwt = require('jsonwebtoken');
 app.set('jwt', jwt);
 
 let log4js = require('log4js');
@@ -25,7 +25,7 @@ app.use(function (req, res, next) {
 
 
 // Objeto sessión
-var expressSession = require('express-session');
+let expressSession = require('express-session');
 app.use(expressSession({
     secret: 'abcdefg',
     resave: true,
@@ -33,15 +33,15 @@ app.use(expressSession({
 }));
 
 // Encriptación de contraseñas
-var crypto = require('crypto');
+let crypto = require('crypto');
 
 // Base de datos
-var mongo = require('mongodb');
+let mongo = require('mongodb');
 let gestorBD = require("./modules/gestorBD.js");
 gestorBD.init(app, mongo);
-var swig = require('swig-templates');
+let swig = require('swig-templates');
 
-var bodyParser = require('body-parser');
+let bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -55,15 +55,14 @@ app.set('crypto', crypto);
 
 
 app.get('/', function (req, res) {
-    let respuesta = swig.renderFile('views/home.html', {});
-    res.redirect("/home");
+    res.redirect("/identificarse");
 });
 
 // routerUsuarioToken
-var routerUsuarioToken = express.Router();
+let routerUsuarioToken = express.Router();
 routerUsuarioToken.use(function (req, res, next) {
     // obtener el token, vía headers (opcionalmente GET y/o POST).
-    var token = req.headers['token'] || req.body.token || req.query.token;
+    let token = req.headers['token'] || req.body.token || req.query.token;
     if (token != null) {
         // verificar el token
         jwt.verify(token, 'secreto', function (err, infoToken) {
@@ -91,18 +90,17 @@ routerUsuarioToken.use(function (req, res, next) {
 // Aplicar routerUsuarioToken
 app.use('/api/oferta', routerUsuarioToken);
 app.use('/api/offer/message/:id', routerUsuarioToken);
-app.use('/api/offer/conversation', routerUsuarioToken); ;
+app.use('/api/offer/conversation', routerUsuarioToken);
 app.use('/api/mensaje/eliminar/', routerUsuarioToken);
 
 // routerUsuarioSession
-var routerUsuarioSession = express.Router();
+let routerUsuarioSession = express.Router();
 routerUsuarioSession.use(function (req, res, next) {
 
     if (req.session.user) {
         // dejamos correr la petición
         next();
     } else {
-        console.log("va a : " + req.session.destino)
         res.redirect("/identificarse");
     }
 });
@@ -113,18 +111,18 @@ app.use("/admin", routerUsuarioSession);
 app.use("/user/*", routerUsuarioSession);
 
 //asegurar identificacion
-var routerAdmin = express.Router();
+let routerAdmin = express.Router();
 routerAdmin.use(function (req, res, next) {
-
-    if (req.session.user.rol == 'admin') {
+    if (req.session.user !== undefined && req.session.user.rol === 'admin') {
         // dejamos correr la petición
         next();
     } else {
-        console.log("va a : " + req.session.destino)
         res.redirect("/home");
     }
 });
 app.use("/admin", routerAdmin);
+app.use("/resetdb", routerAdmin);
+app.use("/addAdmin", routerAdmin);
 app.use("/user/*", routerAdmin);
 //Rutas/controladores por lógica
 
