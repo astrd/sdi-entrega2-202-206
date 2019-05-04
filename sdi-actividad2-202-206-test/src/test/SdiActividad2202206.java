@@ -95,8 +95,7 @@ public class SdiActividad2202206 {
 		driver.get("http://localhost:8081/");
 		testUtil.waitChangeWeb();
 		driver.findElement(By.linkText("Registrate")).click();
-		testUtil.waitChangeWeb();
-		driver.findElement(By.id("name")).click();
+ 		driver.findElement(By.id("name")).click();
 		driver.findElement(By.id("name")).clear();
 		driver.findElement(By.id("name")).sendKeys("Elena");
 		driver.findElement(By.id("surname")).click();
@@ -112,8 +111,7 @@ public class SdiActividad2202206 {
 		driver.findElement(By.id("password2")).clear();
 		driver.findElement(By.id("password2")).sendKeys("12345");
 		driver.findElement(By.id("send")).click();
-		testUtil.waitChangeWeb();
-		testUtil.searchText("Identificación de usuario", true);
+ 		testUtil.searchText("Identificación de usuario", true);
 	}
 
 	/*
@@ -122,10 +120,8 @@ public class SdiActividad2202206 {
 	@Test
 	public void T01_registroEmailVacio() {
 		driver.get("http://localhost:8081/");
-		testUtil.waitChangeWeb();
-		driver.findElement(By.linkText("Registrate")).click();
-		testUtil.waitChangeWeb();
-		driver.findElement(By.id("name")).click();
+ 		driver.findElement(By.linkText("Registrate")).click();
+ 		driver.findElement(By.id("name")).click();
 		driver.findElement(By.id("name")).clear();
 		driver.findElement(By.id("name")).sendKeys("Peter");
 		driver.findElement(By.id("surname")).click();
@@ -151,10 +147,8 @@ public class SdiActividad2202206 {
 	@Test
 	public void T02_registroContraseñasNoCoinciden() {
 		driver.get("http://localhost:8081/");
-		testUtil.waitChangeWeb();
-		driver.findElement(By.linkText("Registrate")).click();
-		testUtil.waitChangeWeb();
-		driver.findElement(By.id("name")).click();
+ 		driver.findElement(By.linkText("Registrate")).click();
+ 		driver.findElement(By.id("name")).click();
 		driver.findElement(By.id("name")).clear();
 		driver.findElement(By.id("name")).sendKeys("Julio");
 		driver.findElement(By.id("surname")).click();
@@ -183,10 +177,8 @@ public class SdiActividad2202206 {
 	@Test
 	public void T03_registroEmailExistente() {
 		driver.get("http://localhost:8081/");
-		testUtil.waitChangeWeb();
-		driver.findElement(By.linkText("Registrate")).click();
-		testUtil.waitChangeWeb();
-		driver.findElement(By.id("name")).click();
+ 		driver.findElement(By.linkText("Registrate")).click();
+ 		driver.findElement(By.id("name")).click();
 		driver.findElement(By.id("name")).clear();
 		driver.findElement(By.id("name")).sendKeys("Ana");
 		driver.findElement(By.id("surname")).click();
@@ -202,8 +194,7 @@ public class SdiActividad2202206 {
 		driver.findElement(By.id("password2")).clear();
 		driver.findElement(By.id("password2")).sendKeys("123456");
 		driver.findElement(By.id("send")).click();
-		testUtil.waitChangeWeb();
-		// nos aseguramos que sigue en la misma pagina por datos incorrectos
+ 		// nos aseguramos que sigue en la misma pagina por datos incorrectos
 		testUtil.searchText("Identificacion de usuario", false);
 		testUtil.searchText("Registrate", true);
 
@@ -213,18 +204,16 @@ public class SdiActividad2202206 {
 	@Test
 	public void T04_IdentificarseValido() {
 		driver.get("http://localhost:8081/identificarse");
-		testUtil.waitChangeWeb();
-		driver.findElement(By.name("email")).click();
+ 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
-		driver.findElement(By.name("email")).sendKeys("test6@email.com");
+		driver.findElement(By.name("email")).sendKeys("user6@email.com");
 		driver.findElement(By.name("password")).click();
 		driver.findElement(By.name("password")).clear();
-		driver.findElement(By.name("password")).sendKeys("test6");
+		driver.findElement(By.name("password")).sendKeys("user6");
 		driver.findElement(By.className("btn-primary")).click();
-		testUtil.waitChangeWeb();
-		testUtil.searchText("Bienvenidos", true);
+ 		testUtil.searchText("Bienvenidos", true);
 		testUtil.searchText("autenticado", true);
-		testUtil.searchText("Prueba", true);
+		testUtil.searchText("user6", true);
 	}
 
 	// Inicio de sesión con datos válidos (usuario estándar, email existente,
@@ -232,16 +221,14 @@ public class SdiActividad2202206 {
 	@Test
 	public void T05_IdentificarseContraseñaIncorrecta() {
 		driver.get("http://localhost:8081/identificarse");
-		testUtil.waitChangeWeb();
-		driver.findElement(By.name("email")).click();
+ 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
 		driver.findElement(By.name("email")).sendKeys("test6@email.com");
 		driver.findElement(By.name("password")).click();
 		driver.findElement(By.name("password")).clear();
 		driver.findElement(By.name("password")).sendKeys("error");
 		driver.findElement(By.className("btn-primary")).click();
-		testUtil.waitChangeWeb();
-		testUtil.searchText("Bienvenidos", false);
+ 		testUtil.searchText("Bienvenidos", false);
 		testUtil.searchText("autenticado", false);
 
 	}
@@ -317,23 +304,21 @@ public class SdiActividad2202206 {
 	@Test
 	public void T10_ListadoDeUsuarios() {
 		driver.get("http://localhost:8081/");
-		testUtil.waitChangeWeb();
-		driver.findElement(By.name("email")).click();
+ 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
 		driver.findElement(By.name("email")).sendKeys("admin@email.com");
 		driver.findElement(By.name("password")).click();
 		driver.findElement(By.name("password")).clear();
 		driver.findElement(By.name("password")).sendKeys("admin");
 		driver.findElement(By.id("send")).click();
-		testUtil.waitChangeWeb();
-		driver.findElement(By.linkText("Ver Usuarios")).click();
+ 		driver.findElement(By.linkText("Ver Usuarios")).click();
 		testUtil.waitChangeWeb();
 		// comprobamos que no se liste el administrador y que se listen usuarios que
 		// estan en la base de datos
 		testUtil.searchText("Usuarios", true);
 		testUtil.searchText("admin@email.com", false);
-		testUtil.searchText("test6@email.com", true);
-		testUtil.searchText("prueba1@prueba1.com", true);
+		testUtil.searchText("user6@email.com", true);
+		testUtil.searchText("user1@email.com", true);
 
 	}
 
@@ -342,6 +327,8 @@ public class SdiActividad2202206 {
 	@Test
 	public void T11_BorrarPrimerUsuario() {
 		driver.get("http://localhost:8081/identificarse");
+		testUtil.waitChangeWeb();
+
 		driver.findElement(By.linkText("Registrate")).click();
 		driver.findElement(By.id("name")).click();
 		driver.findElement(By.id("name")).clear();
@@ -373,6 +360,8 @@ public class SdiActividad2202206 {
 		testUtil.searchText("aaaaaaaaaa@email.com", true);
 		driver.findElements(By.className("check")).get(0).click();
 		driver.findElement(By.id("DeleteButton")).click();
+		testUtil.waitChangeWeb();
+
 		testUtil.searchText("Usuarios", true);
 		testUtil.searchText("admin@email.com", false);
 		testUtil.searchText("aaaaaaaaaa@email.com", false);
@@ -383,8 +372,9 @@ public class SdiActividad2202206 {
 	// comprobar que la lista se actualizay dicho usuario desaparece.
 	@Test
 	public void T12_BorrarUltimoUsuario() {
-		driver.get("http://localhost:8081/identificarse");
-		driver.findElement(By.linkText("Registrate")).click();
+ 
+		driver.get("http://localhost:8081/registrarse");
+		  
 		driver.findElement(By.id("name")).click();
 		driver.findElement(By.id("name")).clear();
 		driver.findElement(By.id("name")).sendKeys("Pepe");
@@ -495,6 +485,8 @@ public class SdiActividad2202206 {
 		driver.findElements(By.className("check")).get(1).click();
 		driver.findElements(By.className("check")).get(2).click();
 		driver.findElement(By.id("DeleteButton")).click();
+		testUtil.waitChangeWeb();
+
 		testUtil.searchText("Usuarios", true);
 		testUtil.searchText("admin@email.com", false);
 		testUtil.searchText("aaBorrarPrimerUsuario@email.com", false);
@@ -511,10 +503,10 @@ public class SdiActividad2202206 {
 		driver.get("http://localhost:8081/identificarse");
 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
-		driver.findElement(By.name("email")).sendKeys("test6@email.com");
+		driver.findElement(By.name("email")).sendKeys("user6@email.com");
 		driver.findElement(By.name("password")).click();
 		driver.findElement(By.name("password")).clear();
-		driver.findElement(By.name("password")).sendKeys("12345");
+		driver.findElement(By.name("password")).sendKeys("user6");
 
 		driver.findElement(By.className("btn-primary")).click();
 
@@ -545,10 +537,10 @@ public class SdiActividad2202206 {
 
 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
-		driver.findElement(By.name("email")).sendKeys("test6@email.com");
+		driver.findElement(By.name("email")).sendKeys("user6@email.com");
 		driver.findElement(By.name("password")).click();
 		driver.findElement(By.name("password")).clear();
-		driver.findElement(By.name("password")).sendKeys("12345");
+		driver.findElement(By.name("password")).sendKeys("user6");
 
 		driver.findElement(By.className("btn-primary")).click();
 
@@ -579,10 +571,10 @@ public class SdiActividad2202206 {
 
 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
-		driver.findElement(By.name("email")).sendKeys("test6@email.com");
+		driver.findElement(By.name("email")).sendKeys("user6@email.com");
 		driver.findElement(By.name("password")).click();
 		driver.findElement(By.name("password")).clear();
-		driver.findElement(By.name("password")).sendKeys("12345");
+		driver.findElement(By.name("password")).sendKeys("user6");
 
 		driver.findElement(By.className("btn-primary")).click();
 		// adding offer
@@ -599,10 +591,10 @@ public class SdiActividad2202206 {
 		driver.get("http://localhost:8081/identificarse");
 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
-		driver.findElement(By.name("email")).sendKeys("prueba1@prueba1.com");
+		driver.findElement(By.name("email")).sendKeys("user1@email.com");
 		driver.findElement(By.name("password")).click();
 		driver.findElement(By.name("password")).clear();
-		driver.findElement(By.name("password")).sendKeys("12345");
+		driver.findElement(By.name("password")).sendKeys("user1");
 		driver.findElement(By.id("send")).click();
 
 		driver.findElement(By.id("offersmanage")).click();
@@ -618,9 +610,11 @@ public class SdiActividad2202206 {
 		driver.findElement(By.name("price")).clear();
 		driver.findElement(By.name("price")).sendKeys("2");
 		driver.findElement(By.id("add")).click();
+		testUtil.waitChangeWeb();
 
 		driver.findElement(By.id("offersmanage")).click();
 		driver.findElement(By.id("offerselling")).click();
+		testUtil.waitChangeWeb();
 
 		testUtil.searchText("Eliminaro", true);
 		List<WebElement> elements = driver.findElements(By.className("eliminar"));
@@ -644,16 +638,14 @@ public class SdiActividad2202206 {
 		driver.get("http://localhost:8081/identificarse");
 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
-		driver.findElement(By.name("email")).sendKeys("prueba1@prueba1.com");
+		driver.findElement(By.name("email")).sendKeys("user1@email.com");
 		driver.findElement(By.name("password")).click();
 		driver.findElement(By.name("password")).clear();
-		driver.findElement(By.name("password")).sendKeys("12345");
+		driver.findElement(By.name("password")).sendKeys("user1");
 		driver.findElement(By.id("send")).click();
-		testUtil.waitChangeWeb();
-		driver.findElement(By.id("offersmanage")).click();
+ 		driver.findElement(By.id("offersmanage")).click();
 		driver.findElement(By.id("offeradd")).click();
-		testUtil.waitChangeWeb();
-		driver.findElement(By.id("title")).click();
+ 		driver.findElement(By.id("title")).click();
 		driver.findElement(By.id("title")).clear();
 		driver.findElement(By.id("title")).sendKeys("zzzzUltimaOferta");
 		driver.findElement(By.id("description")).click();
@@ -666,13 +658,11 @@ public class SdiActividad2202206 {
 		testUtil.waitChangeWeb();
 		driver.findElement(By.id("offersmanage")).click();
 		driver.findElement(By.id("offerselling")).click();
-		testUtil.waitChangeWeb();
-		testUtil.searchText("zzzzUltimaOferta", true);
+ 		testUtil.searchText("zzzzUltimaOferta", true);
 		List<WebElement> elements = driver.findElements(By.className("eliminar"));
 		int size = elements.size();
 		driver.findElements(By.className("eliminar")).get(size - 1).click();
-		testUtil.waitChangeWeb();
-		testUtil.searchText("zzzzUltimaOferta", false);
+ 		testUtil.searchText("zzzzUltimaOferta", false);
 		testUtil.searchText("Se ha eliminado correctamente la oferta", true);
 		elements = driver.findElements(By.className("eliminar"));
 		assertTrue(size - 1 == elements.size());// comprobamos que se ha eliminado un elemento->sumamos 1 al tamaño
@@ -688,10 +678,10 @@ public class SdiActividad2202206 {
 		driver.get("http://localhost:8081");
 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
-		driver.findElement(By.name("email")).sendKeys("prueba1@prueba1.com");
+		driver.findElement(By.name("email")).sendKeys("user1@email.com");
 		driver.findElement(By.name("password")).click();
 		driver.findElement(By.name("password")).clear();
-		driver.findElement(By.name("password")).sendKeys("12345");
+		driver.findElement(By.name("password")).sendKeys("user1");
 
 		driver.findElement(By.className("btn-primary")).click();
 
@@ -722,10 +712,10 @@ public class SdiActividad2202206 {
 		driver.get("http://localhost:8081/identificarse");
 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
-		driver.findElement(By.name("email")).sendKeys("test6@email.com");
+		driver.findElement(By.name("email")).sendKeys("user6@email.com");
 		driver.findElement(By.name("password")).click();
 		driver.findElement(By.name("password")).clear();
-		driver.findElement(By.name("password")).sendKeys("12345");
+		driver.findElement(By.name("password")).sendKeys("user6");
 
 		driver.findElement(By.className("btn-primary")).click();
 
@@ -736,6 +726,7 @@ public class SdiActividad2202206 {
 		driver.findElement(By.id("send")).click();
 
 		driver.findElement(By.id("lastpage")).click();
+		testUtil.waitChangeWeb();
 
 		testUtil.searchText("BUSCAa", true);
 		testUtil.searchText("buscaA", true);
@@ -750,10 +741,10 @@ public class SdiActividad2202206 {
 		driver.get("http://localhost:8081");
 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
-		driver.findElement(By.name("email")).sendKeys("test6@email.com");
+		driver.findElement(By.name("email")).sendKeys("user6@email.com");
 		driver.findElement(By.name("password")).click();
 		driver.findElement(By.name("password")).clear();
-		driver.findElement(By.name("password")).sendKeys("12345");
+		driver.findElement(By.name("password")).sendKeys("user6");
 
 		driver.findElement(By.className("btn-primary")).click();
 
@@ -778,10 +769,10 @@ public class SdiActividad2202206 {
 		driver.get("http://localhost:8081");
 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
-		driver.findElement(By.name("email")).sendKeys("test6@email.com");
+		driver.findElement(By.name("email")).sendKeys("user6@email.com");
 		driver.findElement(By.name("password")).click();
 		driver.findElement(By.name("password")).clear();
-		driver.findElement(By.name("password")).sendKeys("12345");
+		driver.findElement(By.name("password")).sendKeys("user6");
 
 		driver.findElement(By.className("btn-primary")).click();
 
@@ -807,10 +798,10 @@ public class SdiActividad2202206 {
 		driver.get("http://localhost:8081");
 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
-		driver.findElement(By.name("email")).sendKeys("test@uniovi.es");
+		driver.findElement(By.name("email")).sendKeys("user2@email.com");
 		driver.findElement(By.name("password")).click();
 		driver.findElement(By.name("password")).clear();
-		driver.findElement(By.name("password")).sendKeys("tests");
+		driver.findElement(By.name("password")).sendKeys("user2");
 
 		driver.findElement(By.className("btn-primary")).click();
 
@@ -829,17 +820,18 @@ public class SdiActividad2202206 {
 		driver.get("http://localhost:8081/identificarse");
 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
-		driver.findElement(By.name("email")).sendKeys("test6@email.com");
+		driver.findElement(By.name("email")).sendKeys("user6@email.com");
 		driver.findElement(By.name("password")).click();
 		driver.findElement(By.name("password")).clear();
-		driver.findElement(By.name("password")).sendKeys("12345");
+		driver.findElement(By.name("password")).sendKeys("user6");
 
 		driver.findElement(By.className("btn-primary")).click();
-
+ 
 		driver.get("http://localhost:8081/offer/search?busqueda=vende01");
 		driver.findElements(By.className("buy")).get(0).click();
 
 		driver.get("http://localhost:8081/offer/bought");
+		testUtil.waitChangeWeb();
 
 		testUtil.searchText("vende01", true);
 
@@ -856,17 +848,17 @@ public class SdiActividad2202206 {
 		driver.get("http://localhost:8081");
 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
-		driver.findElement(By.name("email")).sendKeys("test@uniovi.es");
+		driver.findElement(By.name("email")).sendKeys("user2@email.com");
 		driver.findElement(By.name("password")).click();
 		driver.findElement(By.name("password")).clear();
-		driver.findElement(By.name("password")).sendKeys("tests");
+		driver.findElement(By.name("password")).sendKeys("user2");
 
 		driver.findElement(By.className("btn-primary")).click();
 
 		driver.get("http://localhost:8081/offer/add");
 		driver.findElement(By.name("title")).click();
 		driver.findElement(By.name("title")).clear();
-		driver.findElement(By.name("title")).sendKeys("vendejusto");
+		driver.findElement(By.name("title")).sendKeys("vendejustisimo");
 		driver.findElement(By.name("description")).click();
 		driver.findElement(By.name("description")).clear();
 		driver.findElement(By.name("description")).sendKeys("justo ");
@@ -878,20 +870,22 @@ public class SdiActividad2202206 {
 		driver.get("http://localhost:8081/identificarse");
 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
-		driver.findElement(By.name("email")).sendKeys("prueba1@prueba1.com");
+		driver.findElement(By.name("email")).sendKeys("user1@email.com");
 		driver.findElement(By.name("password")).click();
 		driver.findElement(By.name("password")).clear();
-		driver.findElement(By.name("password")).sendKeys("12345");
+		driver.findElement(By.name("password")).sendKeys("user1");
 		driver.findElement(By.className("btn-primary")).click();
 
-		driver.get("http://localhost:8081/offer/search?busqueda=vendejusto");
+		driver.get("http://localhost:8081/offer/search?busqueda=vendejustisimo");
 
 		driver.findElements(By.className("buy")).get(0).click();
+		testUtil.waitChangeWeb();
 
-		driver.get("http://localhost:8081/");
-		testUtil.searchText("0", true);
+		
 		driver.get("http://localhost:8081/offer/bought");
-		testUtil.searchText("vendejusto", true);
+		testUtil.searchText("vendejustisimo", true); 
+		driver.get("http://localhost:8081/home");
+		testUtil.searchText("0", true);
 
 	}
 
@@ -905,10 +899,10 @@ public class SdiActividad2202206 {
 		driver.get("http://localhost:8081");
 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
-		driver.findElement(By.name("email")).sendKeys("test@uniovi.es");
+		driver.findElement(By.name("email")).sendKeys("user2@email.com");
 		driver.findElement(By.name("password")).click();
 		driver.findElement(By.name("password")).clear();
-		driver.findElement(By.name("password")).sendKeys("tests");
+		driver.findElement(By.name("password")).sendKeys("user2");
 
 		driver.findElement(By.className("btn-primary")).click();
 
@@ -927,10 +921,10 @@ public class SdiActividad2202206 {
 		driver.get("http://localhost:8081/identificarse");
 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
-		driver.findElement(By.name("email")).sendKeys("test6@email.com");
+		driver.findElement(By.name("email")).sendKeys("user6@email.com");
 		driver.findElement(By.name("password")).click();
 		driver.findElement(By.name("password")).clear();
-		driver.findElement(By.name("password")).sendKeys("12345");
+		driver.findElement(By.name("password")).sendKeys("user6");
 		driver.findElement(By.className("btn-primary")).click();
 
 		driver.get("http://localhost:8081/offer/search?busqueda=vende1199");
@@ -949,10 +943,10 @@ public class SdiActividad2202206 {
 		driver.get("http://localhost:8081/identificarse");
 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
-		driver.findElement(By.name("email")).sendKeys("test6@email.com");
+		driver.findElement(By.name("email")).sendKeys("user6@email.com");
 		driver.findElement(By.name("password")).click();
 		driver.findElement(By.name("password")).clear();
-		driver.findElement(By.name("password")).sendKeys("12345");
+		driver.findElement(By.name("password")).sendKeys("user6");
 		driver.findElement(By.className("btn-primary")).click();
 
 		driver.get("http://localhost:8081/offer/selling");
@@ -988,10 +982,10 @@ public class SdiActividad2202206 {
 		driver.get("http://localhost:8081");
 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
-		driver.findElement(By.name("email")).sendKeys("test@uniovi.es");
+		driver.findElement(By.name("email")).sendKeys("user2@email.com");
 		driver.findElement(By.name("password")).click();
 		driver.findElement(By.name("password")).clear();
-		driver.findElement(By.name("password")).sendKeys("tests");
+		driver.findElement(By.name("password")).sendKeys("user2");
 		driver.findElement(By.className("btn-primary")).click();
 
 		driver.get("http://localhost:8081/offer/add");
@@ -1015,10 +1009,10 @@ public class SdiActividad2202206 {
 
 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
-		driver.findElement(By.name("email")).sendKeys("test6@email.com");
+		driver.findElement(By.name("email")).sendKeys("user6@email.com");
 		driver.findElement(By.name("password")).click();
 		driver.findElement(By.name("password")).clear();
-		driver.findElement(By.name("password")).sendKeys("12345");
+		driver.findElement(By.name("password")).sendKeys("user6");
 		driver.findElement(By.className("btn-primary")).click();
 
 		driver.get("http://localhost:8081/offer/fav");
@@ -1036,16 +1030,16 @@ public class SdiActividad2202206 {
 		driver.get("http://localhost:8081");
 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
-		driver.findElement(By.name("email")).sendKeys("test@uniovi.es");
+		driver.findElement(By.name("email")).sendKeys("user3@email.com");
 		driver.findElement(By.name("password")).click();
 		driver.findElement(By.name("password")).clear();
-		driver.findElement(By.name("password")).sendKeys("tests");
+		driver.findElement(By.name("password")).sendKeys("user3");
 		driver.findElement(By.className("btn-primary")).click();
 
 		driver.get("http://localhost:8081/offer/add");
 		driver.findElement(By.name("title")).click();
 		driver.findElement(By.name("title")).clear();
-		driver.findElement(By.name("title")).sendKeys("sindestacar");
+		driver.findElement(By.name("title")).sendKeys("a destacar");
 		driver.findElement(By.name("description")).click();
 		driver.findElement(By.name("description")).clear();
 		driver.findElement(By.name("description")).sendKeys("faverror ");
@@ -1059,19 +1053,19 @@ public class SdiActividad2202206 {
 
 		driver.get("http://localhost:8081/home");
 		testUtil.searchText("100", false);
-		testUtil.searchText("60", true);
+		testUtil.searchText("80", true);
 
 		driver.get("http://localhost:8081/identificarse");
 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
-		driver.findElement(By.name("email")).sendKeys("test6@email.com");
+		driver.findElement(By.name("email")).sendKeys("user1@email.com");
 		driver.findElement(By.name("password")).click();
 		driver.findElement(By.name("password")).clear();
-		driver.findElement(By.name("password")).sendKeys("12345");
+		driver.findElement(By.name("password")).sendKeys("user1");
 		driver.findElement(By.className("btn-primary")).click();
 
 		driver.get("http://localhost:8081/offer/fav");
-		testUtil.searchText("sindestacar", true);
+		testUtil.searchText("a destacar", true);
 
 	}
 
@@ -1081,10 +1075,10 @@ public class SdiActividad2202206 {
 		driver.get("http://localhost:8081");
 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
-		driver.findElement(By.name("email")).sendKeys("prueba1@prueba1.com");
+		driver.findElement(By.name("email")).sendKeys("user1@email.com");
 		driver.findElement(By.name("password")).click();
 		driver.findElement(By.name("password")).clear();
-		driver.findElement(By.name("password")).sendKeys("12345");
+		driver.findElement(By.name("password")).sendKeys("user1");
 		driver.findElement(By.className("btn-primary")).click();
 
 		driver.get("http://localhost:8081/offer/add");
@@ -1112,10 +1106,10 @@ public class SdiActividad2202206 {
 
 		driver.findElement(By.id("email")).click();
 		driver.findElement(By.id("email")).clear();
-		driver.findElement(By.id("email")).sendKeys("test6@email.com");
+		driver.findElement(By.id("email")).sendKeys("user6@email.com");
 		driver.findElement(By.id("password")).click();
 		driver.findElement(By.id("password")).clear();
-		driver.findElement(By.id("password")).sendKeys("12345");
+		driver.findElement(By.id("password")).sendKeys("user6");
 		driver.findElement(By.id("boton-login")).click();
 		testUtil.waitChangeWeb();
 
@@ -1136,7 +1130,7 @@ public class SdiActividad2202206 {
 
 		driver.findElement(By.id("email")).click();
 		driver.findElement(By.id("email")).clear();
-		driver.findElement(By.id("email")).sendKeys("test6@email.com");
+		driver.findElement(By.id("email")).sendKeys("user6@email.com");
 		driver.findElement(By.id("password")).click();
 		driver.findElement(By.id("password")).clear();
 		driver.findElement(By.id("password")).sendKeys("qewrewq");
@@ -1172,10 +1166,10 @@ public class SdiActividad2202206 {
 		testUtil.waitChangeWeb();
 		driver.findElement(By.id("email")).click();
 		driver.findElement(By.id("email")).clear();
-		driver.findElement(By.id("email")).sendKeys("test6@email.com");
+		driver.findElement(By.id("email")).sendKeys("user6@email.com");
 		driver.findElement(By.id("password")).click();
 		driver.findElement(By.id("password")).clear();
-		driver.findElement(By.id("password")).sendKeys("12345");
+		driver.findElement(By.id("password")).sendKeys("user6");
 		driver.findElement(By.id("boton-login")).click();
 		testUtil.waitChangeWeb();
 		testUtil.searchText("Nombre", true);
