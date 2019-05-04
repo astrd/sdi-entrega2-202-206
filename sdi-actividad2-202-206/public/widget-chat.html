@@ -10,7 +10,7 @@
                 <h3>Chat title</h3>
             </div>
         </div>
-        <div class="currentChatContent">
+        <div class="currentChatContent" id="currentChatContent">
             <div class="message received">
                 <div class="messageContent">
                     Lorem, ipsum dolor sit amet consectetur adipisicing elit. Commodi voluptates, dicta natus
@@ -27,35 +27,41 @@
         </div>
         <div class="currentChatInput">
             <input type="text" name="" id="inputMessage">
-            <input type="button" value="↩︎" id="submitMessage" onclick="showMessage()">
+            <input type="button" value="↩︎" id="submitMessage" onclick="sendMessage()">
         </div>
     </div>
 </div>
 <script>
     function loadConversation() {
-        
+
         $.ajax({
-            url: URLbase + "/search/offer/conversation/" + conversacion._id,
-            type: "GET",
+            url: URLbase + "/search/offer/conversation/" + idOferta,
+            type: "POST",
             data: {},
             headers: {"token": token},
+
             success: function (respuesta) {
-                conversaciones = respuesta;
-                console.log(conversaciones)
-                // actualizarTabla(conversaciones);
+                console.log('succes');
+
+                conversacionid = respuesta;
+                console.log( conversacionid._id);
+                showMessage(conversacionid._id);
             },
             error: function () {
-                $("#contenedor-principal").load("widget-login.html");
+                   $("#contenedor-principal").load("widget-login.html");
+
             }
         });
     }
 
-    function showMessage(conversacion) {
-        // Tenemos que cargar antes la conversación, teneies que crear un nuevo controlador que busque la conversacion
+    function showMessage(conversacionid ) {
+         // Tenemos que cargar antes la conversación, teneies que crear un nuevo controlador que busque la conversacion
         // con el id de la oferta y token de usuarios
         let token = Cookies.get('token');
+        console.log('successm');
+
         $.ajax({
-            url: URLbase + "/offer/conversation/" + conversacion._id,
+            url: URLbase + "/offer/conversation/" + conversacionid,
             type: "GET",
             data: {},
             headers: {"token": token},
@@ -68,10 +74,77 @@
             }
         });
     }
+    function mostrarMensajes( messages ) {
 
-    function mostrarMensajes(mensajes) {
+    $("#currentChatContent").empty();
+        console.log('empting');
+        for (var i = 0; i < messages.length; i++) {
+            var message = "";
+            console.log(messages[i]);
+            if (messages[i].receiver == email) {
+                console.log('dentroif');
+                message = "<div class='currentChatContent'>" +
+                    "<div class='message sent'>"  +
+                    "<div class='messageContent'>" + messages[i].message + "</div>" +
+                    "<div class='messageTime'>" + timeStamp(new Date(messages[i].date)) + "</div>" + "</div>";
 
+            }
+            else{
+
+
+                message = "<div class='currentChatContent'>" +
+                    "<div class='message sent'>"+
+                    "<div class='messageContent'>" + messages[i].message + "</div>" +
+                    "<div class='messageTime'>" +  timeStamp(new Date(messages[i].date))  + "</div>" + "</div>" ;
+
+            }
+            $("#currentChatContent").append(message);
+        }
+
+        }
+
+
+    function sendMessage() {
+        if ($("#inputMessage").val() != '') {
+            $.ajax({
+                url: URLbase + "/offer/message/" + idOferta,
+                type: "POST",
+                data: {
+                    receiver: email,
+                    message: $("#inputMessage").val(),
+                    token: token
+                 },
+                dataType: 'json',
+                success: function (respuesta) {
+                    loadConversation();
+                    $("#inputMessage").val('');
+                },
+                error: function (error) {
+                    $("#contenedor-principal").load("widget-login.html");
+                }
+            });
+        }
+    }
+    function timeStamp(now) {
+        // Create an array with the current month, day and time
+        var date = [now.getMonth() + 1, now.getDate(), now.getFullYear()];
+        // Create an array with the current hour, minute and second
+        var time = [now.getHours(), now.getMinutes(), now.getSeconds()];
+        // Determine AM or PM suffix based on the hour
+        var suffix = (time[0] < 12) ? "AM" : "PM";
+        // Convert hour from military time
+        time[0] = (time[0] < 12) ? time[0] : time[0] - 12;
+        // If hour is 0, set it to 12
+        time[0] = time[0] || 12;
+        // If seconds and minutes are less than 10, add a zero
+        for (var i = 1; i < 3; i++) {
+            if (time[i] < 10) {
+                time[i] = "0" + time[i];
+            }
+        }
+        // Return the formatted string
+        return date.join("/") + " " + time.join(":") + " " + suffix;
     }
 
-    showMessage();
+    loadConversation();
 </script>

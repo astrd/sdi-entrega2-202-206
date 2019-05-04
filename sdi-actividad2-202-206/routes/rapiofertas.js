@@ -323,9 +323,62 @@ module.exports = function (app, gestorBD) {
                 };
                 //Obtenemos las conversaciones
                 gestorBD.obtenerConversaciones(criterio, function (conversacion) {
+                    if (conversacion == null) {
+                        res.status(500);
+                        app.get("logger").error("API: Ha habido un error al listar las conversaciones");
+                        res.json({
+                            error: "Se ha producido un error"
+                        })
+                    }
+                    else if (conversacion.length === 0) {
+                        res.status(400);
+                        app.get("logger").error("API: No se ha encontrado la conversacion");
 
+                        var nuevaConver = {
+                            offer: gestorBD.mongo.ObjectID(oferta._id),
+                            user1: oferta.owner,
+                            user2: usuario,
+                            valid: true
+                        };
+                        gestorBD.crearNuevaConversacion(nuevaConver, function (conversacionNueva) {
+                            if (conversacionNueva === null) {
+                                res.status(204);
+                                app.get("logger").info('API: Se ha producido un error al crear conversacion');
+                                res.json({
+                                    error: "No fue posible crear la conversación"
+                                });
+                            } else {
+                                let message = {
+                                    sender: usuario,
+                                    receiver:oferta.owner,
+                                    offer: oferta._id,
+                                    message: 'Hola! Me interesa su oferta. ',
+                                    date: new Date(),
+                                    read: false,
+                                    idConversacion: conversacionNueva
+                                }
+                                gestorBD.insertarMensaje(message, function (mensaje) {
+                                    if (mensaje == null) {
+                                        res.status(500); // error del servidor
+                                        app.get("logger").info('API: Se ha producido un error al insertar el mensaje');
+                                        res.json({
+                                            err: "Error del servidor"
+                                        });
+                                    } else {
+                                        res.status(200);
+                                        app.get("logger").info('API: El mensaje se ha insertado correctamente');
+                                        console.log(nuevaConver);
+                                        res.send(nuevaConver);
+                                    }
+                                });
+                            }
+                        })
+                    } else {
+                        app.get("logger").info('API: Se listan las conversaciones correctamente');
+                        res.send(conversacion[0]);
+                    }
                 });
             }
         });
-    });
+    })
 };
