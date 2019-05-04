@@ -53,8 +53,9 @@
 
     function cargarConversacion(id, email) {
         idOferta = id;
+        semail = email;
         Cookies.set('idOferta',idOferta);
-        Cookies.set('email',email);
+        Cookies.set('semail',semail);
         $("#contenedor-principal").load("widget-chat.html");
         window.history.pushState("", "", "/cliente.html?w=chat&receptor=" + email + "&oferta=" + id);
     }

@@ -6,8 +6,8 @@
             <div class="currentChatImageWrapper">
                 <img src="img/heart.png" alt="" class="currentChatImage">
             </div>
-            <div class="currentChatHeaderTitle">
-                <h3>Chat title</h3>
+            <div  class="currentChatHeaderTitle">
+                <h3 id="chatTitle" >Titulo </h3>
             </div>
         </div>
         <div class="currentChatContent" id="currentChatContent">
@@ -33,6 +33,8 @@
 </div>
 <script>
     function loadConversation() {
+        $("#chatTitle").empty()
+        $("#chatTitle").append(semail);
 
         $.ajax({
             url: URLbase + "/search/offer/conversation/" + idOferta,
@@ -76,6 +78,8 @@
     }
     function mostrarMensajes( messages ) {
 
+
+
     $("#currentChatContent").empty();
         console.log('empting');
         for (var i = 0; i < messages.length; i++) {
@@ -93,7 +97,7 @@
 
 
                 message = "<div class='currentChatContent'>" +
-                    "<div class='message sent'>"+
+                    "<div class='message received'>"+
                     "<div class='messageContent'>" + messages[i].message + "</div>" +
                     "<div class='messageTime'>" +  timeStamp(new Date(messages[i].date))  + "</div>" + "</div>" ;
 
