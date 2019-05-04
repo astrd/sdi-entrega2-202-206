@@ -13,16 +13,17 @@
         <div class="currentChatContent" id="currentChatContent">
             <div class="message received">
                 <div class="messageContent">
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Commodi voluptates, dicta natus
-                    repudiandae perspiciatis quas sit pariatur nesciunt iure doloremque?
+                    Cargando...
                 </div>
                 <div class="messageTime">12:32</div>
+                <div class="messageTime">✈ </div>
             </div>
             <div class="message sent">
                 <div class="messageContent">
-                    Enviado
+                    ...Espere unos momentos
                 </div>
                 <div class="messageTime">12:50</div>
+                <div class="messageTime">✈</div>
             </div>
         </div>
         <div class="currentChatInput">
@@ -90,16 +91,25 @@
                 message = "<div class='currentChatContent'>" +
                     "<div class='message sent'>"  +
                     "<div class='messageContent'>" + messages[i].message + "</div>" +
-                    "<div class='messageTime'>" + timeStamp(new Date(messages[i].date)) + "</div>" + "</div>";
-
+                    "<div class='messageTime'>" + timeStamp(new Date(messages[i].date)) + "</div>";
+                if (messages[i].read) {
+                    message += "<div class='messageTime'>"+'✔✔' + "</div>";
+                }
+                else{
+                    message += "<div class='messageTime'>"+'✈' + "</div>";
+                }
+                message += "</div>";
             }
             else{
+                readMessage(messages[i]._id.toString());
 
 
                 message = "<div class='currentChatContent'>" +
                     "<div class='message received'>"+
                     "<div class='messageContent'>" + messages[i].message + "</div>" +
-                    "<div class='messageTime'>" +  timeStamp(new Date(messages[i].date))  + "</div>" + "</div>" ;
+                    "<div class='messageTime'>" +  timeStamp(new Date(messages[i].date))  + "</div>" ;
+
+                message += "</div>" ;
 
             }
             $("#currentChatContent").append(message);
@@ -129,6 +139,22 @@
             });
         }
     }
+    function readMessage(id) {
+        $.ajax({
+            url: URLbase + "/mensaje/leido/" + id,
+            type: "GET",
+            data: {},
+            dataType: 'json',
+            headers: {
+                "token": token
+            },
+            success: function (res) {},
+            error: function (error) {
+                $("#contenedor-principal").load("widget-login.html");
+            }
+        });
+    }
+
     function timeStamp(now) {
         // Create an array with the current month, day and time
         var date = [now.getMonth() + 1, now.getDate(), now.getFullYear()];
