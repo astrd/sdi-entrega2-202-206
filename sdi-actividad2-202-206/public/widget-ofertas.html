@@ -27,7 +27,6 @@
             headers: {"token": token},
             success: function (respuesta) {
                 ofertas = respuesta;
-                console.log(ofertas)
                 actualizarTabla(ofertas);
             },
             error: function () {
@@ -52,7 +51,6 @@
 
 
     function cargarConversacion(id, email) {
-        console.log(email);
         idOferta = id;
         $("#contenedor-principal").load("widget-chat.html");
         window.history.pushState("", "", "/cliente.html?w=chat&receptor=" + email + "&oferta=" + id);

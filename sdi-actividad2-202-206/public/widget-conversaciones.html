@@ -1,0 +1,62 @@
+<div id="widget-conversaciones">
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Descripcion</th>
+            <th> Precio</th>
+            <th class="col-md-1"></th>
+        </tr>
+        </thead>
+        <tbody id="tablaCuerpo">
+
+        </tbody>
+    </table>
+</div>
+
+<script>
+    window.history.pushState("", "", "/cliente.html?w=conversaciones");
+    let conversaciones;
+
+    function cargarConversaciones() {
+        $.ajax({
+            url: URLbase + "/offer/conversation/" + idOferta,
+            type: "GET",
+            data: {},
+            dataType: 'json',
+            headers: {"token": token},
+            success: function (respuesta) {
+                conversaciones = respuesta;
+                console.log(conversaciones)
+                actualizarTabla(conversaciones);
+            },
+            error: function () {
+                $("#contenedor-principal").load("widget-login.html");
+            }
+        });
+    }
+
+    function actualizarTabla(conversacionesMostrar) {
+        $("#tablaCuerpo").empty(); // Vaciar la tabla
+        for (let i = 0; i < conversacionesMostrar.length; i++) {
+            $("#tablaCuerpo").append(
+                "<tr id=" + conversacionesMostrar[i]._id + ">" +
+                "<td>" + conversacionesMostrar[i].title + "</td>" +
+                "<td>" + conversacionesMostrar[i].description + "</td>" +
+                "<td>" + conversacionesMostrar[i].price + "</td>" +
+                "<td><a class='btn btn-primary' onclick=cargarChat('" + ofertasMostrar[i]._id + "','" + ofertasMostrar[i].owner + "')>Enviar mensaje</a></td>" +
+                "</tr>"
+            );
+        }
+    }
+
+
+    function cargarChat(id, email) {
+        console.log(email);
+        idOferta = id;
+        $("#contenedor-principal").load("widget-chat.html");
+        window.history.pushState("", "", "/cliente.html?w=chat&receptor=" + email + "&oferta=" + id);
+    }
+
+    cargarConversaciones();
+</script>

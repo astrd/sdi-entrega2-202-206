@@ -1,29 +1,6 @@
 <link rel="stylesheet" href="css/chatstyle.css"/>
 
 <div class="bodyWrapper">
-    <div class="recentChatsWrapper">
-        <h3>Recent Chats</h3>
-        <div class="recentChats">
-            <div class="chatCard">
-                <div class="chatImage">
-                    <img src="img/heart.png" alt="">
-                </div>
-                <div class="chatInfo">
-                    <div class="chatName">Astrid Gamoneda</div>
-                    <div class="chatPreview">Lorem, ipsum dolor sit</div>
-                </div>
-            </div>
-            <div class="chatCard">
-                <div class="chatImage">
-                    <img src="img/purple_hearts.png" alt="">
-                </div>
-                <div class="chatInfo">
-                    <div class="chatName">Elena Diaz</div>
-                    <div class="chatPreview">Lorem, ipsum dolor sit</div>
-                </div>
-            </div>
-        </div>
-    </div>
     <div class="currentChat">
         <div class="currentChatHeader">
             <div class="currentChatImageWrapper">
@@ -55,7 +32,46 @@
     </div>
 </div>
 <script>
-    function showMessage() {
+    function loadConversation() {
+        
+        $.ajax({
+            url: URLbase + "/search/offer/conversation/" + conversacion._id,
+            type: "GET",
+            data: {},
+            headers: {"token": token},
+            success: function (respuesta) {
+                conversaciones = respuesta;
+                console.log(conversaciones)
+                // actualizarTabla(conversaciones);
+            },
+            error: function () {
+                $("#contenedor-principal").load("widget-login.html");
+            }
+        });
+    }
+
+    function showMessage(conversacion) {
+        // Tenemos que cargar antes la conversación, teneies que crear un nuevo controlador que busque la conversacion
+        // con el id de la oferta y token de usuarios
+        let token = Cookies.get('token');
+        $.ajax({
+            url: URLbase + "/offer/conversation/" + conversacion._id,
+            type: "GET",
+            data: {},
+            headers: {"token": token},
+            success: function (respuesta) {
+                conversaciones = respuesta;
+                mostrarMensajes(conversaciones);
+            },
+            error: function () {
+                $("#contenedor-principal").load("widget-login.html");
+            }
+        });
+    }
+
+    function mostrarMensajes(mensajes) {
 
     }
+
+    showMessage();
 </script>

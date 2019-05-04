@@ -33,6 +33,8 @@
             dataType: 'json',
             success: function (respuesta) {
                 token = respuesta.token;
+                Cookies.set('token', token);
+                console.log(Cookies.get('token'))
                 $("#contenedor-principal").load("widget-ofertas.html");
             },
             error: function (error) {

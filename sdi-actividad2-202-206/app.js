@@ -90,9 +90,11 @@ routerUsuarioToken.use(function (req, res, next) {
 // Aplicar routerUsuarioToken
 app.use('/api/oferta', routerUsuarioToken);
 app.use('/api/offer/message/:id', routerUsuarioToken);
-app.use('/api/offer/conversation', routerUsuarioToken);
+app.use('/api/offer/conversation/:id', routerUsuarioToken);
 app.use('/api/mensaje/eliminar/', routerUsuarioToken);
 app.use('/api/mensaje/leido/:id', routerUsuarioToken);
+app.use('/api/offer/listConversations', routerUsuarioToken);
+app.use('/api/search/offer/conversation/:id', routerUsuarioToken);
 
 // routerUsuarioSession
 let routerUsuarioSession = express.Router();

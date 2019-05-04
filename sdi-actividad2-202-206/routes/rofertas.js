@@ -147,7 +147,7 @@ module.exports = function (app, swig, gestorBD) {
                         ultimaPg: ultimaPg,
                         actual: pg
                     });
-                app.get("logger").info('Usuario se ha dirijido a la vista de buscar oferta');
+                app.get("logger").info('Usuario se ha dirigido a la vista de buscar oferta');
                 res.send(respuesta);
             }
         });
@@ -174,7 +174,7 @@ module.exports = function (app, swig, gestorBD) {
                         ofertas: ofertas.sort(mysort)
                     });
                 res.send(respuesta);
-                app.get("logger").info('Usuario se ha dirijido a la vista ofertas propias');
+                app.get("logger").info('Usuario se ha dirigido a la vista ofertas propias');
             }
         });
 
@@ -196,7 +196,7 @@ module.exports = function (app, swig, gestorBD) {
                         usuario: req.session.user
                     });
                 res.send(respuesta);
-                app.get("logger").info('Usuario se ha dirijido a la vista ofertas compradas');
+                app.get("logger").info('Usuario se ha dirigido a la vista ofertas compradas');
             }
         });
     });
@@ -217,7 +217,7 @@ module.exports = function (app, swig, gestorBD) {
                         ofertas: ofertas
                     });
                 res.send(respuesta);
-                app.get("logger").info('Usuario se ha dirijido a la vista ofertas disponibles');
+                app.get("logger").info('Usuario se ha dirigido a la vista ofertas disponibles');
             }
         });
 
