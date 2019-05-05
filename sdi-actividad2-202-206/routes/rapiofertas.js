@@ -297,22 +297,17 @@ module.exports = function (app, gestorBD) {
 
     app.post("/api/offer/listConversations", function (req, res) {
         let criterio = {$or: [{receptor: res.usuario}, {emisor: res.usuario}]};
-        gestorBD.obtenerConversaciones(criterio, function (ofertas) {
-            if (ofertas == null) {
+        gestorBD.obtenerConversaciones(criterio, function (conver) {
+            if (conver == null) {
                 res.status(500);
                 app.get("logger").error("API: Ha habido un error al listar las conversaciones");
                 res.json({
                     error: "Se ha producido un error"
                 })
-            } else if (ofertas.length === 0) {
-                res.status(400);
-                app.get("logger").error("API: No se ha encontrado la oferta");
-                res.json({
-                    error: "Oferta no encontrada"
-                })
+
             } else {
                 app.get("logger").info('API: Se listan las conversaciones correctamente');
-                res.send(ofertas);
+                res.send(conver);
             }
         });
     });

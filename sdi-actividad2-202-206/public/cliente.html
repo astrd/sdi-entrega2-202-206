@@ -9,7 +9,6 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="js/cookies.js"></script>
 </head>
-<body>
 
 <!-- Barra de Navegación superior -->
 <nav class="navbar navbar-inverse">
@@ -23,12 +22,17 @@
             <img src="/img/purple_hearts.png" alt="logo"/>
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
-            <ul class="nav navbar-nav" id="barra-menu">
-                <li><a onclick=widgetConversaciones()>Conversaciones</a></li>
-                <li><a onclick=widgetOfertas()>Ofertas</a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right" id="barra-menu-derecha">
-                <!-- Opciones de menú aqui -->
+            <ul class="nav navbar-nav">
+                <li id="offers-menu" class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" id="offersmanage" href="#">
+                        Menu <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a  onclick="ofertasv()" id="ofertasv">Ver Ofertas </a></li>
+                        <li><a  onclick="conver()" id="conver">Ver Conversaciones</a></li>
+
+                    </ul>
+                </li>
             </ul>
         </div>
     </div>
@@ -51,6 +55,9 @@
             case 'chat':
                 $("#contenedor-principal").load("widget-chat.html");
                 break;
+            case 'conver':
+                $("#contenedor-principal").load("widget-conversaciones.html");
+                break;
             case 'oferta':
                 $("#contenedor-principal").load("widget-ofertas.html");
                 break;
@@ -60,14 +67,13 @@
     }
 
 
-    function widgetConversaciones() {
-        $("#contenedor-principal").load("widget-conversaciones.html");
-    }
-
-    function widgetOfertas(){
+    function ofertasv() {
         $("#contenedor-principal").load("widget-ofertas.html");
     }
+    function conver() {
+        $("#contenedor-principal").load("widget-conversaciones.html");
 
+    }
 </script>
 </body>
 </html>
