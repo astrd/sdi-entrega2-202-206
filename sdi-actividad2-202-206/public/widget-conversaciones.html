@@ -1,17 +1,28 @@
-<div id="widget-conversaciones">
-    <table class="table table-hover">
-        <thead>
-        <tr>
-            <th>Nombre</th>
-            <th>Descripcion</th>
-            <th> Precio</th>
-            <th class="col-md-1"></th>
-        </tr>
-        </thead>
-        <tbody id="tablaCuerpo">
+<link rel="stylesheet" href="css/chatstyle.css"/>
 
-        </tbody>
-    </table>
+<div class="recentChatsWrapper">
+<h3>Conversaciones</h3>
+<div id="widget-conversaciones" class="recentChats">
+
+
+    <div class="chatCard">
+        <div class="chatImage">
+            <img src="img/heart.png" alt="">
+        </div>
+        <div class="chatInfo">
+            <div class="chatName">Astrid Gamoneda</div>
+         </div>
+    </div>
+
+    <div class="chatCard">
+        <div class="chatImage">
+            <img src="img/purple_hearts.png" alt="">
+        </div>
+        <div class="chatInfo">
+            <div class="chatName">Elena Diaz</div>
+         </div>
+    </div>
+</div>
 </div>
 
 <script>
@@ -20,8 +31,8 @@
 
     function cargarConversaciones() {
         $.ajax({
-            url: URLbase + "/offer/conversation/" + idOferta,
-            type: "GET",
+            url: URLbase + "/offer/listConversations/" ,
+            type: "POST",
             data: {},
             dataType: 'json',
             headers: {"token": token},
