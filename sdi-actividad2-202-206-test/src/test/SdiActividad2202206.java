@@ -1202,17 +1202,16 @@ public class SdiActividad2202206 {
 	    driver.findElement(By.id("submitMessage")).click();
 	    testUtil.waitChangeWeb();
 	    testUtil.waitChangeWeb();
-	    testUtil.waitChangeWeb();
 	  //debería de aparecer mensaje que acabamos de mandar y la hora de envío
 	    testUtil.searchText("Hola", true);
 	    //debería aparecer mensaje automático
 	    testUtil.searchText("Hola! Me interesa su oferta", true);	    
-	    //debería aparecer la hora de envío del mensaje
-	    testUtil.searchText("" + driver.findElement(By.className("messageTime")), true);
 	    //debería de aparecer el email del primer usuario user1@email.com
 	    testUtil.searchText("user1@email.com", true);
 	    driver.findElement(By.id("offersmanage")).click();
 	    driver.findElement(By.id("conver")).click();
+	    testUtil.waitChangeWeb();
+	    testUtil.waitChangeWeb();
 	    testUtil.searchText("user1@email.com", true);
 	    
 		
