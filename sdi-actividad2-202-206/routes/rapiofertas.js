@@ -108,6 +108,7 @@ module.exports = function (app, gestorBD) {
                             if (conversacion == null || conversacion.length === 0) {
                                 var nuevaConver = {
                                     offer: gestorBD.mongo.ObjectID(oferta._id),
+                                    title: oferta.title,
                                     user1: req.body.receiver,
                                     user2: usuario,
                                     valid: true
@@ -368,8 +369,7 @@ module.exports = function (app, gestorBD) {
     // Buscar conversación por id de oferta y con el token
     app.post('/api/search/offer/conversation/:id', function (req, res) {
         let criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
-        console.log(criterio);
-        gestorBD.obtenerOfertas(criterio, function (ofertas) {
+         gestorBD.obtenerOfertas(criterio, function (ofertas) {
             if (ofertas == null || ofertas.length === 0) {
                 res.status(403);
                 app.get("logger").info('API: Se ha producido un error al obtener oferta');
@@ -381,8 +381,7 @@ module.exports = function (app, gestorBD) {
             else {
 
                 let criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
-                console.log(criterio);
-                gestorBD.obtenerOfertas(criterio, function (ofertas) {
+                 gestorBD.obtenerOfertas(criterio, function (ofertas) {
                     if (ofertas == null || ofertas.length === 0) {
                         res.status(403);
                         app.get("logger").info('API: Se ha producido un error al obtener oferta');
@@ -416,6 +415,7 @@ module.exports = function (app, gestorBD) {
 
                                 var nuevaConver = {
                                     offer: gestorBD.mongo.ObjectID(oferta._id),
+                                    title: oferta.title,
                                     user1: oferta.owner,
                                     user2: usuario,
                                     valid: true

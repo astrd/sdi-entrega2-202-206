@@ -15,7 +15,7 @@ module.exports = {
                     if (err) {
                         funcionCallback(null);
                         db.close();
-                    } else { 
+                    } else {
                          let conversaciones = db.collection('conversaciones');
                         conversaciones.remove(err, function () {
                              if (err) {
