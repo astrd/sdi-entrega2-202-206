@@ -593,8 +593,10 @@ public class SdiActividad2202206 {
 		driver.findElement(By.name("password")).clear();
 		driver.findElement(By.name("password")).sendKeys("user1");
 		driver.findElement(By.id("send")).click();
+		testUtil.waitChangeWeb();
 		driver.findElement(By.id("offersmanage")).click();
 		driver.findElement(By.id("offeradd")).click();
+		testUtil.waitChangeWeb();
 		driver.findElement(By.id("title")).click();
 		driver.findElement(By.id("title")).clear();
 		driver.findElement(By.id("title")).sendKeys("Eliminar");
@@ -636,8 +638,10 @@ public class SdiActividad2202206 {
 		driver.findElement(By.name("password")).clear();
 		driver.findElement(By.name("password")).sendKeys("user1");
 		driver.findElement(By.id("send")).click();
+		testUtil.waitChangeWeb();
  		driver.findElement(By.id("offersmanage")).click();
 		driver.findElement(By.id("offeradd")).click();
+		testUtil.waitChangeWeb();
  		driver.findElement(By.id("title")).click();
 		driver.findElement(By.id("title")).clear();
 		driver.findElement(By.id("title")).sendKeys("zzzzUltimaOferta");
@@ -651,10 +655,12 @@ public class SdiActividad2202206 {
 		testUtil.waitChangeWeb();
 		driver.findElement(By.id("offersmanage")).click();
 		driver.findElement(By.id("offerselling")).click();
+		testUtil.waitChangeWeb();
  		testUtil.searchText("zzzzUltimaOferta", true);
 		List<WebElement> elements = driver.findElements(By.className("eliminar"));
 		int size = elements.size();
 		driver.findElements(By.className("eliminar")).get(size - 1).click();
+		testUtil.waitChangeWeb();
  		testUtil.searchText("zzzzUltimaOferta", false);
 		testUtil.searchText("Se ha eliminado correctamente la oferta", true);
 		elements = driver.findElements(By.className("eliminar"));
@@ -1031,7 +1037,6 @@ public class SdiActividad2202206 {
 		driver.findElement(By.name("password")).clear();
 		driver.findElement(By.name("password")).sendKeys("user3");
 		driver.findElement(By.className("btn-primary")).click();
-
 		driver.get("http://localhost:8081/offer/add");
 		testUtil.waitChangeWeb();
 		driver.findElement(By.name("title")).click();
@@ -1044,7 +1049,6 @@ public class SdiActividad2202206 {
 		driver.findElement(By.name("price")).clear();
 		driver.findElement(By.name("price")).sendKeys("1");
 		driver.findElement(By.className("btn")).click();
-
 		driver.get("http://localhost:8081/offer/selling");
 		driver.findElements(By.className("destacar")).get(0).click();
 		testUtil.waitChangeWeb();
@@ -1265,6 +1269,7 @@ public class SdiActividad2202206 {
 	    testUtil.waitChangeWeb();
 	    //mandamos mensaje a la oferta1 del primer usuario1
 	    driver.findElements(By.id("sendMessage")).get(0).click();
+	    testUtil.waitChangeWeb();
 	    driver.findElement(By.id("inputMessage")).click();
 	    driver.findElement(By.id("inputMessage")).clear();
 	    driver.findElement(By.id("inputMessage")).sendKeys("Hola!!");
@@ -1275,6 +1280,7 @@ public class SdiActividad2202206 {
 	    //mandamos mensaje a la oferta1 del usuario2
 	    testUtil.waitChangeWeb();
 	    driver.findElements(By.id("sendMessage")).get(5).click();
+	    testUtil.waitChangeWeb();
 	    driver.findElement(By.id("inputMessage")).click();
 	    driver.findElement(By.id("inputMessage")).clear();
 	    driver.findElement(By.id("inputMessage")).sendKeys("Buenas");
