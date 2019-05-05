@@ -1,21 +1,26 @@
 <link rel="stylesheet" href="css/chatstyle.css"/>
 
 <div class="recentChatsWrapper">
-<h3>Conversaciones</h3>
-<div id="widget-conversaciones" class="recentChats">
 
+    <h3>Conversaciones</h3>
 
+    <div id="widget-conversaciones" class="recentChats">
 
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>Usuario</th>
+                <th>Oferta</th>
+                <th class="col-md-1"></th>
+                <th class="col-md-1"></th>
+            </tr>
+            </thead>
+            <tbody id="tablaCuerpo">
 
-    <div class="chatCard" >
-        <div class="chatImage">
-            <img src="img/purple_hearts.png" alt="">
-        </div>
-        <div class="chatInfo">
-            <div class="chatName" id="username">Elena Diaz</div>
-         </div>
+            </tbody>
+        </table>
+
     </div>
-</div>
 </div>
 
 <script>
@@ -40,19 +45,26 @@
     }
 
     function actualizarTabla(conversacionesMostrar) {
-        $("#username").empty(); // Vaciar la tabla
+        $("#tablaCuerpo").empty(); // Vaciar la tabla
         for (let i = 0; i < conversacionesMostrar.length; i++) {
-            $("#username").append(
-                "<tr id=" + conversacionesMostrar[i].user1 + ">" +
-                "<td>" + conversacionesMostrar[i].user1 + "</td>" +
-                "<td><a class='btn btn-primary' onclick=cargarChat('" + conversacionesMostrar[i].offer.toString() + "','" + conversacionesMostrar[i].user1 + "')>Enviar mensaje</a></td>" +
+            $("#tablaCuerpo").append(
+                "<tr id=" + conversacionesMostrar[i]._id + ">" +
+                    "<td>" + conversacionesMostrar[i].user1 + "</td>" +
+                    "<td>" + conversacionesMostrar[i].offer.toString() + "</td>" +
+                    "<td><a class='btn btn-primary' onclick=cargarChat('"
+                        + conversacionesMostrar[i].offer.toString()
+                        + "','"
+                        + conversacionesMostrar[i].user1 + "')>Enviar mensaje</a></td>" +
+                    "<td><a class='btn btn-primary' onclick=eliminarConversacion('"
+                        + conversacionesMostrar[i]._id + "')>Eliminar conversación</a></td>" +
                 "</tr>"
             );
         }
     }
+
     function eliminarConversacion(id) {
         $.ajax({
-            url: URLbase + "/conversaciones/eliminar/" + _id ,
+            url: URLbase + "/conversation/delete/" + id ,
             type: "GET",
             data: {},
             dataType: 'json',
@@ -63,7 +75,7 @@
                 $("#contenedor-principal").load("widget-conversaciones.html");
             },
             error: function (error) {
-                alert('Error al listar conversaciones');
+                alert('Error al borrar conversacion');
                 Cookies.remove('token');
                 $("#contenedor-principal").load("widget-login.html");
             }
