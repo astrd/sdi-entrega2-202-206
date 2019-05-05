@@ -22,14 +22,11 @@
             <img src="/img/purple_hearts.png" alt="logo"/>
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
-
             <ul class="nav navbar-nav">
-
                 <li id="offers-menu" class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" id="offersmanage" href="#">
                         Menu <span class="caret"></span>
                     </a>
-
                     <ul class="dropdown-menu">
                         <li><a  onclick="ofertasv()" id="ofertasv">Ver Ofertas </a></li>
                         <li><a  onclick="conver()" id="conver">Ver Conversaciones</a></li>
@@ -68,8 +65,8 @@
                 $("#contenedor-principal").load("widget-login.html");
         }
     }
-</script>
-<script>
+
+
     function ofertasv() {
         $("#contenedor-principal").load("widget-ofertas.html");
     }
