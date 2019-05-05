@@ -1,4 +1,6 @@
 module.exports = function (app, gestorBD) {
+
+
     app.post("/api/autenticar/", function (req, res) {
         let seguro = app.get("crypto").createHmac('sha256', app.get('clave'))
             .update(req.body.password).digest('hex');
@@ -25,6 +27,8 @@ module.exports = function (app, gestorBD) {
 
         });
     });
+
+
     app.get("/api/oferta/", function (req, res) {
         let token = req.headers['token'] || req.body.token || req.query.token;
         app.get('jwt').verify(token, 'secreto', function (err, infoToken) {
@@ -63,120 +67,122 @@ module.exports = function (app, gestorBD) {
 
     // Segun id de la oferta
     app.post('/api/offer/message/:id', function (req, res) {
-        let criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
-        gestorBD.obtenerOfertas(criterio, function (ofertas) {
-            if (ofertas == null || ofertas.length === 0) {
-                res.status(403);
-                app.get("logger").info('API: Se ha producido un error al obtener oferta');
+
+        let token = req.headers['token'] || req.body.token || req.query.token;
+        app.get('jwt').verify(token, 'secreto', function (err, infoToken) {
+            if (err) {
+                app.get("logger").error('API: Token invalido');
+                res.status(403); // Forbidden
                 res.json({
-                    err: "No results"
+                    acceso: false,
+                    error: 'Token invalido o caducado'
                 });
             } else {
-                let usuario = res.usuario;
-                let oferta = ofertas[0];
-                let criterio = {
-                    $or: [
-                        {
-                            $and: [
-                                {user1: usuario},
-                                {user2: ofertas[0].owner},
-                                {offer: gestorBD.mongo.ObjectID(req.params.id)}
 
+                let criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
+                gestorBD.obtenerOfertas(criterio, function (ofertas) {
+                    if (ofertas == null || ofertas.length === 0) {
+                        res.status(403);
+                        app.get("logger").info('API: Se ha producido un error al obtener oferta');
+                        res.json({err: "No results"});
+                    } else {
+                        let usuario = infoToken.usuario;
+                        let oferta = ofertas[0];
+                        let criterio = {
+                            $or: [
+                                {
+                                    user1: usuario,
+                                    user2: ofertas[0].owner,
+                                    offer: gestorBD.mongo.ObjectID(req.params.id)
+                                },
+                                {
+                                    user1: ofertas[0].owner,
+                                    user2: usuario,
+                                    offer: gestorBD.mongo.ObjectID(req.params.id)
+                                }
                             ]
-                        },
-                        {
-                            $and: [
-                                {user1: ofertas[0].owner},
-                                {user2: usuario},
-                                {offer: gestorBD.mongo.ObjectID(req.params.id)}
-                            ]
-                        }
-                    ],
-                };
-                //Obtenemos las conversaciones
-                gestorBD.obtenerConversaciones(criterio, function (conversacion) {
-                        if (conversacion == null || conversacion.length === 0) {
-                            var nuevaConver = {
-                                offer: gestorBD.mongo.ObjectID(oferta._id),
-                                user1: req.body.receiver,
-                                user2: usuario,
-                                valid: true
-                            };
-                            gestorBD.crearNuevaConversacion(nuevaConver, function (conversacionNueva) {
-                                if (conversacionNueva === null) {
-                                    res.status(204);
-                                    app.get("logger").info('API: Se ha producido un error al crear conversacion');
-                                    res.json({
-                                        error: "No fue posible crear la conversación"
-                                    });
-                                } else {
-                                    let message = {
-                                        sender: usuario,
-                                        receiver: req.body.receiver,
-                                        offer: oferta._id,
-                                        message: req.body.message,
-                                        date: new Date(),
-                                        read: false,
-                                        idConversacion: conversacionNueva
+                        };
+
+                        //Obtenemos las conversaciones
+                        gestorBD.obtenerConversaciones(criterio, function (conversacion) {
+                            if (conversacion == null || conversacion.length === 0) {
+                                var nuevaConver = {
+                                    offer: gestorBD.mongo.ObjectID(oferta._id),
+                                    user1: req.body.receiver,
+                                    user2: usuario,
+                                    valid: true
+                                };
+                                gestorBD.crearNuevaConversacion(nuevaConver, function (conversacionNueva) {
+                                    if (conversacionNueva === null) {
+                                        res.status(204);
+                                        app.get("logger").info('API: Se ha producido un error al crear conversacion');
+                                        res.json({error: "No fue posible crear la conversación"});
+                                    } else {
+                                        _enviarMensaje(
+                                            req.body.message,
+                                            usuario,
+                                            req.body.receiver,
+                                            conversacionNueva,
+                                            oferta._id,
+                                            req,
+                                            res);
                                     }
-                                    gestorBD.insertarMensaje(message, function (mensaje) {
-                                        if (mensaje == null) {
-                                            res.status(500); // error del servidor
-                                            app.get("logger").info('API: Se ha producido un error al insertar el mensaje');
-                                            res.json({
-                                                err: "Error del servidor"
-                                            });
-                                        } else {
-                                            res.status(200);
-                                            app.get("logger").info('API: El mensaje se ha insertado correctamente');
-                                            res.json(mensaje);
-                                        }
-                                    });
-                                }
-                            })
-                        } else {
-                            //si el receptor es nulo consideramos que el propietario esta enviando el mensaje
-                            let message = {
-                                sender: usuario,
-                                receiver: req.body.receiver,
-                                offer: oferta._id,
-                                message: req.body.message,
-                                date: new Date(),
-                                read: false,
-                                idConversacion: conversacion[0]._id
+                                });
+                            } else {
+                                //si el receptor es nulo consideramos que el propietario esta enviando el mensaje
+                                _enviarMensaje(
+                                    req.body.message,
+                                    usuario,
+                                    req.body.receiver,
+                                    conversacion[0]._id,
+                                    oferta._id,
+                                    req, res);
                             }
-                            gestorBD.insertarMensaje(message, function (mensaje) {
-                                if (mensaje == null) {
-                                    res.status(500); // error del servidor
-                                    app.get("logger").info('API: Se ha producido un error al insertar el mensaje');
-                                    res.json({
-                                        err: "Error del servidor"
-                                    });
-                                } else {
-                                    res.status(200);
-                                    app.get("logger").info('API: El mensaje se ha insertado correctamente');
-                                    res.json(mensaje);
-                                }
-                            });
-                        }
-
-
+                        });
                     }
-                );
+                });
             }
         });
     });
+
+
+    function _enviarMensaje(text, sender, receiver, convId, offerId, req, res) {
+
+        let message = {
+            sender: sender,
+            receiver: receiver,
+            offer: offerId,
+            message: text,
+            date: new Date(),
+            read: false,
+            idConversacion: convId
+        };
+        gestorBD.insertarMensaje(message, function (mensaje) {
+            if (mensaje == null) {
+                res.status(500); // error del servidor
+                app.get("logger").info('API: Se ha producido un error al insertar el mensaje');
+                res.json({
+                    err: "Error del servidor"
+                });
+            } else {
+                res.status(200);
+                app.get("logger").info('API: El mensaje se ha insertado correctamente');
+                res.json(mensaje);
+            }
+        });
+
+    }
+
+
     app.get("/api/offer/conversation/:id", function (req, res) {
         let crit = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
         gestorBD.obtenerConversaciones(crit, function (conversaciones) {
             if (conversaciones == null) {
                 res.status(500);
                 app.get("logger").info('API: Se ha producido un error al obtener conversaciones');
-                res.json({
-                    error: "Se ha producido un error"
-                })
-                //Si aún no se han creado conversaciones envía json vacio
+                res.json({error: "Se ha producido un error"});
             } else if (conversaciones.length === 0) {
+                res.status(200);
                 res.json([]);
             } else {
                 let conversacion = conversaciones[0];
@@ -198,56 +204,76 @@ module.exports = function (app, gestorBD) {
                 });
             }
         });
+
     });
 
+
     app.post("/api/mensaje/eliminar/", function (req, res) {
-        let crit = {"_id": gestorBD.mongo.ObjectID(req.body.id)};
-        gestorBD.obtenerOfertas(crit, function (ofertas) {
-            if (ofertas == null) {
-                res.status(500);
-                app.get("logger").info('API: Se ha producido un error al obtener ofertas');
+        let token = req.headers['token'] || req.body.token || req.query.token;
+        app.get('jwt').verify(token, 'secreto', function (err, infoToken) {
+            if (err) {
+                app.get("logger").error('API: Token invalido');
+                res.status(403); // Forbidden
                 res.json({
-                    error: "se ha producido un error"
-                })
-            } else if (ofertas.length === 0) {
-                res.status(400);
-                app.get("logger").info('API: No se ha encontrado la oferta');
-                res.json({
-                    error: "Oferta no encontrada"
-                })
+                    acceso: false,
+                    error: 'Token invalido o caducado'
+                });
+                // También podríamos comprobar que intoToken.usuario existe
             } else {
-                let owner = req.body.receiver;
-                let user = res.usuario;
-                let criterio = {
-                    $or: [
-                        {
-                            sender: user,
-                            receiver: owner,
-                            offer: gestorBD.mongo.ObjectID(req.body.id)
-                        },
-                        {
-                            sender: owner,
-                            receiver: user,
-                            offer: gestorBD.mongo.ObjectID(req.body.id)
-                        }
-                    ]
-                };
-                gestorBD.eliminarMensajes(criterio, function (mensajes) {
-                    if (mensajes == null) {
+
+                let crit = {"_id": gestorBD.mongo.ObjectID(req.body.id)};
+                gestorBD.obtenerOfertas(crit, function (ofertas) {
+                    if (ofertas == null) {
                         res.status(500);
-                        app.get("logger").info('API: Se ha producido un error al eliminar mensaje');
+                        app.get("logger").info('API: Se ha producido un error al obtener ofertas');
                         res.json({
                             error: "se ha producido un error"
                         })
+                    } else if (ofertas.length === 0) {
+                        res.status(400);
+                        app.get("logger").info('API: No se ha encontrado la oferta');
+                        res.json({
+                            error: "Oferta no encontrada"
+                        })
                     } else {
-                        app.get("logger").info('API: Se ha eliminado el mensaje');
-                        res.status(200);
-                        res.send(mensajes);
+                        let owner = req.body.receiver;
+                        let user = infoToken.usuario;
+                        let criterio = {
+                            $or: [
+                                {
+                                    sender: user,
+                                    receiver: owner,
+                                    offer: gestorBD.mongo.ObjectID(req.body.id)
+                                },
+                                {
+                                    sender: owner,
+                                    receiver: user,
+                                    offer: gestorBD.mongo.ObjectID(req.body.id)
+                                }
+                            ]
+                        };
+                        gestorBD.eliminarMensajes(criterio, function (mensajes) {
+                            if (mensajes == null) {
+                                res.status(500);
+                                app.get("logger").info('API: Se ha producido un error al eliminar mensaje');
+                                res.json({
+                                    error: "se ha producido un error"
+                                })
+                            } else {
+                                app.get("logger").info('API: Se ha eliminado el mensaje');
+                                res.status(200);
+                                res.send(mensajes);
+                            }
+                        });
                     }
                 });
             }
+
         });
+
     });
+
+
     app.get("/api/mensaje/leido/:id", function (req, res) {
         let criterio = {
             "_id": gestorBD.mongo.ObjectID(req.params.id)
@@ -290,6 +316,8 @@ module.exports = function (app, gestorBD) {
             }
         });
     });
+
+
     //Borrar una conversacion acuerdo a un criterio
     app.get("/api/conversation/delete/:id", function (req, res) {
         let idOferta = gestorBD.mongo.ObjectID(req.params.id);
@@ -335,99 +363,93 @@ module.exports = function (app, gestorBD) {
                 });
             }
         });
+
     });
+
+
 
 
     // Buscar conversación por id de oferta y con el token
     app.post('/api/search/offer/conversation/:id', function (req, res) {
-        let criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
-        gestorBD.obtenerOfertas(criterio, function (ofertas) {
-            if (ofertas == null || ofertas.length === 0) {
-                res.status(403);
-                app.get("logger").info('API: Se ha producido un error al obtener oferta');
+        let token = req.headers['token'] || req.body.token || req.query.token;
+        app.get('jwt').verify(token, 'secreto', function (err, infoToken) {
+            if (err) {
+                app.get("logger").error('API: Token invalido');
+                res.status(403); // Forbidden
                 res.json({
-                    err: "No results"
+                    acceso: false,
+                    error: 'Token invalido o caducado'
                 });
-            } else {
-                let usuario = res.usuario;
-                let oferta = ofertas[0];
-                let criterio = {
-                    $or: [
-                        {
-                            $and: [
-                                {user1: usuario},
-                                {user2: ofertas[0].owner},
-                                {offer: gestorBD.mongo.ObjectID(req.params.id)}
+            }
+            else {
 
-                            ]
-                        },
-                        {
-                            $and: [
-                                {user1: ofertas[0].owner},
-                                {user2: usuario},
-                                {offer: gestorBD.mongo.ObjectID(req.params.id)}
-                            ]
-                        }
-                    ],
-                };
-                //Obtenemos las conversaciones
-                gestorBD.obtenerConversaciones(criterio, function (conversacion) {
-                    if (conversacion == null) {
-                        res.status(500);
-                        app.get("logger").error("API: Ha habido un error al listar las conversaciones");
-                        res.json({
-                            error: "Se ha producido un error"
-                        })
+                let criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
+                gestorBD.obtenerOfertas(criterio, function (ofertas) {
+                    if (ofertas == null || ofertas.length === 0) {
+                        res.status(403);
+                        app.get("logger").info('API: Se ha producido un error al obtener oferta');
+                        res.json({ err: "No results" });
                     }
-                    else if (conversacion.length === 0) {
-                        res.status(400);
-                        app.get("logger").error("API: No se ha encontrado la conversacion");
-
-                        var nuevaConver = {
-                            offer: gestorBD.mongo.ObjectID(oferta._id),
-                            user1: oferta.owner,
-                            user2: usuario,
-                            valid: true
-                        };
-                        gestorBD.crearNuevaConversacion(nuevaConver, function (conversacionNueva) {
-                            if (conversacionNueva === null) {
-                                res.status(204);
-                                app.get("logger").info('API: Se ha producido un error al crear conversacion');
-                                res.json({
-                                    error: "No fue posible crear la conversación"
-                                });
-                            } else {
-                                let message = {
-                                    sender: usuario,
-                                    receiver:oferta.owner,
-                                    offer: oferta._id,
-                                    message: 'Hola! Me interesa su oferta. ',
-                                    date: new Date(),
-                                    read: false,
-                                    idConversacion: conversacionNueva
+                    else {
+                        let usuario = res.usuario;
+                        let oferta = ofertas[0];
+                        let criterio = {$or: [
+                                {
+                                    user1: usuario,
+                                    user2: ofertas[0].owner,
+                                    offer: gestorBD.mongo.ObjectID(req.params.id)
+                                },
+                                {
+                                    user1: ofertas[0].owner,
+                                    user2: usuario,
+                                    offer: gestorBD.mongo.ObjectID(req.params.id)
                                 }
-                                gestorBD.insertarMensaje(message, function (mensaje) {
-                                    if (mensaje == null) {
-                                        res.status(500); // error del servidor
-                                        app.get("logger").info('API: Se ha producido un error al insertar el mensaje');
+                            ]};
+
+                        //Obtenemos las conversaciones
+                        gestorBD.obtenerConversaciones(criterio, function (conversacion) {
+                            if (conversacion == null) {
+                                res.status(500);
+                                app.get("logger").error("API: Ha habido un error al listar las conversaciones");
+                                res.json({ error: "Se ha producido un error" });
+                            }
+                            else if (conversacion.length === 0) {
+                                app.get("logger").error("API: No se ha encontrado la conversacion");
+
+                                var nuevaConver = {
+                                    offer: gestorBD.mongo.ObjectID(oferta._id),
+                                    user1: oferta.owner,
+                                    user2: usuario,
+                                    valid: true
+                                };
+                                gestorBD.crearNuevaConversacion(nuevaConver, function (conversacionNueva) {
+                                    if (conversacionNueva === null) {
+                                        res.status(204);
+                                        app.get("logger").info('API: Se ha producido un error al crear conversacion');
                                         res.json({
-                                            err: "Error del servidor"
+                                            error: "No fue posible crear la conversación"
                                         });
                                     } else {
-                                        res.status(200);
-                                        app.get("logger").info('API: El mensaje se ha insertado correctamente');
-                                        console.log(nuevaConver);
-                                        res.send(nuevaConver);
+                                        _enviarMensaje(
+                                            'Hola! Me interesa su oferta. ',
+                                            usuario,
+                                            oferta.owner,
+                                            conversacionNueva,
+                                            oferta._id,
+                                            req, res);
                                     }
-                                });
+                                })
+                            } else {
+                                app.get("logger").info('API: Se listan las conversaciones correctamente');
+                                res.send(conversacion[0]);
                             }
-                        })
-                    } else {
-                        app.get("logger").info('API: Se listan las conversaciones correctamente');
-                        res.send(conversacion[0]);
+                        });
                     }
                 });
             }
         });
-    })
-};
+
+    });
+
+
+}
