@@ -335,8 +335,8 @@ public class SdiActividad2202206 {
 	public void T11_BorrarPrimerUsuario() {
 		driver.get("http://localhost:8081/identificarse");
 		testUtil.waitChangeWeb();
-
 		driver.findElement(By.linkText("Registrate")).click();
+		testUtil.waitChangeWeb();
 		driver.findElement(By.id("name")).click();
 		driver.findElement(By.id("name")).clear();
 		driver.findElement(By.id("name")).sendKeys("Ana");
@@ -585,6 +585,7 @@ public class SdiActividad2202206 {
 	@Test
 	public void T17_EliminarPrimeraOferta() {
 		driver.get("http://localhost:8081/identificarse");
+		testUtil.waitChangeWeb();
 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
 		driver.findElement(By.name("email")).sendKeys("user1@email.com");
@@ -627,6 +628,7 @@ public class SdiActividad2202206 {
 	public void T18_EliminarUltimaOferta() {
 
 		driver.get("http://localhost:8081/identificarse");
+		testUtil.waitChangeWeb();
 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
 		driver.findElement(By.name("email")).sendKeys("user1@email.com");
@@ -796,10 +798,9 @@ public class SdiActividad2202206 {
 		driver.findElement(By.name("password")).click();
 		driver.findElement(By.name("password")).clear();
 		driver.findElement(By.name("password")).sendKeys("user2");
-
 		driver.findElement(By.className("btn-primary")).click();
-
 		driver.get("http://localhost:8081/offer/add");
+		testUtil.waitChangeWeb();
 		driver.findElement(By.name("title")).click();
 		driver.findElement(By.name("title")).clear();
 		driver.findElement(By.name("title")).sendKeys("vende01");
@@ -810,7 +811,6 @@ public class SdiActividad2202206 {
 		driver.findElement(By.name("price")).clear();
 		driver.findElement(By.name("price")).sendKeys("0.1");
 		driver.findElement(By.className("btn-primary")).click();
-
 		driver.get("http://localhost:8081/identificarse");
 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
@@ -818,15 +818,12 @@ public class SdiActividad2202206 {
 		driver.findElement(By.name("password")).click();
 		driver.findElement(By.name("password")).clear();
 		driver.findElement(By.name("password")).sendKeys("user6");
-
-		driver.findElement(By.className("btn-primary")).click();
- 
+		driver.findElement(By.className("btn-primary")).click(); 
 		driver.get("http://localhost:8081/offer/search?busqueda=vende01");
 		driver.findElements(By.className("buy")).get(0).click();
-
+		testUtil.waitChangeWeb();
 		driver.get("http://localhost:8081/offer/bought");
 		testUtil.waitChangeWeb();
-
 		testUtil.searchText("vende01", true);
 
 	}
@@ -1050,6 +1047,7 @@ public class SdiActividad2202206 {
 
 		driver.get("http://localhost:8081/offer/selling");
 		driver.findElements(By.className("destacar")).get(0).click();
+		testUtil.waitChangeWeb();
 
 		driver.get("http://localhost:8081/home");
 		testUtil.searchText("100", false);
