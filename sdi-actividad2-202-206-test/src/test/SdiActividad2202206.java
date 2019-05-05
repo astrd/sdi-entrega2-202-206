@@ -1304,5 +1304,188 @@ public class SdiActividad2202206 {
 	    testUtil.searchText("Buenas", true);
 	    
 	}
+	//Eliminar un conversacion
+		//Sobre el listado de conversaciones ya abiertas pinchar el enlace de eliminar
+		//comprobar que el listado se actualizar
+	@Test
+	public void T_36EliminarConver() {
+
+		//reseteamos la base de datos para que las conversaciones añadidas en tests anteriores
+		//no influyan en este test
+		begin();
+		 
+		driver.get("http://localhost:8081/cliente.html?w=login");
+		testUtil.waitChangeWeb();
+	    driver.findElement(By.id("email")).click();
+	    driver.findElement(By.id("email")).clear();
+	    driver.findElement(By.id("email")).sendKeys("user6@email.com");
+	    driver.findElement(By.id("password")).click();
+	    driver.findElement(By.id("password")).clear();
+	    driver.findElement(By.id("password")).sendKeys("user6");
+	    driver.findElement(By.id("boton-login")).click();
+	    testUtil.waitChangeWeb();
+	    //mandamos mensaje a la oferta1 del primer usuario1
+	    driver.findElements(By.id("sendMessage")).get(0).click();
+	    testUtil.waitChangeWeb();
+	    driver.findElement(By.id("inputMessage")).click();
+	    driver.findElement(By.id("inputMessage")).clear();
+	    driver.findElement(By.id("inputMessage")).sendKeys("Hola!!");
+	    driver.findElement(By.id("submitMessage")).click();
+	    testUtil.waitChangeWeb();
+	    driver.findElement(By.id("offersmanage")).click();
+	    driver.findElement(By.id("conver")).click();
+	    testUtil.waitChangeWeb();
+	    testUtil.waitChangeWeb();
+	    List<WebElement> elements = driver.findElements(By.id("deleteMessage"));
+		int size = elements.size();
+	    //comprobamos que este la conversacion con el primer usuario
+	    testUtil.searchText("user1@email.com", true);
+	    //debería de aparecer el boton de eliminar
+	    testUtil.searchText("Eliminar", true);	    
+	    driver.findElements(By.id("deleteMessage")).get(0).click();
+	    testUtil.waitChangeWeb();
+	    testUtil.waitChangeWeb();
+	    //una vez borramos, la lista de conversaciones aparecera vacia
+	    elements = driver.findElements(By.id("deleteMessage"));
+	    testUtil.waitChangeWeb();
+	    testUtil.searchText("user1@email.com", false);
+	     	    
+	    assertTrue(size-1 == elements.size());
+	}
+	//Eliminar conversacion
+			//Sobre el listado de conversaciones ya abiertas.
+			//Pinchar enlace de eliminar de la ultima y comprobar que se actualiza
+	@Test
+	public void T37_EliminarUltimaConver() {	
+				//reseteamos la base de datos para que las conversaciones añadidas en tests anteriores
+				//no influyan en este test
+				begin();
+				driver.get("http://localhost:8081/cliente.html?w=login");
+				testUtil.waitChangeWeb();
+			    driver.findElement(By.id("email")).click();
+			    driver.findElement(By.id("email")).clear();
+			    driver.findElement(By.id("email")).sendKeys("user6@email.com");
+			    driver.findElement(By.id("password")).click();
+			    driver.findElement(By.id("password")).clear();
+			    driver.findElement(By.id("password")).sendKeys("user6");
+			    driver.findElement(By.id("boton-login")).click();
+			    testUtil.waitChangeWeb();
+			    //mandamos mensaje a la oferta1 del primer usuario1
+			    driver.findElements(By.id("sendMessage")).get(0).click();
+			    testUtil.waitChangeWeb();
+			    driver.findElement(By.id("inputMessage")).click();
+			    driver.findElement(By.id("inputMessage")).clear();
+			    driver.findElement(By.id("inputMessage")).sendKeys("Hola!!");
+			    driver.findElement(By.id("submitMessage")).click();
+			    testUtil.waitChangeWeb();
+			    driver.findElement(By.id("offersmanage")).click();
+			    driver.findElement(By.id("ofertasv")).click();
+			    //mandamos mensaje a la oferta1 del usuario2
+			    testUtil.waitChangeWeb();
+			    driver.findElements(By.id("sendMessage")).get(5).click();
+			    testUtil.waitChangeWeb();
+			    driver.findElement(By.id("inputMessage")).click();
+			    driver.findElement(By.id("inputMessage")).clear();
+			    driver.findElement(By.id("inputMessage")).sendKeys("Buenas");
+			    driver.findElement(By.id("submitMessage")).click();
+			    testUtil.waitChangeWeb();
+			    driver.findElement(By.id("offersmanage")).click();
+			    driver.findElement(By.id("conver")).click();
+			    testUtil.waitChangeWeb();
+				List<WebElement> elements = driver.findElements(By.id("deleteMessage"));
+				int size = elements.size();
+				//comprobamos que este la conversacion con el ultimo usuario(segundo usuario)
+			    testUtil.searchText("user2@email.com", true);
+			    //debería de aparecer el boton de eliminar
+			    testUtil.searchText("Eliminar", true);
+				//eliminamos el ultimo usuario
+				driver.findElements(By.id("deleteMessage")).get(size - 1).click();
+				testUtil.waitChangeWeb();
+			    testUtil.waitChangeWeb();
+				elements = driver.findElements(By.id("deleteMessage"));
+				testUtil.waitChangeWeb();
+				assertTrue(size-1 == elements.size());
+				testUtil.searchText("user2@email.com", false);
+			    
+				
+			}
+	@Test
+		public void T38_MensajeLeido() {
+		//reseteamos la base de datos para que las conversaciones añadidas en tests anteriores
+		//no influyan en este test
+			begin();
+			driver.get("http://localhost:8081/cliente.html?w=login");
+			testUtil.waitChangeWeb();
+		    driver.findElement(By.id("email")).click();
+		    driver.findElement(By.id("email")).clear();
+		    driver.findElement(By.id("email")).sendKeys("user8@email.com");
+		    driver.findElement(By.id("password")).click();
+		    driver.findElement(By.id("password")).clear();
+		    driver.findElement(By.id("password")).sendKeys("user8");
+		    driver.findElement(By.id("boton-login")).click();
+		    testUtil.waitChangeWeb();
+		    //mandamos mensaje a la oferta1 del primer usuario1
+		    driver.findElements(By.id("sendMessage")).get(0).click();
+		    testUtil.waitChangeWeb();
+		    testUtil.waitChangeWeb();
+		    testUtil.waitChangeWeb();
+
+		    driver.findElement(By.id("inputMessage")).click();
+		    driver.findElement(By.id("inputMessage")).clear();
+		    driver.findElement(By.id("inputMessage")).sendKeys("Hola, user1!!");
+		    driver.findElement(By.id("submitMessage")).click();
+		    testUtil.waitChangeWeb();		     
+		    driver.get("http://localhost:8081/cliente.html?w=login");
+			testUtil.waitChangeWeb();
+		    driver.findElement(By.id("email")).click();
+		    driver.findElement(By.id("email")).clear();
+		    driver.findElement(By.id("email")).sendKeys("user1@email.com");
+		    driver.findElement(By.id("password")).click();
+		    driver.findElement(By.id("password")).clear();
+		    driver.findElement(By.id("password")).sendKeys("user1");
+		    driver.findElement(By.id("boton-login")).click();
+		    testUtil.waitChangeWeb();  
+		    driver.findElement(By.id("offersmanage")).click();
+		    driver.findElement(By.id("conver")).click();
+		    testUtil.waitChangeWeb();
+		    testUtil.waitChangeWeb();
+		    testUtil.waitChangeWeb();
+		    driver.findElements(By.id("sendMessageConver")).get(0).click();
+ 
+		    //comprobar que esta el mensaje que mandamos al primer usuario
+		    testUtil.waitChangeWeb();
+
+		    driver.findElement(By.id("inputMessage")).click();
+		    driver.findElement(By.id("inputMessage")).clear();
+		    driver.findElement(By.id("inputMessage")).sendKeys("Hola, user8!!");
+		    driver.findElement(By.id("submitMessage")).click();		    
+		    testUtil.waitChangeWeb();
+		    testUtil.waitChangeWeb();
+		    testUtil.waitChangeWeb();
+
+		    driver.get("http://localhost:8081/cliente.html?w=login");
+ 		    driver.findElement(By.id("email")).click();
+		    driver.findElement(By.id("email")).clear();
+		    driver.findElement(By.id("email")).sendKeys("user8@email.com");
+		    driver.findElement(By.id("password")).click();
+		    driver.findElement(By.id("password")).clear();
+		    driver.findElement(By.id("password")).sendKeys("user8");
+		    driver.findElement(By.id("boton-login")).click();
+		    testUtil.waitChangeWeb();
+		    driver.findElement(By.id("offersmanage")).click();
+		    driver.findElement(By.id("conver")).click();
+		    testUtil.waitChangeWeb();
+ 		    driver.findElements(By.id("sendMessageConver")).get(0).click();
+		    testUtil.waitChangeWeb();
+		    testUtil.waitChangeWeb();
+		    testUtil.waitChangeWeb();
+
+		    testUtil.searchText("✈", false);	    
+
+		   testUtil.searchText("✔✔", true);	    
+
+		    
+		
+		}
 
 }
