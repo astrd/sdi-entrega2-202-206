@@ -50,12 +50,12 @@
                 "<tr id=" + conversacionesMostrar[i]._id + ">" +
                     "<td>" + conversacionesMostrar[i].user1 + "</td>" +
                     "<td>" + conversacionesMostrar[i].title + "</td>" +
-                    "<td><a class='btn btn-primary' onclick=cargarChat('"
+                    "<td><a id='sendMessageConver' class='btn btn-primary' onclick=cargarChat('"
                         + conversacionesMostrar[i].offer.toString()
                         + "','"
                         + conversacionesMostrar[i].user1+ "','"
                         + conversacionesMostrar[i].user2+ "')>Enviar mensaje</a></td>" +
-                    "<td><a class='btn btn-primary' onclick=eliminarConversacion('"
+                    "<td><a id='deleteMessage'class='btn btn-primary' onclick=eliminarConversacion('"
                         + conversacionesMostrar[i]._id + "')>Eliminar conversación</a></td>" +
                 "</tr>"
             );

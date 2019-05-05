@@ -939,7 +939,7 @@ public class SdiActividad2202206 {
 	// que aparecen
 	// las ofertas que deben aparecer.
 	@Test
-	public void Test25() {
+	public void T25_MostrarOfertas() {
 		driver.get("http://localhost:8081/identificarse");
 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
@@ -1251,6 +1251,55 @@ public class SdiActividad2202206 {
 	    testUtil.searchText("Hola! Me interesa su oferta", true);
 	    testUtil.searchText("Buenas!", true);
 	    
+	    
+	}
+	
+	//Mostrar listado de conversaciones abiertas y comprobar que son las que tienen que ser
+	@Test
+	public void T35_MostrarConversaciones() {
+		driver.get("http://localhost:8081/cliente.html?w=login");
+		testUtil.waitChangeWeb();
+	    driver.findElement(By.id("email")).click();
+	    driver.findElement(By.id("email")).clear();
+	    driver.findElement(By.id("email")).sendKeys("user6@email.com");
+	    driver.findElement(By.id("password")).click();
+	    driver.findElement(By.id("password")).clear();
+	    driver.findElement(By.id("password")).sendKeys("user6");
+	    driver.findElement(By.id("boton-login")).click();
+	    testUtil.waitChangeWeb();
+	    //mandamos mensaje a la oferta1 del primer usuario1
+	    driver.findElements(By.id("sendMessage")).get(0).click();
+	    driver.findElement(By.id("inputMessage")).click();
+	    driver.findElement(By.id("inputMessage")).clear();
+	    driver.findElement(By.id("inputMessage")).sendKeys("Hola!!");
+	    driver.findElement(By.id("submitMessage")).click();
+	    testUtil.waitChangeWeb();
+	    driver.findElement(By.id("offersmanage")).click();
+	    driver.findElement(By.id("ofertasv")).click();
+	    //mandamos mensaje a la oferta1 del usuario2
+	    testUtil.waitChangeWeb();
+	    driver.findElements(By.id("sendMessage")).get(5).click();
+	    driver.findElement(By.id("inputMessage")).click();
+	    driver.findElement(By.id("inputMessage")).clear();
+	    driver.findElement(By.id("inputMessage")).sendKeys("Buenas");
+	    driver.findElement(By.id("submitMessage")).click();
+	    testUtil.waitChangeWeb();
+	    driver.findElement(By.id("offersmanage")).click();
+	    driver.findElement(By.id("conver")).click();
+	    testUtil.waitChangeWeb();
+	    driver.findElements(By.id("sendMessageConver")).get(0).click();
+	    //comprobar que esta el mensaje que mandamos al primer usuario
+	    testUtil.waitChangeWeb();
+	    testUtil.searchText("user1@email.com", true);
+	    testUtil.searchText("Hola!!", true);
+	    driver.findElement(By.id("offersmanage")).click();
+	    driver.findElement(By.id("conver")).click();
+	    testUtil.waitChangeWeb();
+	    driver.findElements(By.id("sendMessageConver")).get(1).click();
+	    //comprobar que esta el mensaje que mandamos al segundo usario
+	    testUtil.waitChangeWeb();
+	    testUtil.searchText("user2@email.com", true);
+	    testUtil.searchText("Buenas", true);
 	    
 	}
 
