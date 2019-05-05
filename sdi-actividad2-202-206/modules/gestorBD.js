@@ -200,6 +200,23 @@ module.exports = {
             }
         });
     },
+    eliminarConversaciones: function (criterio, funcionCallback) {
+        this.mongo.MongoClient.connect(this.app.get('db'), function (err, db) {
+            if (err) {
+                funcionCallback(null);
+            } else {
+                let collection = db.collection('conversaciones');
+                collection.remove(criterio, function (err, conversaciones) {
+                    if (err) {
+                        funcionCallback(null);
+                    } else {
+                        funcionCallback(conversaciones);
+                    }
+                    db.close();
+                });
+            }
+        });
+    },
     obtenerConversaciones:function(criterio,funcionCallback){
         this.mongo.MongoClient.connect(this.app.get('db'), function (err, db) {
             if (err) {

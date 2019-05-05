@@ -95,6 +95,7 @@ app.use('/api/mensaje/eliminar/', routerUsuarioToken);
 app.use('/api/mensaje/leido/:id', routerUsuarioToken);
 app.use('/api/offer/listConversations', routerUsuarioToken);
 app.use('/api/search/offer/conversation/:id', routerUsuarioToken);
+app.use('/api/conversation/delete/:id', routerUsuarioToken);
 
 // routerUsuarioSession
 let routerUsuarioSession = express.Router();

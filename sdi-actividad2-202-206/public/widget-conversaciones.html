@@ -49,7 +49,26 @@
             );
         }
     }
-
+    function eliminarConversacion(id) {
+        $.ajax({
+            url: URLbase + "/conversaciones/eliminar/" + _id ,
+            type: "GET",
+            data: {},
+            dataType: 'json',
+            headers: {
+                "token": Cookies.get('token')
+            },
+            success: function (respuesta) {
+                $("#contenedor-principal").load("widget-conversaciones.html");
+            },
+            error: function (error) {
+                alert('Error al listar conversaciones');
+                Cookies.remove('token');
+                $("#contenedor-principal").load("widget-login.html");
+            }
+        });
+        $("#contenedor-principal").load("widget-conversaciones.html");
+    }
 
     function cargarChat(id, email) {
         idOferta = id;
