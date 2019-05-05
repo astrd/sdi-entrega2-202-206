@@ -5,21 +5,14 @@
 <div id="widget-conversaciones" class="recentChats">
 
 
-    <div class="chatCard">
-        <div class="chatImage">
-            <img src="img/heart.png" alt="">
-        </div>
-        <div class="chatInfo">
-            <div class="chatName">Astrid Gamoneda</div>
-         </div>
-    </div>
 
-    <div class="chatCard">
+
+    <div class="chatCard" >
         <div class="chatImage">
             <img src="img/purple_hearts.png" alt="">
         </div>
         <div class="chatInfo">
-            <div class="chatName">Elena Diaz</div>
+            <div class="chatName" id="username">Elena Diaz</div>
          </div>
     </div>
 </div>
@@ -48,14 +41,12 @@
     }
 
     function actualizarTabla(conversacionesMostrar) {
-        $("#tablaCuerpo").empty(); // Vaciar la tabla
+        $("#username").empty(); // Vaciar la tabla
         for (let i = 0; i < conversacionesMostrar.length; i++) {
-            $("#tablaCuerpo").append(
-                "<tr id=" + conversacionesMostrar[i]._id + ">" +
-                "<td>" + conversacionesMostrar[i].title + "</td>" +
-                "<td>" + conversacionesMostrar[i].description + "</td>" +
-                "<td>" + conversacionesMostrar[i].price + "</td>" +
-                "<td><a class='btn btn-primary' onclick=cargarChat('" + ofertasMostrar[i]._id + "','" + ofertasMostrar[i].owner + "')>Enviar mensaje</a></td>" +
+            $("#username").append(
+                "<tr id=" + conversacionesMostrar[i].user1 + ">" +
+                "<td>" + conversacionesMostrar[i].user1 + "</td>" +
+                "<td><a class='btn btn-primary' onclick=cargarChat('" + conversacionesMostrar[i].offer + "','" + conversacionesMostrar[i].user1 + "')>Enviar mensaje</a></td>" +
                 "</tr>"
             );
         }
@@ -83,6 +74,9 @@
 
     function cargarChat(id, email) {
         idOferta = id;
+        semail = email;
+        Cookies.set('idOferta',idOferta);
+        Cookies.set('semail',semail);
         $("#contenedor-principal").load("widget-chat.html");
         window.history.pushState("", "", "/cliente.html?w=chat&receptor=" + email + "&oferta=" + id);
     }

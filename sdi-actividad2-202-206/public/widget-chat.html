@@ -36,6 +36,10 @@
     function loadConversation() {
         $("#chatTitle").empty()
         $("#chatTitle").append(semail);
+        console.log( semail);
+        console.log( token);
+
+
 
         $.ajax({
             url: URLbase + "/search/offer/conversation/" + idOferta,
@@ -51,7 +55,7 @@
                 showMessage(conversacionid._id);
             },
             error: function () {
-                   $("#contenedor-principal").load("widget-login.html");
+                   $("#contenedor-principal").load("widget-conversaciones.html");
 
             }
         });
@@ -134,7 +138,7 @@
                     $("#inputMessage").val('');
                 },
                 error: function (error) {
-                    $("#contenedor-principal").load("widget-login.html");
+                    $("#contenedor-principal").load("widget-conversaciones.html");
                 }
             });
         }
@@ -150,7 +154,7 @@
             },
             success: function (res) {},
             error: function (error) {
-                $("#contenedor-principal").load("widget-login.html");
+                $("#contenedor-principal").load("widget-conversaciones.html");
             }
         });
     }
