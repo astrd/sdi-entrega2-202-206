@@ -25,7 +25,6 @@
 
 <script>
     window.history.pushState("", "", "/cliente.html?w=conversaciones");
-    let conversaciones;
 
     function cargarConversaciones() {
         $.ajax({
@@ -35,7 +34,7 @@
             dataType: 'json',
             headers: {"token": Cookies.get('token')},
             success: function (respuesta) {
-                conversaciones = respuesta;
+                let conversaciones = respuesta;
                  actualizarTabla(conversaciones);
             },
             error: function () {
@@ -54,7 +53,8 @@
                     "<td><a class='btn btn-primary' onclick=cargarChat('"
                         + conversacionesMostrar[i].offer.toString()
                         + "','"
-                        + conversacionesMostrar[i].user1 + "')>Enviar mensaje</a></td>" +
+                        + conversacionesMostrar[i].user1+ "','"
+                        + conversacionesMostrar[i].user2+ "')>Enviar mensaje</a></td>" +
                     "<td><a class='btn btn-primary' onclick=eliminarConversacion('"
                         + conversacionesMostrar[i]._id + "')>Eliminar conversación</a></td>" +
                 "</tr>"
@@ -83,13 +83,38 @@
         $("#contenedor-principal").load("widget-conversaciones.html");
     }
 
-    function cargarChat(id, email) {
+    function cargarChat(id, email1, email2) {
         idOferta = id;
-        semail = email;
+        var emaild;
+        demail = email1;
+        remail = email2;
         Cookies.set('idOferta',idOferta);
-        Cookies.set('semail',semail);
+        console.log(Cookies.get('lemail'));
+
+        if(semail===Cookies.get('lemail'))
+        {
+            emaild = email2;
+            Cookies.set('semail',remail);
+            console.log('dentroif remail');
+
+            console.log(emaild);
+
+        }else
+          {
+              emaild= email1;
+              Cookies.set('semail',demail);
+
+              console.log('dentroelse semail');
+              console.log(emaild);
+
+
+          }
+        console.log(emaild);
+        console.log(Cookies.get('semail'));
+
+
         $("#contenedor-principal").load("widget-chat.html");
-        window.history.pushState("", "", "/cliente.html?w=chat&receptor=" + email + "&oferta=" + id);
+        window.history.pushState("", "", "/cliente.html?w=chat&receptor=" + emaild + "&oferta=" + id);
     }
 
     cargarConversaciones();

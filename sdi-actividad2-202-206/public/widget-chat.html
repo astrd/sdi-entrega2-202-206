@@ -35,8 +35,7 @@
 <script>
     function loadConversation() {
         $("#chatTitle").empty()
-        $("#chatTitle").append(semail);
-         console.log( idOferta);
+        $("#chatTitle").append(Cookies.get('semail'));
 
 
 
@@ -86,10 +85,10 @@
 
     $("#currentChatContent").empty();
         for (var i = 0; i < messages.length; i++) {
-            console.log(messages[i].receiver+""+semail);
+            console.log(messages[i].receiver+""+Cookies.get('semail'));
 
             var message = "";
-             if (messages[i].receiver === semail) {
+             if (messages[i].receiver === Cookies.get('semail')) {
                 console.log('dentroif');
                 message = "<div class='currentChatContent'>" +
                     "<div class='message sent'>"  +
@@ -127,7 +126,7 @@
                 url: URLbase + "/offer/message/" + idOferta,
                 type: "POST",
                 data: {
-                    receiver: semail,
+                    receiver: Cookies.get('semail'),
                     message: $("#inputMessage").val(),
                     token: token
                  },

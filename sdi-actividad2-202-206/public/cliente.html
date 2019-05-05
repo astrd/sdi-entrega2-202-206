@@ -34,6 +34,9 @@
                     </ul>
                 </li>
             </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a onclick="login()"><span class="glyphicon glyphicon-log-in"></span>Desconectar</a></li>
+            </ul>
         </div>
     </div>
 </nav>
@@ -72,6 +75,10 @@
     }
     function conver() {
         $("#contenedor-principal").load("widget-conversaciones.html");
+
+    }
+    function login() {
+        $("#contenedor-principal").load("widget-login.html");
 
     }
 </script>
