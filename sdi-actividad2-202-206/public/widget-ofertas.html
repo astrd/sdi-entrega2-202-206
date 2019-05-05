@@ -44,7 +44,7 @@
                 "<td>" + ofertasMostrar[i].title + "</td>" +
                 "<td>" + ofertasMostrar[i].description + "</td>" +
                 "<td>" + ofertasMostrar[i].price + "</td>" +
-                "<td><a class='btn btn-primary' onclick=cargarConversacion('" + ofertasMostrar[i]._id + "','" + ofertasMostrar[i].owner + "')>Enviar mensaje</a></td>" +
+                "<td><a id='sendMessage' class='btn btn-primary' onclick=cargarConversacion('" + ofertasMostrar[i]._id + "','" + ofertasMostrar[i].owner + "')>Enviar mensaje</a></td>" +
                 "</tr>"
             );
         }

@@ -294,7 +294,7 @@ public class SdiActividad2202206 {
 	// Comprobar que el botón cerrar sesión no está visible si el usuario no
 	// está autenticado.
 	@Test
-	public void T9_CerrarSesionNoVisibleNoAutenticado() {
+	public void T09_CerrarSesionNoVisibleNoAutenticado() {
 		driver.get("http://localhost:8081/");
 		testUtil.searchText("Desconectar", false);
 	}
@@ -794,7 +794,7 @@ public class SdiActividad2202206 {
 	// un saldo positivo en el contador del comprobador. Y comprobar que el contador
 	// se actualiza
 	// correctamente en la vista del comprador
-	public void Test22() {
+	public void T22_ComprarOfertaSaldoPositivo() {
 		driver.get("http://localhost:8081");
 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
@@ -843,7 +843,7 @@ public class SdiActividad2202206 {
 	// actualiza correctamente en
 	// la vista del comprador.
 	@Test
-	public void Test23() {
+	public void T23_ComprarOfertaSaldo0() {
 
 		driver.get("http://localhost:8081");
 		driver.findElement(By.name("email")).click();
@@ -895,7 +895,7 @@ public class SdiActividad2202206 {
 	// muestra el mensaje de
 	// saldo no suficiente.
 	@Test
-	public void Test24() {
+	public void T24_ComprarOfertaSaldoInsuficiente() {
 		driver.get("http://localhost:8081");
 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
@@ -1069,7 +1069,7 @@ public class SdiActividad2202206 {
 
 	}
 
-	// menos 20 euros de saldo no dejar destacar
+	// Teniendo menos de 20 euros de saldo no dejar destacar
 	@Test
 	public void Test28() {
 		driver.get("http://localhost:8081");
@@ -1124,7 +1124,7 @@ public class SdiActividad2202206 {
 	// contraseña incorrecta).
 
 	@Test
-	public void Test30() {
+	public void T30_InicioSesionContraseñaIncorrecta() {
 		driver.get("http://localhost:8081/cliente.html");
 		testUtil.waitChangeWeb();
 
@@ -1161,7 +1161,7 @@ public class SdiActividad2202206 {
 	// las que existen,
 	// menos las del usuario identificado
 	@Test
-	public void Test32() {
+	public void T32_MostrarOfertas() {
 		driver.get("http://localhost:8081/cliente.html");
 		testUtil.waitChangeWeb();
 		driver.findElement(By.id("email")).click();
@@ -1174,6 +1174,48 @@ public class SdiActividad2202206 {
 		testUtil.waitChangeWeb();
 		testUtil.searchText("Nombre", true);
 		testUtil.searchText("Vendo 111", false);
+	}
+	
+	
+	//Enviar y visualizar mensajes a una oferta.
+	//Sobre una búsqueda determinada de ofertas enviar un mensaje a una oferta. 
+	//Se abrirá dicha conversación por primera vez.
+	//Comprobar que el mensaje aparece en el listado de conversaciones
+	@Test
+	public void T33_EnviarMensajePrimeraVez() {
+		driver.get("http://localhost:8081/cliente.html?w=login");
+		testUtil.waitChangeWeb();
+	    driver.findElement(By.id("email")).click();
+	    driver.findElement(By.id("email")).clear();
+	    driver.findElement(By.id("email")).sendKeys("user6@email.com");
+	    driver.findElement(By.id("password")).click();
+	    driver.findElement(By.id("password")).clear();
+	    driver.findElement(By.id("password")).sendKeys("user6");
+	    driver.findElement(By.id("boton-login")).click();
+	    testUtil.waitChangeWeb();
+	    //vamos a probar mandar un mensaje a la primera oferta que aparece
+	    driver.findElements(By.id("sendMessage")).get(0).click();
+	    testUtil.waitChangeWeb();
+	    driver.findElement(By.id("inputMessage")).click();
+	    driver.findElement(By.id("inputMessage")).clear();
+	    driver.findElement(By.id("inputMessage")).sendKeys("Hola");
+	    driver.findElement(By.id("submitMessage")).click();
+	    testUtil.waitChangeWeb();
+	    testUtil.waitChangeWeb();
+	    testUtil.waitChangeWeb();
+	  //debería de aparecer mensaje que acabamos de mandar y la hora de envío
+	    testUtil.searchText("Hola", true);
+	    //debería aparecer mensaje automático
+	    testUtil.searchText("Hola! Me interesa su oferta", true);	    
+	    //debería aparecer la hora de envío del mensaje
+	    testUtil.searchText("" + driver.findElement(By.className("messageTime")), true);
+	    //debería de aparecer el email del primer usuario user1@email.com
+	    testUtil.searchText("user1@email.com", true);
+	    driver.findElement(By.id("offersmanage")).click();
+	    driver.findElement(By.id("conver")).click();
+	    testUtil.searchText("user1@email.com", true);
+	    
+		
 	}
 
 }
