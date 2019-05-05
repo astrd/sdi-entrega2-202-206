@@ -978,7 +978,7 @@ public class SdiActividad2202206 {
 	// saldo del usuario se actualiza adecuadamente en la vista del ofertante
 	// (-20)..
 	@Test
-	public void Test26() {
+	public void T26_DestacarDesdeCreacion() {
 		driver.get("http://localhost:8081");
 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
@@ -1026,7 +1026,7 @@ public class SdiActividad2202206 {
 	// y que el saldo del usuario se actualiza adecuadamente en la vista del
 	// ofertante (-20). @Test
 	@Test
-	public void Test27() {
+	public void T27_DestacarOfertasDesdeEnlace() {
 		driver.get("http://localhost:8081");
 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
@@ -1071,7 +1071,7 @@ public class SdiActividad2202206 {
 
 	// Teniendo menos de 20 euros de saldo no dejar destacar
 	@Test
-	public void Test28() {
+	public void T28_NoDejaDestacarSiSaldoInsuficiente() {
 		driver.get("http://localhost:8081");
 		driver.findElement(By.name("email")).click();
 		driver.findElement(By.name("email")).clear();
@@ -1100,7 +1100,7 @@ public class SdiActividad2202206 {
 
 	// Jquery: Inicio de sesión con datos válidos.
 	@Test
-	public void Test29() {
+	public void T29_InicioSesinDatosValidos() {
 		driver.get("http://localhost:8081/cliente.html");
 		testUtil.waitChangeWeb();
 
@@ -1215,6 +1215,43 @@ public class SdiActividad2202206 {
 	    testUtil.searchText("user1@email.com", true);
 	    
 		
+	}
+	
+	//Sobre el listado de conversaciones enviar mensaje a conversación ya abierta
+	//Comprobamos que el mensaje aparece en listado de mensajes
+	@Test
+	public void T34_EnviarMensajeConverAbierta() {
+		driver.get("http://localhost:8081/cliente.html?w=login");
+		testUtil.waitChangeWeb();
+	    driver.findElement(By.id("email")).click();
+	    driver.findElement(By.id("email")).clear();
+	    driver.findElement(By.id("email")).sendKeys("user6@email.com");
+	    driver.findElement(By.id("password")).click();
+	    driver.findElement(By.id("password")).clear();
+	    driver.findElement(By.id("password")).sendKeys("user6");
+	    driver.findElement(By.id("boton-login")).click();
+	    testUtil.waitChangeWeb();
+	    driver.findElements(By.id("sendMessage")).get(0).click();
+	    driver.findElement(By.id("inputMessage")).click();
+	    driver.findElement(By.id("inputMessage")).clear();
+	    //abrimos una conversación y mandamos mensaje	   
+	    driver.findElement(By.id("inputMessage")).sendKeys("Buenas!");
+	    testUtil.waitChangeWeb();
+	    driver.findElement(By.id("submitMessage")).click();
+	    testUtil.waitChangeWeb();
+	    driver.findElement(By.id("offersmanage")).click();
+	    driver.findElement(By.id("conver")).click();
+	    testUtil.waitChangeWeb();
+	    //vamos a las conversaciones, 
+	    //intentamos mandar un mensaje en esa conversacion y comprobamos que esta el mensaje anterior
+	    testUtil.searchText("user1@email.com", true);
+	    driver.findElement(By.linkText("Enviar mensaje")).click();
+	    testUtil.waitChangeWeb();
+	    testUtil.waitChangeWeb();
+	    testUtil.searchText("Hola! Me interesa su oferta", true);
+	    testUtil.searchText("Buenas!", true);
+	    
+	    
 	}
 
 }
