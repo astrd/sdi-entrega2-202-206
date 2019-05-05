@@ -159,31 +159,72 @@ module.exports = function (app, swig, gestorBD) {
             });
         }
     });
-
     app.post('/user/delete', function (req, res) {
-        let idsUsers = req.body.idsUsers;
+        let idsUsers = req.body.idsUser;
         //si es solo un usuario, creamos un array y lo metemos para trabajar con forEach
-        if (!Array.isArray(idsUsers)) {
-            let aux = idsUsers;
-            idsUsers = [];
-            idsUsers.push(aux);
-        }
-        for (let i = 0; i < idsUsers.length; i++) {
-            let email = {
-                email: idsUsers[i]
+        if (idsUsers === undefined) {
+            res.redirect("/listarUsuarios" +
+                "?mensaje=Los usuarios no pudieron eliminarse" + "&tipoMensaje=alert-danger ");
+        } else {
+            if (!Array.isArray(idsUsers)) {
+                let aux = idsUsers;
+                idsUsers = [];
+                idsUsers.push(aux);
+            }
+            // Borro conversacion
+            let criterioConversacion = {
+                $or: [{receptor: {$in: idsUsers}},
+                    {emisor: {$in: idsUsers}}]
             };
-            gestorBD.eliminarUsuario(email, function (resultado) {
-                if (resultado == null) {
-                    res.redirect('/user/list?mensaje=Error al borrar el usuario con email' + user);
-                    app.get("logger").error('Error al borrar el usuario');
+            gestorBD.eliminarConversaciones(criterioConversacion, function (conversaciones) {
+                if (conversaciones == null) {
+                    app.get("logger").error("No se pudieron borrar las conversaciones de los usuarios");
+                    res.redirect("/listarUsuarios" +
+                        "?mensaje=No se pudieron borrar las conversaciones de los usuarios");
                 } else {
-                    if (i === idsUsers.length - 1) {
-                        res.redirect('/user/list?mensaje=Usuarios borrados correctamente');
-                        app.get("logger").info('Usuarios borrados correctamente');
-                    }
+                    // borrar mensajes
+                    let criterioMensajes = {
+                        $or: [{receptor: {$in: idsUsers}},
+                            {emisor: {$in: idsUsers}}]
+                    };
+                    gestorBD.eliminarMensajes(criterioMensajes, function (mensajes) {
+                        if (mensajes == null) {
+                            app.get("logger").error("No se pudieron borrar los mensajes de los usuarios");
+                            res.redirect("/listarUsuarios" +
+                                "?mensaje=No se pudieron borrar los mensajes de los usuarios");
+                        } else {
+                            // Borrar ofertas
+                            let criterioOferta = {
+                                propietario: {$in: idsUsers}
+                            };
+                            gestorBD.eliminarOferta(criterioOferta, function (ofertas) {
+                                if (ofertas == null) {
+                                    app.get("logger").error("No se pudieron borrar las ofertas de los usuarios");
+                                    res.redirect("/listarUsuarios" +
+                                        "?mensaje=No se pudieron borrar las ofertas de los usuarios");
+                                } else {
+                                    // Borrar usuario
+                                    let criterio = {
+                                        email: {$in: idsUsers}
+                                    };
+                                    let nuevoCriterio = {valid: false};
+                                    gestorBD.deleteUsers(criterio, nuevoCriterio, function (usuarios) {
+                                        if (usuarios == null || usuarios.length === 0) {
+                                            app.get("logger").error("Los usuarios no pudieron eliminarse");
+                                            res.redirect("/listarUsuarios" +
+                                                "?mensaje=Los usuarios no pudieron eliminarse");
+                                        } else {
+                                            app.get("logger").info("Los usuarios se eliminaron correctamente");
+                                            res.redirect("/listarUsuarios" +
+                                                "?mensaje=Los usuarios se eliminaron correctamente");
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    })
                 }
-
-            })
+            });
         }
     });
 

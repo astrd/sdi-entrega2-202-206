@@ -108,13 +108,7 @@ module.exports = function (app, swig, gestorBD) {
                                 }
                             });
                         });
-                        gestorBD.insertDataTest(listMessages, 'mensajes', function (messages) {
-                            if (messages == null || messages.length === 0) {
-                                res.redirect("/identificarse?mensaje=Error al crear las ofertas de prueba");
-                            } else {
-                                res.redirect("/identificarse?mensaje=Datos creado correctamente");
-                            }
-                        });
+
                     }
                 });
             }

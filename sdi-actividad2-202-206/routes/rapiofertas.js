@@ -376,7 +376,7 @@ module.exports = function (app, gestorBD) {
                 res.json({
                     acceso: false,
                     error: 'Token invalido o caducado'
-                    
+
                 });
             }
             else {
