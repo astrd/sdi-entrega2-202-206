@@ -49,7 +49,7 @@
             $("#tablaCuerpo").append(
                 "<tr id=" + conversacionesMostrar[i]._id + ">" +
                     "<td>" + conversacionesMostrar[i].user1 + "</td>" +
-                    "<td>" + conversacionesMostrar[i].offer.toString() + "</td>" +
+                    "<td>" + conversacionesMostrar[i].title + "</td>" +
                     "<td><a class='btn btn-primary' onclick=cargarChat('"
                         + conversacionesMostrar[i].offer.toString()
                         + "','"
@@ -89,29 +89,16 @@
         demail = email1;
         remail = email2;
         Cookies.set('idOferta',idOferta);
-        console.log(Cookies.get('lemail'));
 
         if(semail===Cookies.get('lemail'))
         {
             emaild = email2;
             Cookies.set('semail',remail);
-            console.log('dentroif remail');
-
-            console.log(emaild);
-
         }else
           {
               emaild= email1;
               Cookies.set('semail',demail);
-
-              console.log('dentroelse semail');
-              console.log(emaild);
-
-
           }
-        console.log(emaild);
-        console.log(Cookies.get('semail'));
-
 
         $("#contenedor-principal").load("widget-chat.html");
         window.history.pushState("", "", "/cliente.html?w=chat&receptor=" + emaild + "&oferta=" + id);

@@ -46,11 +46,10 @@
             headers: {"token": token},
 
             success: function (respuesta) {
-                console.log('succes');
 
                 conversacionid = respuesta;
-                console.log( conversacionid._id);
                 showMessage(conversacionid._id);
+
             },
             error: function () {
                    $("#contenedor-principal").load("widget-conversaciones.html");
@@ -60,11 +59,7 @@
     }
 
     function showMessage(conversacionid ) {
-         // Tenemos que cargar antes la conversación, teneies que crear un nuevo controlador que busque la conversacion
-        // con el id de la oferta y token de usuarios
         let token = Cookies.get('token');
-        console.log('successm');
-
         $.ajax({
             url: URLbase + "/offer/conversation/" + conversacionid,
             type: "GET",
@@ -81,16 +76,12 @@
     }
     function mostrarMensajes( messages ) {
 
-
-
     $("#currentChatContent").empty();
         for (var i = 0; i < messages.length; i++) {
-            console.log(messages[i].receiver+""+Cookies.get('semail'));
 
             var message = "";
              if (messages[i].receiver === Cookies.get('semail')) {
-                console.log('dentroif');
-                message = "<div class='currentChatContent'>" +
+                 message = "<div class='currentChatContent'>" +
                     "<div class='message sent'>"  +
                     "<div class='messageContent'>" + messages[i].message + "</div>" +
                     "<div class='messageTime'>" + timeStamp(new Date(messages[i].date)) + "</div>";
