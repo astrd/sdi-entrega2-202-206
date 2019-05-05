@@ -15,10 +15,10 @@ module.exports = {
                     if (err) {
                         funcionCallback(null);
                         db.close();
-                    } else {
-                        let conver = db.collection('conversaciones');
-                        conver.remove(err, function () {
-                            if (err) {
+                    } else { 
+                         let conversaciones = db.collection('conversaciones');
+                        conversaciones.remove(err, function () {
+                             if (err) {
                                 funcionCallback(null);
                                 db.close();
                             } else {
