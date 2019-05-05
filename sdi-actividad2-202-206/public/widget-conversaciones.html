@@ -28,11 +28,10 @@
             type: "POST",
             data: {},
             dataType: 'json',
-            headers: {"token": token},
+            headers: {"token": Cookies.get('token')},
             success: function (respuesta) {
                 conversaciones = respuesta;
-                console.log(conversaciones)
-                actualizarTabla(conversaciones);
+                 actualizarTabla(conversaciones);
             },
             error: function () {
                 $("#contenedor-principal").load("widget-login.html");
@@ -46,7 +45,7 @@
             $("#username").append(
                 "<tr id=" + conversacionesMostrar[i].user1 + ">" +
                 "<td>" + conversacionesMostrar[i].user1 + "</td>" +
-                "<td><a class='btn btn-primary' onclick=cargarChat('" + conversacionesMostrar[i].offer + "','" + conversacionesMostrar[i].user1 + "')>Enviar mensaje</a></td>" +
+                "<td><a class='btn btn-primary' onclick=cargarChat('" + conversacionesMostrar[i].offer.toString() + "','" + conversacionesMostrar[i].user1 + "')>Enviar mensaje</a></td>" +
                 "</tr>"
             );
         }

@@ -270,7 +270,7 @@ module.exports = function (app, gestorBD) {
 
 
     app.post("/api/offer/listConversations", function (req, res) {
-        let criterio = {$or: [{receptor: res.usuario}, {emisor: res.usuario}]};
+        let criterio = {$or: [{user1: res.usuario}, {user2: res.usuario}]};
         gestorBD.obtenerConversaciones(criterio, function (conver) {
             if (conver == null) {
                 res.status(500);
@@ -280,6 +280,7 @@ module.exports = function (app, gestorBD) {
                 })
 
             } else {
+
                 app.get("logger").info('API: Se listan las conversaciones correctamente');
                 res.send(conver);
             }
@@ -336,6 +337,7 @@ module.exports = function (app, gestorBD) {
     // Buscar conversación por id de oferta y con el token
     app.post('/api/search/offer/conversation/:id', function (req, res) {
         let criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
+        console.log(criterio);
         gestorBD.obtenerOfertas(criterio, function (ofertas) {
             if (ofertas == null || ofertas.length === 0) {
                 res.status(403);
